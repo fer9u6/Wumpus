@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="isl.wumpus.DibujarLaberinto"
+    android:orientation="vertical">
+
+
+       <view
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:id="@+id/lienzo"
+           android:layout_weight="5"
+           class="isl.wumpus.Lienzo"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:orientation="horizontal">
+           <Button
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:id="@+id/btncueva"
+               android:tag="#FFFF00"
+               android:background="#FFFF00"
+               android:text="Cueva"/>
+           <Button
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:id="@+id/btncamino"
+               android:tag="#FFFF00"
+               android:background="#FFFF00"
+               android:text="Camino"/>
+
+
+       </LinearLayout>
+
+
+
+</LinearLayout>
