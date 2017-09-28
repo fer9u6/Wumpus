@@ -5,9 +5,13 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
+    private static Lienzo lienzo;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        lienzo = (Lienzo) findViewById(R.id.lienzo);
+
     }
 }
