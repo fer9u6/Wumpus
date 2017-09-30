@@ -7,7 +7,7 @@ import android.view.View;
 
 public class DibujarLaberinto extends AppCompatActivity implements View.OnClickListener {
 
-    public static Lienzo lienzo;
+    private static Lienzo lienzo;
     public Button bCueva;
     public Button bCamino;
 
@@ -18,7 +18,6 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bCamino = (Button) findViewById(R.id.btncamino);
         bCueva = (Button) findViewById(R.id.btncueva);
         lienzo = (Lienzo) findViewById(R.id.lienzo);
-
         bCamino.setOnClickListener(this);
         bCueva.setOnClickListener(this);
 
@@ -27,7 +26,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btncueva:
-                lienzo.setCueva();
+                lienzo.nuevaCueva();
                 break;
 
             case R.id.btncamino:

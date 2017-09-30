@@ -1,6 +1,7 @@
 package isl.wumpus;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Path;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 
 /**
  * Created by b41441 on 28/09/2017.
@@ -28,44 +32,48 @@ public class Lienzo extends View {
     private static Paint drawPaint;
     private static Paint canvasPaint;
     private static int paintColor = 0xFFFF0000;
-    //0xFF660000;
-    private Canvas drawCanvas;
-    private Bitmap canvasBitmap;
-    static float TamanyoPunto;
     private static boolean borrado=false;
+
+    private int mPivotX = 0;
+    private int mPivotY = 0;
+    private int radius = 30;
+    private Canvas drawCanvas;
+    //arrays que contienen las posiciones de las cuevas
+    private int[] cuevaX;
+    private int[] cuevaY;
+
+    //private Bitmap cuevas[];
+    int numCuevas =0 ; //contador de cuevas
+    private int cueva=-1; //identificadoe de cueva
+
 
     public Lienzo(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
-        canvasPaint = new Paint();
+        cuevaY=new int[100];
+        cuevaX =new int[100];
+
 
     }
 
-    //Tamaño asignado a la vista
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        //canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-       // drawCanvas = new Canvas(canvasBitmap);
-    }
     private void setupDrawing(){
-
         drawPath = new Path();
         drawPaint = new Paint();
-        drawPaint.setColor(paintColor);
+        drawPaint.setColor(Color.BLACK);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(20);
-        drawPaint.setStyle(Paint.Style.STROKE);
-        drawPaint.setStrokeJoin(Paint.Join.ROUND);
-        drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        canvasPaint = new Paint(Paint.DITHER_FLAG);
+        canvasPaint = new Paint();
+        drawCanvas =new Canvas();
     }
 
-    //Pinta la vista. Será llamado desde el OnTouchEvent
+   //Pinta la vista. Será llamado desde el OnTouchEvent
     @Override
     protected void onDraw(Canvas canvas) {
-        //canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
+        Bitmap b= BitmapFactory.decodeResource(getResources(), R.mipmap.cueva);
+        for(int i=1;i<=numCuevas;i++) {
+            canvas.drawBitmap(b, cuevaX[i], cuevaY[i], canvasPaint);
+        }
+
     }
 
     //Registra los touch de usuario
@@ -76,15 +84,30 @@ public class Lienzo extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                drawPath.moveTo(touchX, touchY);
+               // drawPath.moveTo(touchX, touchY);
+                for(int i =1;i<=numCuevas ;i++){
+                    double cenx = touchX - cuevaX[i];//x original
+                    double ceny = touchY - cuevaY[i];//y original
+                    //que cuava se esta tocando
+                    float distance = (float)Math.sqrt(cenx*cenx + ceny*ceny);
+                    if(distance <= 70 ){ //radio original
+                        cueva =i;
+                        //txt = "El circulo tocado es i"
+                        invalidate();
+                    }
+                }
+
                 break;
             case MotionEvent.ACTION_MOVE:
-                drawPath.lineTo(touchX, touchY);
+               if(cueva != -1){
+                   cuevaX[cueva]= (int )touchX;
+                   cuevaY[cueva]=(int)touchY;
+               }
                 break;
             case MotionEvent.ACTION_UP:
-                drawPath.lineTo(touchX, touchY);
+               /* drawPath.lineTo(touchX, touchY);
                 drawCanvas.drawPath(drawPath, drawPaint);
-                drawPath.reset();
+                drawPath.reset()*/;
                 break;
             default:
                 return false;
@@ -95,14 +118,25 @@ public class Lienzo extends View {
 
     }
 
-    public void setCueva(){
+    //originalmente era para dibijar un circulo
+    public void nuevaCueva() {
+        int minX = radius * 2;
+        int maxX = getWidth() - (radius *2 );
+        int minY = radius * 2;
+        int maxY = getHeight() - (radius *2 );
+        //Generate random numbers for x and y locations of the circle on screen
+        Random random = new Random();
+        mPivotX = random.nextInt(maxX - minX + 1) + minX;
+        mPivotY = random.nextInt(maxY - minY + 1) + minY;
 
+        //se inserta un nueva cueva en los array de posiciones
+        numCuevas++; //la posicon 0 del array no se usa
+        cuevaX[numCuevas] =mPivotX;
+        cuevaY[numCuevas] = mPivotY;
+
+       invalidate();
 
     }
-
-
-
-
 
 
 
