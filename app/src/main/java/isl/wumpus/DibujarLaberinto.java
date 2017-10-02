@@ -26,10 +26,12 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btncueva:
+                lienzo.modo(true);
                 lienzo.nuevaCueva();
                 break;
 
             case R.id.btncamino:
+                lienzo.modo(false);
                 break;
         }
 
