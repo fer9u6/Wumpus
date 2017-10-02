@@ -5,16 +5,19 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.lang.System.in;
 import static java.security.AccessController.getContext;
 
 
@@ -28,14 +31,18 @@ public class GestionadorDeArchivos {
 
 
     //Convierte objeto a string
-    public String convertirObjetoAString(Object o){
+    public static String convertirObjetoAString(Object o){
         final Gson gson = new Gson();
+        // 1. Java object to JSON,
+        //return gson.toJson(o).toString();
         return gson.toJson(o);
     }
 
     //Convierte String a objeto
-    public Object convertirStringAObjeto(String string){
-
+    public static Object convertirStringAObjeto(String string){
+        final Gson gson = new Gson();
+        Object o = gson.fromJson(string, Object.class);
+        return o;
     }
 
 
@@ -73,6 +80,16 @@ public class GestionadorDeArchivos {
             e.printStackTrace();
         }
     }*/
+    public static void main(String args[]){
+        /*Se crea un String "prueba" en el main, se convierte a objeto
+          y se reconvierte a String para luego imprimir en consola
+        */
+
+        String a = "prueba";
+        Object o = convertirStringAObjeto(a);
+
+        System.out.println(convertirObjetoAString(o));
+    }
 
     //Recibe el nombre de laberinto que quiere abrir
     public void read(String nombrelab, View view, Context ctx) {
