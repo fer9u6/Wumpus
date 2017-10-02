@@ -41,18 +41,25 @@ public class Lienzo extends View {
     //arrays que contienen las posiciones de las cuevas
     private int[] cuevaX;
     private int[] cuevaY;
+    private int []caminoX;
+    private int []caminoY;
+    private int cuevasCamino[];//cuevas que se eunen por la linea
 
     //private Bitmap cuevas[];
     int numCuevas =0 ; //contador de cuevas
     private int cueva=-1; //identificadoe de cueva
-
+    private boolean modocueva;
+    private int contadorCamino;
+    private int contadorToques;
 
     public Lienzo(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
         cuevaY=new int[100];
         cuevaX =new int[100];
-
+        contadorCamino =0;
+        contadorToques=0;
+        cuevasCamino= new int [2];
 
     }
 
@@ -69,12 +76,17 @@ public class Lienzo extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawPath(drawPath, drawPaint);
-        Bitmap b= BitmapFactory.decodeResource(getResources(), R.mipmap.cueva);
-        for(int i=1;i<=numCuevas;i++) {
-            canvas.drawBitmap(b, cuevaX[i], cuevaY[i], canvasPaint);
-        }
 
+            Bitmap b = BitmapFactory.decodeResource(getResources(), R.mipmap.cueva);
+            for (int i = 1; i <= numCuevas; i++) {
+                canvas.drawBitmap(b, cuevaX[i], cuevaY[i], canvasPaint);
+            }
+           for(int i=0;i<contadorCamino;i++){
+               canvas.drawLine(cuevaX[caminoX[i]],cuevaY[caminoX[i]],cuevaX[caminoY[i]],cuevaY[caminoY[i]],canvasPaint);
+           }
     }
+
+
 
     //Registra los touch de usuario
     @Override
@@ -82,44 +94,78 @@ public class Lienzo extends View {
         float touchX = event.getX();
         float touchY = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-               // drawPath.moveTo(touchX, touchY);
-                for(int i =1;i<=numCuevas ;i++){
-                    double cenx = touchX - cuevaX[i];//x original
-                    double ceny = touchY - cuevaY[i];//y original
-                    //que cuava se esta tocando
-                    float distance = (float)Math.sqrt(cenx*cenx + ceny*ceny);
-                    if(distance <= 70 ){ //radio original
-                        cueva =i;
-                        //txt = "El circulo tocado es i"
-                        invalidate();
+        if (modocueva == true) {
+            switch (event.getAction()) {
+                //min =70
+                case MotionEvent.ACTION_DOWN:
+                    for (int i = 1; i <= numCuevas; i++) {
+                        double cenx = touchX - cuevaX[i];//x original
+                        double ceny = touchY - cuevaY[i];//y original
+                        //que cuava se esta tocando
+                        float distance = (float) Math.sqrt(cenx * cenx + ceny * ceny);
+                        if (distance <= 70) { //radio original   //compara con min
+                            cueva = i;
+                            //min=distance
+                            invalidate();
+                        }
                     }
-                }
 
-                break;
-            case MotionEvent.ACTION_MOVE:
-               if(cueva != -1){
-                   cuevaX[cueva]= (int )touchX;
-                   cuevaY[cueva]=(int)touchY;
-               }
-                break;
-            case MotionEvent.ACTION_UP:
-               /* drawPath.lineTo(touchX, touchY);
-                drawCanvas.drawPath(drawPath, drawPaint);
-                drawPath.reset()*/;
-                break;
-            default:
-                return false;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (cueva != -1) {
+                        cuevaX[cueva] = (int) touchX;
+                        cuevaY[cueva] = (int) touchY;
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    break;
+                default:
+                    return false;
+            }
+        } else {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    for (int i = 1; i <= numCuevas; i++) {
+                        double cenx = touchX - cuevaX[i];//x original
+                        double ceny = touchY - cuevaY[i];//y original
+                        //que cuava se esta tocando
+                        float distance = (float) Math.sqrt(cenx * cenx + ceny * ceny);
+                        if (distance <= 70) { //radio original   //compara con min
+                            cueva = i;
+                        }
+                    }
+                    cuevasCamino[contadorToques]= cueva;
+                    if(contadorToques==1){
+                        crearLinea();
+                    }
+                    ++contadorToques;
+                    contadorToques%=2;
+
+                    invalidate();
+
+                    break;
+                case MotionEvent.ACTION_MOVE:
+
+
+                    break;
+
+                default:
+                    return false;
+
+            }
+
+        }//fin else
+
+            invalidate();
+            return true;
+
         }
-        //repintar
-        invalidate();
-        return true;
 
-    }
 
     //originalmente era para dibijar un circulo
     public void nuevaCueva() {
+
+        modocueva=true;
         int minX = radius * 2;
         int maxX = getWidth() - (radius *2 );
         int minY = radius * 2;
@@ -139,5 +185,13 @@ public class Lienzo extends View {
     }
 
 
-
+    public void crearLinea(){
+        caminoX[contadorCamino]=cuevasCamino[0];
+        caminoY[contadorCamino]=cuevasCamino[1];
+        contadorCamino++;
+        invalidate();
+    }
+    public void modo(boolean m ){
+        modocueva = m;
+    }
 }
