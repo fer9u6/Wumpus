@@ -39,17 +39,17 @@ public class Lienzo extends View {
     private int radius = 30;
     private Canvas drawCanvas;
     //arrays que contienen las posiciones de las cuevas
-    private int[] cuevaX;
-    private int[] cuevaY;
-    private int []caminoX;
-    private int []caminoY;
-    private int cuevasCamino[];//cuevas que se eunen por la linea
+    public int[] cuevaX;
+    public int[] cuevaY;
+    public int []caminoX;
+    public int []caminoY;
+    public int cuevasCamino[];//cuevas que se eunen por la linea
 
     //private Bitmap cuevas[];
-    int numCuevas =0 ; //contador de cuevas
+    public int numCuevas =0 ; //contador de cuevas
     private int cueva=-1; //identificadoe de cueva
     private boolean modocueva;
-    private int contadorCamino;
+    public int contadorCamino;
     private int contadorToques;
 
     public Lienzo(Context context, AttributeSet attrs) {
@@ -57,6 +57,8 @@ public class Lienzo extends View {
         setupDrawing();
         cuevaY=new int[100];
         cuevaX =new int[100];
+        caminoX=new int[100];
+        caminoY =new int[100];
         contadorCamino =0;
         contadorToques=0;
         cuevasCamino= new int [2];
@@ -186,10 +188,21 @@ public class Lienzo extends View {
 
 
     public void crearLinea(){
-        caminoX[contadorCamino]=cuevasCamino[0];
-        caminoY[contadorCamino]=cuevasCamino[1];
-        contadorCamino++;
-        invalidate();
+        //agregue esta parte que prevalida
+        boolean valido= true;
+        if(cuevasCamino[0] == cuevasCamino[1]) valido = false;
+        else{
+            for(int i=0; i <= contadorCamino; i++){
+                if(caminoY[i]==cuevasCamino[0] && caminoX[i]==cuevasCamino[1]) valido = false;
+            }
+        }
+        if(valido){
+            caminoX[contadorCamino]=cuevasCamino[0];
+            caminoY[contadorCamino]=cuevasCamino[1];
+            contadorCamino++;
+            invalidate();
+        }
+
     }
     public void modo(boolean m ){
         modocueva = m;

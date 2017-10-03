@@ -35,6 +35,14 @@
                android:tag="#FFFF00"
                android:background="#FFFF00"
                android:text="Camino"/>
+           <Button
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:id="@+id/btnguardar"
+               android:tag="#FFFF00"
+               android:background="#FFFF00"
+               android:text="Guardar"/>
 
 
        </LinearLayout>
