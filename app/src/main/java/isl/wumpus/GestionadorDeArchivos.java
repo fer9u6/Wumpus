@@ -1,5 +1,6 @@
 package isl.wumpus;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import static java.security.AccessController.getContext;
  */
 
 public class GestionadorDeArchivos {
+
 
     //File file = new File(/*context.getFilesDir(), filename*/"archivo");
 
@@ -80,7 +82,11 @@ public class GestionadorDeArchivos {
             e.printStackTrace();
         }
     }*/
-    public static void main(String args[]){
+
+
+    static MainActivity ctx;
+
+   public static void main(String args[]){
         /*Se crea un String "prueba" en el main, se convierte a objeto
           y se reconvierte a String para luego imprimir en consola
         */
@@ -89,10 +95,11 @@ public class GestionadorDeArchivos {
         Object o = convertirStringAObjeto(a);
 
         System.out.println(convertirObjetoAString(o));
-    }
+        write("prueba",convertirObjetoAString(o),ctx);
+   }
 
     //Recibe el nombre de laberinto que quiere abrir
-    public void read(String nombrelab, View view, Context ctx) {
+    public static String read(String nombrelab, View view, Context ctx) {
         try {
             FileInputStream fileInputStream= ctx.getApplicationContext().openFileInput(nombrelab+".txt");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -102,15 +109,17 @@ public class GestionadorDeArchivos {
             while ((lines=bufferedReader.readLine())!=null) {
                 stringBuffer.append(lines+"\n");
             }
+            return stringBuffer.toString();
             //textView.setText(stringBuffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "";
     }
 
-    public void write(String nombrelab, String string, Context ctx) {
+    public static void write(String nombrelab, String string, Context ctx) {
         try {
             FileOutputStream fileOutputStream = ctx.openFileOutput(nombrelab + ".txt",MODE_PRIVATE);
             fileOutputStream.write(string.getBytes());
@@ -122,4 +131,6 @@ public class GestionadorDeArchivos {
             e.printStackTrace();
         }
     }
+
+
 }
