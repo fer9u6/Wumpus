@@ -4,10 +4,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    int REQUEST_ENABLE_BT;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,16 +16,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void bluetoothTrial(){
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            // Device does not support Bluetooth
-        }
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
 
+    public void toBluetoothActivity(View v){
+        Intent i = new Intent(this , Bluetooth.class);
+        startActivity(i);
+        //Toast.makeText(this, "You selected OK", Toast.LENGTH_SHORT).show();
     }
 
 }
