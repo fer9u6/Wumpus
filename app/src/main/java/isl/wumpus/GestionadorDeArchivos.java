@@ -29,8 +29,11 @@ import static java.security.AccessController.getContext;
 public class GestionadorDeArchivos {
 
 
-    //File file = new File(/*context.getFilesDir(), filename*/"archivo");
+    private static Context ctx;
 
+    public GestionadorDeArchivos(Context c) {
+        this.ctx = c;
+    }
 
     //Convierte objeto a string
     public static String convertirObjetoAString(Object o){
@@ -48,44 +51,6 @@ public class GestionadorDeArchivos {
     }
 
 
-
-    /*
-     public void guardarArchivoInterno(String stringAGuardar, String fileName, Context ctx){
-        FileOutputStream fos = null;
-        try{
-            fos = ctx.openFileOutput(fileName, MODE_PRIVATE);
-            fos.write(stringAGuardar.getBytes());
-            fos.close();
-            //save preference
-            preferenceEditor.putBoolean("guardado interno", true);
-            //show button & listener
-            buttonShowInternal.setVisibility(View.VISIBLE);
-            buttonShowInternal.setOnClickListener(this);
-        }catch (IOException e){
-           // Toast.makeText(this, "Hubo un problema al guardar",
-           //         Toast.LENGTH_SHORT).show();
-           // e.printStackTrace();
-        }
-    }
-
-    public void guardarArchivo(Context ctx) {
-        String filename = "myfile";
-        String string = "Hello world!";
-        FileOutputStream outputStream;
-
-        try {
-            //llamo a context con getContext() o getApplicationContext() o this
-            outputStream = ctx.openFileOutput(filename, MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-
-    static MainActivity ctx;
-
    public static void main(String args[]){
         /*Se crea un String "prueba" en el main, se convierte a objeto
           y se reconvierte a String para luego imprimir en consola
@@ -99,7 +64,7 @@ public class GestionadorDeArchivos {
    }
 
     //Recibe el nombre de laberinto que quiere abrir
-    public static String read(String nombrelab, View view, Context ctx) {
+    public static String read(String nombrelab/*, View view*/, Context ctx) {
         try {
             FileInputStream fileInputStream= ctx.getApplicationContext().openFileInput(nombrelab+".txt");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -110,7 +75,7 @@ public class GestionadorDeArchivos {
                 stringBuffer.append(lines+"\n");
             }
             return stringBuffer.toString();
-            //textView.setText(stringBuffer.toString());
+            //view.texto.setText(stringBuffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
