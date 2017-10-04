@@ -21,6 +21,7 @@ import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 
 /**
@@ -43,14 +44,15 @@ public class Lienzo extends View {
     public int[] cuevaY;
     public int []caminoX;
     public int []caminoY;
-    public int cuevasCamino[];//cuevas que se eunen por la linea
+    public int cuevasCamino[];//cuevas que se unen por la linea
 
     //private Bitmap cuevas[];
     public int numCuevas =0 ; //contador de cuevas
-    private int cueva=-1; //identificadoe de cueva
+    private int cueva=-1; //identificador de cueva
     private boolean modocueva;
     public int contadorCamino;
     private int contadorToques;
+    private Stack<Boolean> ultimo;
 
     public Lienzo(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,6 +64,7 @@ public class Lienzo extends View {
         contadorCamino =0;
         contadorToques=0;
         cuevasCamino= new int [2];
+        ultimo = new Stack<Boolean>();
 
     }
 
@@ -89,6 +92,20 @@ public class Lienzo extends View {
     }
 
 
+    public void borrar(){
+        boolean var =false;
+        if(!ultimo.empty()){
+           var= ultimo.pop();
+        }
+        if(var == false){ //camino
+            if(contadorCamino!= 0)contadorCamino --;
+        }else{
+            if(numCuevas != 0)numCuevas --;
+        }
+
+        invalidate();
+    }
+
 
     //Registra los touch de usuario
     @Override
@@ -103,7 +120,7 @@ public class Lienzo extends View {
                     for (int i = 1; i <= numCuevas; i++) {
                         double cenx = touchX - cuevaX[i];//x original
                         double ceny = touchY - cuevaY[i];//y original
-                        //que cuava se esta tocando
+                        //que cueva se esta tocando
                         float distance = (float) Math.sqrt(cenx * cenx + ceny * ceny);
                         if (distance <= 70) { //radio original   //compara con min
                             cueva = i;
@@ -164,9 +181,8 @@ public class Lienzo extends View {
         }
 
 
-    //originalmente era para dibijar un circulo
+    //originalmente era para dibujar un circulo
     public void nuevaCueva() {
-
         modocueva=true;
         int minX = radius * 2;
         int maxX = getWidth() - (radius *2 );
@@ -181,7 +197,7 @@ public class Lienzo extends View {
         numCuevas++; //la posicon 0 del array no se usa
         cuevaX[numCuevas] =mPivotX;
         cuevaY[numCuevas] = mPivotY;
-
+        ultimo.push(true);
        invalidate();
 
     }
@@ -200,6 +216,7 @@ public class Lienzo extends View {
             caminoX[contadorCamino]=cuevasCamino[0];
             caminoY[contadorCamino]=cuevasCamino[1];
             contadorCamino++;
+            ultimo.push(false);
             invalidate();
         }
 
