@@ -50,19 +50,6 @@ public class GestionadorDeArchivos {
         return o;
     }
 
-
-   public static void main(String args[]){
-        /*Se crea un String "prueba" en el main, se convierte a objeto
-          y se reconvierte a String para luego imprimir en consola
-        */
-
-        String a = "prueba";
-        Object o = convertirStringAObjeto(a);
-
-        System.out.println(convertirObjetoAString(o));
-        write("prueba",convertirObjetoAString(o),ctx);
-   }
-
     //Recibe el nombre de laberinto que quiere abrir
     public static String read(String nombrelab/*, View view*/, Context ctx) {
         try {
