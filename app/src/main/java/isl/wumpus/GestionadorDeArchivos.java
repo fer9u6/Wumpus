@@ -29,11 +29,11 @@ import static java.security.AccessController.getContext;
 public class GestionadorDeArchivos {
 
 
-    private static Context ctx;
+    //private static Context ctx;
 
-    public GestionadorDeArchivos(Context c) {
+    /*public GestionadorDeArchivos(Context c) {
         this.ctx = c;
-    }
+    }*/
 
     //Convierte objeto a string
     public static String convertirObjetoAString(Object o){

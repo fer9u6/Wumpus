@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.UUID;
 
 public class DibujarLaberinto extends AppCompatActivity implements View.OnClickListener {
@@ -34,6 +35,9 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bGuardar.setOnClickListener(this);
         bBorrar.setOnClickListener(this);
 
+       /* File fileDir = new File(getFilesDir().getAbsolutePath());
+       fileDir.mkdirs();*/
+
     }
 
     public void guardarLaberinto(){
@@ -45,10 +49,22 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
 
                 //Salvar dibujo
                 lienzo.setDrawingCacheEnabled(true);
+
+                //Para asociar PNG con TXT. Pedir nombre?
+                String nombre;
+                nombre = UUID.randomUUID().toString();
+
                 //attempt to save
                 String imgSaved = MediaStore.Images.Media.insertImage(
                         getContentResolver(), lienzo.getDrawingCache(),
-                        UUID.randomUUID().toString()+".png", "drawing");
+                        //UUID.randomUUID().toString()+".png", "drawing");
+                        nombre+".png", "drawing");
+
+                //Guardar TXT
+                GestionadorDeArchivos ga = new GestionadorDeArchivos();
+                ga.write(nombre,ga.convertirObjetoAString(mapa),getApplicationContext());
+
+
                 //Mensaje de todo correcto
                 if(imgSaved!=null){
                     Toast savedToast = Toast.makeText(getApplicationContext(),

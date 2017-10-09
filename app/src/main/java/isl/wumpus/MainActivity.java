@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*
         ga = new GestionadorDeArchivos(this);
 
         appContext = getApplicationContext();
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(convertirObjetoAString(o));
         ga.write("prueba",convertirObjetoAString(o),this);
-        Toast.makeText(this.getApplicationContext(),ga.read("prueba", this),Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getApplicationContext(),ga.read("prueba", this),Toast.LENGTH_LONG).show();*/
     }
 
 
