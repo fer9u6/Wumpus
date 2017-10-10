@@ -38,7 +38,7 @@ public class Mapa {
         boolean esValido = true;
         for(int j=1; j <= contCuevas; j++){
             boolean hayCamino=false;
-            for(int i=0; i <= contCaminos; i++){
+            for(int i=0; i < contCaminos; i++){  //en vez de <=
                 if(caminoV2[i]==j || caminoV1[i]==j) {
                     hayCamino = true; break;
                 }

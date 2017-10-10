@@ -42,8 +42,8 @@ public class Lienzo extends View {
     //arrays que contienen las posiciones de las cuevas
     public int[] cuevaX;
     public int[] cuevaY;
-    public int []caminoX;
-    public int []caminoY;
+    public int []caminoA;
+    public int []caminoB;
     public int cuevasCamino[];//cuevas que se unen por la linea
 
     //private Bitmap cuevas[];
@@ -59,8 +59,8 @@ public class Lienzo extends View {
         setupDrawing();
         cuevaY=new int[100];
         cuevaX =new int[100];
-        caminoX=new int[100];
-        caminoY =new int[100];
+        caminoA=new int[100];
+        caminoB =new int[100];
         contadorCamino =0;
         contadorToques=0;
         cuevasCamino= new int [2];
@@ -87,7 +87,8 @@ public class Lienzo extends View {
                 canvas.drawBitmap(b, cuevaX[i], cuevaY[i], canvasPaint);
             }
            for(int i=0;i<contadorCamino;i++){
-               canvas.drawLine(cuevaX[caminoX[i]],cuevaY[caminoX[i]],cuevaX[caminoY[i]],cuevaY[caminoY[i]],canvasPaint);
+               int mitadCueva = 24;//cueva 48x48
+               canvas.drawLine(cuevaX[caminoA[i]]+mitadCueva,cuevaY[caminoA[i]]+mitadCueva,cuevaX[caminoB[i]]+mitadCueva,cuevaY[caminoB[i]]+mitadCueva,canvasPaint);
            }
     }
 
@@ -209,12 +210,12 @@ public class Lienzo extends View {
         if(cuevasCamino[0] == cuevasCamino[1]) valido = false;
         else{
             for(int i=0; i <= contadorCamino; i++){
-                if(caminoY[i]==cuevasCamino[0] && caminoX[i]==cuevasCamino[1]) valido = false;
+                if(caminoB[i]==cuevasCamino[0] && caminoA[i]==cuevasCamino[1]) valido = false;
             }
         }
         if(valido){
-            caminoX[contadorCamino]=cuevasCamino[0];
-            caminoY[contadorCamino]=cuevasCamino[1];
+            caminoA[contadorCamino]=cuevasCamino[0];
+            caminoB[contadorCamino]=cuevasCamino[1];
             contadorCamino++;
             ultimo.push(false);
             invalidate();

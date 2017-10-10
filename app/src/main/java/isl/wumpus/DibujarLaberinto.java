@@ -51,6 +51,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 lienzo.setDrawingCacheEnabled(true);
 
                 //Para asociar PNG con TXT. Pedir nombre?
+
                 String nombre;
                 nombre = UUID.randomUUID().toString();
 
@@ -106,8 +107,8 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnguardar:
                 lienzo.modo(true);
-                mapa = new Mapa(lienzo.cuevaX, lienzo.cuevaY, lienzo.caminoX,
-                        lienzo.caminoY, lienzo.numCuevas, lienzo.contadorCamino);
+                mapa = new Mapa(lienzo.cuevaX, lienzo.cuevaY, lienzo.caminoA,
+                        lienzo.caminoB, lienzo.numCuevas, lienzo.contadorCamino);
                 if(mapa.Validar()) {
                     guardarLaberinto();
                 } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
