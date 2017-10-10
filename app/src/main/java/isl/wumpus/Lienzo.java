@@ -40,10 +40,10 @@ public class Lienzo extends View {
     private int radius = 30;
     private Canvas drawCanvas;
     //arrays que contienen las posiciones de las cuevas
-    public int[] cuevaX;
-    public int[] cuevaY;
-    public int []caminoX;
-    public int []caminoY;
+    public float[] cuevaX;
+    public float[] cuevaY;
+    public int[]caminoX;
+    public int[]caminoY;
     public int cuevasCamino[];//cuevas que se unen por la linea
 
     //private Bitmap cuevas[];
@@ -57,8 +57,8 @@ public class Lienzo extends View {
     public Lienzo(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
-        cuevaY=new int[100];
-        cuevaX =new int[100];
+        cuevaY=new float[100];
+        cuevaX =new float[100];
         caminoX=new int[100];
         caminoY =new int[100];
         contadorCamino =0;
@@ -87,7 +87,7 @@ public class Lienzo extends View {
                 canvas.drawBitmap(b, cuevaX[i], cuevaY[i], canvasPaint);
             }
            for(int i=0;i<contadorCamino;i++){
-               canvas.drawLine(cuevaX[caminoX[i]],cuevaY[caminoX[i]],cuevaX[caminoY[i]],cuevaY[caminoY[i]],canvasPaint);
+               canvas.drawLine(cuevaX[caminoX[i]]+30f,cuevaY[caminoX[i]]+30f,cuevaX[caminoY[i]]+30f,cuevaY[caminoY[i]]+30f,canvasPaint);
            }
     }
 
