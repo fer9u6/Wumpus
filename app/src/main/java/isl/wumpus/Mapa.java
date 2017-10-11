@@ -5,17 +5,17 @@ package isl.wumpus;
  */
 
 public class Mapa {
-    private float[] cuevaX;
-    private float[] cuevaY;
+    private int[] cuevaX;
+    private int[] cuevaY;
     private int[] caminoV1;
     private int[] caminoV2;
     private int contCuevas;
     private int contCaminos;
 
-    public float[] getCuevaX(){
+    public int[] getCuevaX(){
         return cuevaX;
     }
-    public float[] getCuevaY(){
+    public int[] getCuevaY(){
         return cuevaY;
     }
     public int[] getCaminoV1(){
@@ -25,7 +25,7 @@ public class Mapa {
         return caminoV2;
     }
 
-    public Mapa(float[] cX, float[] cY, int[] cV1, int[] cV2, int cCuevas, int cCaminos){
+    public Mapa(int[] cX, int[] cY, int[] cV1, int[] cV2, int cCuevas, int cCaminos){
         cuevaX = cX;
         cuevaY = cY;
         caminoV1 = cV1;
@@ -36,11 +36,9 @@ public class Mapa {
 
     public boolean Validar(){
         boolean esValido = true;
-        for(int j=1; j <= contCuevas; j++)//El vector de cuevas empieza de la posición 1.
-        {
+        for(int j=1; j <= contCuevas; j++){
             boolean hayCamino=false;
-            for(int i=0; i < contCaminos; i++)//El vector de caminos empieza de la posición 0.
-            {
+            for(int i=0; i < contCaminos; i++){  //en vez de <=
                 if(caminoV2[i]==j || caminoV1[i]==j) {
                     hayCamino = true; break;
                 }
