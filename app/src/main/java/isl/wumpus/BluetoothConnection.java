@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -166,6 +168,11 @@ public class BluetoothConnection {
                 try {
                     bytes= mInputStream.read(buffer);
                     String incomingmessage= new String(buffer,0,bytes);
+
+                    Intent incomingMessageIntent = new Intent("incomingMessage");
+                    incomingMessageIntent.putExtra("theMessage",incomingmessage);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+
                 } catch (IOException e) {
                     //nothing boey
                     break;
@@ -175,6 +182,7 @@ public class BluetoothConnection {
         }
 
         public void write(byte[] bytes){
+
             String text = new String (bytes, Charset.defaultCharset());
             try {
                 mOutputStream.write(bytes);

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     Button btnStartConnection;
     Button btnSend;
+
+    TextView incomingMessages;
+    StringBuilder messages;
 
     BluetoothConnection mBluetoothConnection;
 
@@ -157,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btnSend=(Button) findViewById(R.id.btnSend);
         chatText=(EditText) findViewById(R.id.chatText);
 
+        incomingMessages = (TextView) findViewById(R.id.incomingMessage);
+        messages = new StringBuilder();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, new IntentFilter("incomingMessage"));
+
         IntentFilter newintentFilter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver4, newintentFilter);
 
@@ -181,11 +191,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btnSend.setOnClickListener(new View.OnClickListener(){//gets text and sends it
             @Override
             public void onClick(View vie){
+                //Obtengo en bytes lo quiere mandar
                 byte[] bytes=chatText.getText().toString().getBytes(Charset.defaultCharset());
+                //Se lo paso a mandar por la conexion
                 mBluetoothConnection.write(bytes);
+                chatText.setText("");
             }
         });
     }
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String text = intent.getStringExtra("theMessage");
+            messages.append(text + "\n");
+            incomingMessages.setText(messages);
+        }
+    };
 
     public void startConnection(){
         startBTConnection(mBTDevice,MY_UUID_INSECURE);
