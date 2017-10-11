@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Wumpus.iml" filepath="$PROJECT_DIR$/Wumpus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Wumpus2.iml" filepath="$PROJECT_DIR$/Wumpus2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
