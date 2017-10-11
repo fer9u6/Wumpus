@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="isl.wumpus.Activity_EmplazarLaberinto"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="193dp"
+            android:layout_height="31dp"
+            android:layout_margin="30dp"
+            android:text="Configure el laberinto"
+            android:textColor="#000000"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/btnCoordenadasCueva"
+            android:layout_width="202dp"
+            android:layout_height="85dp"
+            android:layout_margin="20dp"
+            android:background="#CC0000"
+            android:tag="#CC0000"
+            android:text="Coordenadas de Cueva"
+            android:layout_weight="0.04" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Indique la distacia aproximada en metros entre cada cueva"
+            android:textColor="#000000"/>
+
+        <EditText
+            android:id="@+id/textDistancia"
+            android:layout_width="fill_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
