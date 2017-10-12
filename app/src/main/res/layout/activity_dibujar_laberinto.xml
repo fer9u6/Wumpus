@@ -25,24 +25,24 @@
                android:layout_weight="1"
                android:layout_height="match_parent"
                android:id="@+id/btncueva"
-               android:tag="#FFFF00"
-               android:background="#FFFF00"
+               android:tag="#42A5F5"
+               android:background="#42A5F5"
                android:text="Cueva"/>
            <Button
                android:layout_width="0dp"
                android:layout_weight="1"
                android:layout_height="match_parent"
                android:id="@+id/btncamino"
-               android:tag="#FFFF00"
-               android:background="#FFFF00"
+               android:tag="#42A5F5"
+               android:background="#42A5F5"
                android:text="Camino"/>
            <Button
                android:layout_width="0dp"
                android:layout_weight="1"
                android:layout_height="match_parent"
                android:id="@+id/btnguardar"
-               android:tag="#FFFF00"
-               android:background="#FFFF00"
+               android:tag="#42A5F5"
+               android:background="#42A5F5"
                android:text="Guardar"/>
 
        </LinearLayout>
@@ -57,8 +57,8 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:id="@+id/btnborrar"
-            android:tag="#FFFF00"
-            android:background="#FFFF00"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
             android:text="Borrar" />
 
         <Button
@@ -66,9 +66,18 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:id="@+id/btnPoliedro"
-            android:tag="#FFFF00"
-            android:background="#FFFF00"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
             android:text="Poliedro" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnEmplazar"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
+            android:text="Emplazar" />
 
 
 

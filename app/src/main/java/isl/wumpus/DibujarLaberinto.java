@@ -22,6 +22,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public Button bGuardar;
     public Button bBorrar;
     public Button bPoliedro;
+    public Button bEmplazar;
     public Mapa mapa;
 
     @Override
@@ -33,12 +34,14 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bGuardar = (Button) findViewById(R.id.btnguardar);
         bBorrar =(Button) findViewById(R.id.btnborrar);
         bPoliedro=(Button) findViewById(R.id.btnPoliedro);
+        bEmplazar =(Button)findViewById(R.id.btnEmplazar);
         lienzo = (Lienzo) findViewById(R.id.lienzo);
         bCamino.setOnClickListener(this);
         bPoliedro.setOnClickListener(this);
         bCueva.setOnClickListener(this);
         bGuardar.setOnClickListener(this);
         bBorrar.setOnClickListener(this);
+        bEmplazar.setOnClickListener(this);
 
        /* File fileDir = new File(getFilesDir().getAbsolutePath());
        fileDir.mkdirs();*/
@@ -116,8 +119,6 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                         lienzo.caminoB, lienzo.numCuevas, lienzo.contadorCamino);
                 if(mapa.Validar()) {
                     guardarLaberinto();
-                    Intent i = new Intent(this, EmplazarMapa.class);
-                    startActivity(i);
                 } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
 
                 break;
@@ -127,6 +128,11 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
             case R.id.btnPoliedro:
                 lienzo.crearDodecahedro();
                 break;
+            case R.id.btnEmplazar:
+                if(mapa.Validar()) {
+                    Intent i = new Intent(this, EmplazarMapa.class);
+                    startActivity(i);
+                } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
         }
 
     }
