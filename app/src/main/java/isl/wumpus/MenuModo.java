@@ -24,7 +24,8 @@ public class MenuModo extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();*/
 
         if(buttonText.equals("SOLO")){
-            pantallasoloopen();
+            Intent i = new Intent(this, DibujarLaberinto.class);
+            startActivity(i);
         }
         if(buttonText.equals("MULTI")){
             pantallamultiopen();

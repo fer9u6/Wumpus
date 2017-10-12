@@ -29,6 +29,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Marker marker;
     double lat = 0.0, lon = 0.0;
+    private Mapa mapaWumpus;
 
 
     @Override

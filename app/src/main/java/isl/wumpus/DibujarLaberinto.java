@@ -1,6 +1,7 @@
 package isl.wumpus;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -115,7 +116,10 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                         lienzo.caminoB, lienzo.numCuevas, lienzo.contadorCamino);
                 if(mapa.Validar()) {
                     guardarLaberinto();
+                    Intent i = new Intent(this, EmplazarMapa.class);
+                    startActivity(i);
                 } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
+
                 break;
             case R.id.btnborrar:
                 lienzo.borrar();
