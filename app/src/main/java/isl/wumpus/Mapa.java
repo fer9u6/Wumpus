@@ -12,6 +12,8 @@ public class Mapa {
     private int contCuevas;
     private int contCaminos;
 
+    private Mapa tetrahedro;
+
     public int[] getCuevaX(){
         return cuevaX;
     }
@@ -33,6 +35,7 @@ public class Mapa {
         contCuevas = cCuevas;
         contCaminos = cCaminos;
     }
+
 
     public boolean Validar(){
         boolean esValido = true;

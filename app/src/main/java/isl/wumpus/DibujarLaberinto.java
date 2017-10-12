@@ -5,6 +5,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ButtonBarLayout;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public Button bCamino;
     public Button bGuardar;
     public Button bBorrar;
+    public Button bPoliedro;
     public Mapa mapa;
 
     @Override
@@ -29,8 +31,10 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bCueva = (Button) findViewById(R.id.btncueva);
         bGuardar = (Button) findViewById(R.id.btnguardar);
         bBorrar =(Button) findViewById(R.id.btnborrar);
+        bPoliedro=(Button) findViewById(R.id.btnPoliedro);
         lienzo = (Lienzo) findViewById(R.id.lienzo);
         bCamino.setOnClickListener(this);
+        bPoliedro.setOnClickListener(this);
         bCueva.setOnClickListener(this);
         bGuardar.setOnClickListener(this);
         bBorrar.setOnClickListener(this);
@@ -115,6 +119,10 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnborrar:
                 lienzo.borrar();
+                break;
+            case R.id.btnPoliedro:
+                lienzo.crearOctahedro();
+                break;
         }
 
     }
