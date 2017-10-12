@@ -43,6 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MenuModo" />
+        <activity android:name=".PantallaSolo" />
+        <activity android:name=".PantallaMulti"></activity>
     </application>
 
 </manifest>
