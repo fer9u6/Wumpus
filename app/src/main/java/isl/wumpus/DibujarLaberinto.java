@@ -121,7 +121,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 lienzo.borrar();
                 break;
             case R.id.btnPoliedro:
-                lienzo.crearOctahedro();
+                lienzo.crearDodecahedro();
                 break;
         }
 

@@ -18,9 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DibujarLaberinto">
 
-        </activity>
+
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -35,7 +35,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".EmplazarMapa"
+            android:name=".DibujarLaberinto"
             android:label="@string/title_activity_emplazar_mapa">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
