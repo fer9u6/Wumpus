@@ -61,6 +61,17 @@
             android:background="#FFFF00"
             android:text="Borrar" />
 
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnPoliedro"
+            android:tag="#FFFF00"
+            android:background="#FFFF00"
+            android:text="Poliedro" />
+
+
+
 
     </LinearLayout>
 

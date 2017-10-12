@@ -5,10 +5,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ButtonBarLayout;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.UUID;
 
 public class DibujarLaberinto extends AppCompatActivity implements View.OnClickListener {
@@ -18,6 +20,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public Button bCamino;
     public Button bGuardar;
     public Button bBorrar;
+    public Button bPoliedro;
     public Mapa mapa;
 
     @Override
@@ -28,11 +31,16 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bCueva = (Button) findViewById(R.id.btncueva);
         bGuardar = (Button) findViewById(R.id.btnguardar);
         bBorrar =(Button) findViewById(R.id.btnborrar);
+        bPoliedro=(Button) findViewById(R.id.btnPoliedro);
         lienzo = (Lienzo) findViewById(R.id.lienzo);
         bCamino.setOnClickListener(this);
+        bPoliedro.setOnClickListener(this);
         bCueva.setOnClickListener(this);
         bGuardar.setOnClickListener(this);
         bBorrar.setOnClickListener(this);
+
+       /* File fileDir = new File(getFilesDir().getAbsolutePath());
+       fileDir.mkdirs();*/
 
     }
 
@@ -45,10 +53,23 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
 
                 //Salvar dibujo
                 lienzo.setDrawingCacheEnabled(true);
+
+                //Para asociar PNG con TXT. Pedir nombre?
+
+                String nombre;
+                nombre = UUID.randomUUID().toString();
+
                 //attempt to save
                 String imgSaved = MediaStore.Images.Media.insertImage(
                         getContentResolver(), lienzo.getDrawingCache(),
-                        UUID.randomUUID().toString()+".png", "drawing");
+                        //UUID.randomUUID().toString()+".png", "drawing");
+                        nombre+".png", "drawing");
+
+                //Guardar TXT
+                GestionadorDeArchivos ga = new GestionadorDeArchivos();
+                ga.write(nombre,ga.convertirObjetoAString(mapa),getApplicationContext());
+
+
                 //Mensaje de todo correcto
                 if(imgSaved!=null){
                     Toast savedToast = Toast.makeText(getApplicationContext(),
@@ -90,14 +111,18 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnguardar:
                 lienzo.modo(true);
-                mapa = new Mapa(lienzo.cuevaX, lienzo.cuevaY, lienzo.caminoX,
-                        lienzo.caminoY, lienzo.numCuevas, lienzo.contadorCamino);
+                mapa = new Mapa(lienzo.cuevaX, lienzo.cuevaY, lienzo.caminoA,
+                        lienzo.caminoB, lienzo.numCuevas, lienzo.contadorCamino);
                 if(mapa.Validar()) {
                     guardarLaberinto();
                 } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
                 break;
             case R.id.btnborrar:
                 lienzo.borrar();
+                break;
+            case R.id.btnPoliedro:
+                lienzo.crearDodecahedro();
+                break;
         }
 
     }
