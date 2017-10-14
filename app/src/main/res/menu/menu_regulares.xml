@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Tetraedro"
+        android:title="Tetraedro"/>
+
+    <item
+        android:id="@+id/Octaedro"
+        android:title="Octaedro"/>
+
+    <item
+        android:id="@+id/Cubo"
+        android:title="Cubo"/>
+
+    <item
+        android:id="@+id/Icosaedro"
+        android:title="Icosaedro"/>
+
+    <item
+        android:id="@+id/Dodecaedro"
+        android:title="Dodecaedro"/>
+
+</menu>
