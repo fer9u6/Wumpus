@@ -3,6 +3,7 @@
     package="isl.wumpus">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -40,6 +41,7 @@
 
         </activity>
         <activity android:name=".MenuModo" />
+        <activity android:name=".EscogerLaberinto" />
         <activity android:name=".EmplazarMapa" >
 
         </activity>
