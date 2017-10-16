@@ -7,18 +7,24 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -202,6 +208,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            PackageManager m = getPackageManager();
+            String s = getPackageName();
+            try {
+                PackageInfo p = m.getPackageInfo(s, 0);
+                s = p.applicationInfo.dataDir;
+            } catch (PackageManager.NameNotFoundException e) {
+
+            }
+            try {
+                File file = new File(s+"newfile.txt");
+                file.createNewFile();
+                if (file.createNewFile()){
+                    Toast.makeText(getApplicationContext(), "File Created at "+s,
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "File is already present at "+s,
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (IOException e) {
+                Toast.makeText(getApplicationContext(), "Couldn't create file on directory "+s,Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
             String text = intent.getStringExtra("theMessage");
             messages.append(text + "\n");
             incomingMessages.setText(messages);
