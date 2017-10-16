@@ -218,8 +218,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
             try {
-                File file = new File(s+"newfile.txt");
-                file.createNewFile();
+                File file = new File(s+"/newfile.txt");
+
                 if (file.createNewFile()){
                     Toast.makeText(getApplicationContext(), "File Created at "+s,
                             Toast.LENGTH_SHORT).show();
