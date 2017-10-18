@@ -2,6 +2,7 @@ package isl.wumpus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
 
@@ -72,16 +73,36 @@ public class GestionadorDeArchivos {
     }
 
     public static void write(String nombrelab, String string, Context ctx) {
-        try {
-            FileOutputStream fileOutputStream = ctx.openFileOutput(nombrelab + ".txt",MODE_PRIVATE);
-            fileOutputStream.write(string.getBytes());
-            fileOutputStream.close();
-            Toast.makeText(ctx.getApplicationContext(),"Se guardó el laberinto",Toast.LENGTH_LONG).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+
+        File folder = new File(ctx.getFilesDir() + File.separator + "Laberintos");
+        if(!folder.exists()){
+            folder.mkdir();
+        }
+
+
+        File file = new File(ctx.getFilesDir() + File.separator + "Laberintos" + File.separator + nombrelab+".mapa");
+        FileOutputStream fos;
+
+        try{
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
+            fos = new FileOutputStream(file);
+            fos.write(string.getBytes());
+            fos.close();
+
+        }catch(IOException e){
             e.printStackTrace();
         }
+
+
+            /*
+            FileOutputStream fileOutputStream = ctx.openFileOutput(nombrelab + ".mapa",MODE_PRIVATE);
+            fileOutputStream.write(string.getBytes());
+            fileOutputStream.close();*/
+        Toast.makeText(ctx.getApplicationContext(),"Laberinto guardado como "+ctx.getFilesDir() + File.separator + "Laberintos" + File.separator + nombrelab+".mapa",Toast.LENGTH_LONG).show();
     }
 
 

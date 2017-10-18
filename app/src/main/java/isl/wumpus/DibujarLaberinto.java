@@ -7,8 +7,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
+import android.text.InputType;
 import android.widget.Button;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
@@ -24,6 +26,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public Button bPoliedro;
     public Button bEmplazar;
     public Mapa mapa;
+    private String nombre = ""; //input nombre laberinto
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +63,13 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
 
                 //Para asociar PNG con TXT. Pedir nombre?
 
-                String nombre;
-                nombre = UUID.randomUUID().toString();
 
                 //attempt to save
                 String imgSaved = MediaStore.Images.Media.insertImage(
                         getContentResolver(), lienzo.getDrawingCache(),
-                        //UUID.randomUUID().toString()+".png", "drawing");
                         nombre+".png", "drawing");
 
-                //Guardar TXT
+                //Guardar
                 GestionadorDeArchivos ga = new GestionadorDeArchivos();
                 ga.write(nombre,ga.convertirObjetoAString(mapa),getApplicationContext());
 
@@ -118,7 +118,30 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 mapa = new Mapa(lienzo.cuevaX, lienzo.cuevaY, lienzo.caminoA,
                         lienzo.caminoB, lienzo.numCuevas, lienzo.contadorCamino);
                 if(mapa.Validar()) {
-                    guardarLaberinto();
+
+                    //AlertDialog Nombre del laberinto.
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Nombre del laberinto:");
+
+                    final EditText input = new EditText(this);
+                    builder.setView(input);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            nombre = input.getText().toString();
+                            guardarLaberinto();
+
+                        }
+                    });
+                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
                 } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
 
                 break;
