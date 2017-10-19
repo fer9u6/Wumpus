@@ -1,0 +1,116 @@
+package isl.wumpus;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static isl.wumpus.R.styleable.View;
+
+public class EscogerLaberinto extends AppCompatActivity implements View.OnClickListener {
+
+    Button btnR;
+    Button btnI;
+    Button btnD;
+    Button btnE;
+    ImageView iv;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_escoger_laberinto);
+
+
+        btnR = (Button) findViewById(R.id.btnRegular);
+        btnR.setOnClickListener(this);
+        btnI = (Button) findViewById(R.id.btnIrregular);
+        btnI.setOnClickListener(this);
+        btnD = (Button) findViewById(R.id.btnDibujar);
+        btnD.setOnClickListener(this);
+        btnE = (Button) findViewById(R.id.btnEmplazar);
+        btnE.setOnClickListener(this);
+        iv = (ImageView) findViewById(R.id.ivPoliedro);
+
+
+        }
+
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnRegular:
+                PopupMenu popup = new PopupMenu(EscogerLaberinto.this, btnR);
+                popup.getMenuInflater().inflate(R.menu.menu_regulares, popup.getMenu());
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        //Carge poliedro y muestre la foto.
+                        if (item.getTitle().equals("Tetraedro")){
+                            iv.setImageResource(R.drawable.tetraedro);
+                        }
+                        if (item.getTitle().equals("Octaedro")){
+                            iv.setImageResource(R.drawable.octaedro);
+                        }
+                        if (item.getTitle().equals("Cubo")){
+                            iv.setImageResource(R.drawable.cubo);
+                        }
+                        if (item.getTitle().equals("Icosaedro")){
+                            iv.setImageResource(R.drawable.icosaedro);
+                        }
+                        if (item.getTitle().equals("Dodecaedro")){
+                            iv.setImageResource(R.drawable.dodecaedro);
+                        }
+                        return true;
+                    }
+                });
+
+                popup.show();
+                break;
+            case R.id.btnIrregular:
+
+                break;
+            case R.id.btnDibujar:
+                Intent i = new Intent(this, DibujarLaberinto.class);
+                startActivity(i);
+                break;
+            case R.id.btnEmplazar:
+                Intent a = new Intent(this, EmplazarMapa.class);
+                startActivity(a);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                iv.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Error al cargar imagen de galeria", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(getApplicationContext(), "Escoger imagen",Toast.LENGTH_LONG).show();
+        }
+    }
+
+}
+
+
