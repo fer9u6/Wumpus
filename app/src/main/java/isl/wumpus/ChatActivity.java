@@ -196,8 +196,36 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
         btnSend.setOnClickListener(new View.OnClickListener(){//gets text and sends it
             @Override
             public void onClick(View vie){
+
+                // Se crea un archivo
+                PackageManager m = getPackageManager();
+                String s = getPackageName();
+                File file = new File(null);
+                try {
+                    PackageInfo p = m.getPackageInfo(s, 0);
+                    s = p.applicationInfo.dataDir;
+                } catch (PackageManager.NameNotFoundException e) {
+
+                }
+                try {
+                    File file = new File(s+"/newfile.txt");
+
+                    if (file.createNewFile()){
+                        Toast.makeText(getApplicationContext(), "File Created at "+s,
+                                Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "File is already present at "+s,
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (IOException e) {
+                    Toast.makeText(getApplicationContext(), "Couldn't create file on directory "+s,Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
                 //Obtengo en bytes lo quiere mandar
-                byte[] bytes=chatText.getText().toString().getBytes(Charset.defaultCharset());
+                //byte[] bytes=chatText.getText().toString().getBytes(Charset.defaultCharset());
+                byte[] bytes= file;
                 //Se lo paso a mandar por la conexion
                 mBluetoothConnection.write(bytes);
                 chatText.setText("");
@@ -208,7 +236,7 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            PackageManager m = getPackageManager();
+            /*PackageManager m = getPackageManager();
             String s = getPackageName();
             try {
                 PackageInfo p = m.getPackageInfo(s, 0);
@@ -230,12 +258,40 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), "Couldn't create file on directory "+s,Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-            }
+            }*/
             String text = intent.getStringExtra("theMessage");
             messages.append(text + "\n");
             incomingMessages.setText(messages);
         }
     };
+
+    public void generarArchivo(Context context, String sFileName, String sBody) {
+
+        PackageManager m = getPackageManager();
+        String s = getPackageName();
+        try {
+            PackageInfo p = m.getPackageInfo(s, 0);
+            s = p.applicationInfo.dataDir;
+        } catch (PackageManager.NameNotFoundException e) {
+
+        }
+
+        try {
+            File root = new File(s + "/" + sFileName);
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            File gpxfile = new File(root, sFileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void startConnection(){
         startBTConnection(mBTDevice,MY_UUID_INSECURE);
