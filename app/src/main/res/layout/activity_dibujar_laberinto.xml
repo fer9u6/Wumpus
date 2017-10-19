@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="isl.wumpus.DibujarLaberinto"
+    android:orientation="vertical">
+
+
+       <view
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:id="@+id/lienzo"
+           android:layout_weight="5"
+           android:background="#FFFFFFFF"
+           class="isl.wumpus.Lienzo"/>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:orientation="horizontal">
+           <Button
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:id="@+id/btncueva"
+               android:tag="#42A5F5"
+               android:background="#42A5F5"
+               android:text="Cueva"/>
+           <Button
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:id="@+id/btncamino"
+               android:tag="#42A5F5"
+               android:background="#42A5F5"
+               android:text="Camino"/>
+           <Button
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:layout_height="match_parent"
+               android:id="@+id/btnguardar"
+               android:tag="#42A5F5"
+               android:background="#42A5F5"
+               android:text="Guardar"/>
+
+       </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnborrar"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
+            android:text="Borrar" />
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnEmplazar"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
+            android:text="Emplazar" />
+
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
