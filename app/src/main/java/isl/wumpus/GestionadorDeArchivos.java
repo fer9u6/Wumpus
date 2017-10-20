@@ -75,34 +75,31 @@ public class GestionadorDeArchivos {
     public static void write(String nombrelab, String string, Context ctx) {
 
 
-        File folder = new File(ctx.getFilesDir() + File.separator + "Laberintos");
+
+        //File folder = ctx.getDir("Mapas",ctx.MODE_PRIVATE);
+
+        File folder = new File(ctx.getFilesDir() + File.separator + "Mapas");
+
         if(!folder.exists()){
             folder.mkdir();
         }
 
+        File file = new File(folder, nombrelab+".mapa");
 
-        File file = new File(ctx.getFilesDir() + File.separator + "Laberintos" + File.separator + nombrelab+".mapa");
         FileOutputStream fos;
 
         try{
-            if(!file.exists()){
-                file.createNewFile();
-            }
-
             fos = new FileOutputStream(file);
             fos.write(string.getBytes());
             fos.close();
-
         }catch(IOException e){
             e.printStackTrace();
         }
-
-
             /*
             FileOutputStream fileOutputStream = ctx.openFileOutput(nombrelab + ".mapa",MODE_PRIVATE);
             fileOutputStream.write(string.getBytes());
             fileOutputStream.close();*/
-        Toast.makeText(ctx.getApplicationContext(),"Laberinto guardado como "+ctx.getFilesDir() + File.separator + "Laberintos" + File.separator + nombrelab+".mapa",Toast.LENGTH_LONG).show();
+        Toast.makeText(ctx.getApplicationContext(),"Laberinto guardado como "+ file.getAbsolutePath(),Toast.LENGTH_LONG).show();
     }
 
 
