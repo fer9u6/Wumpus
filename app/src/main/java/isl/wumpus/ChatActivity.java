@@ -22,7 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -200,35 +204,66 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
                 // Se crea un archivo
                 PackageManager m = getPackageManager();
                 String s = getPackageName();
-                File file = new File(null);
                 try {
                     PackageInfo p = m.getPackageInfo(s, 0);
                     s = p.applicationInfo.dataDir;
                 } catch (PackageManager.NameNotFoundException e) {
 
                 }
-                try {
-                    File file = new File(s+"/newfile.txt");
+                String ruta = s+"/"+chatText.getText().toString()+".mapa";
+                File file = new File(ruta);
+                //Obtengo en bytes lo quiere mandar
+                //byte[] bytes=chatText.getText().toString().getBytes(Charset.defaultCharset();
+                //Se lo paso a mandar por la conexion
+                //mBluetoothConnection.write(bytes);
+                //chatText.setText("");
 
-                    if (file.createNewFile()){
-                        Toast.makeText(getApplicationContext(), "File Created at "+s,
-                                Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "File is already present at "+s,
+
+
+                // The name of the file to open.
+
+                // This will reference one line at a time
+                String line = null;
+
+                try {
+                    // FileReader reads text files in the default encoding.
+                    FileReader fileReader =
+                            new FileReader(ruta);
+
+                    // Always wrap FileReader in BufferedReader.
+                    BufferedReader bufferedReader =
+                            new BufferedReader(fileReader);
+
+                    while((line = bufferedReader.readLine()) != null) {
+                        /*System.out.println(line);*/
+                        Toast.makeText(getApplicationContext(), "Contenido del archivo: "+line,
                                 Toast.LENGTH_SHORT).show();
                     }
 
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(), "Couldn't create file on directory "+s,Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    // Always close files.
+                    bufferedReader.close();
+                }
+                catch(FileNotFoundException ex) {
+                    /*System.out.println(
+                            "Unable to open file '" +
+                                    ruta + "'");*/
+                    Toast.makeText(getApplicationContext(), "No se pudo abrir el archivo "+ruta,
+                            Toast.LENGTH_SHORT).show();
+                }
+                catch(IOException ex) {
+                    /*System.out.println(
+                            "Error reading file '"
+                                    + ruta + "'");*/
+                    Toast.makeText(getApplicationContext(), "Error leyendo el archivo "+ruta,
+                            Toast.LENGTH_SHORT).show();
+                    // Or we could just do this:
+                    // ex.printStackTrace();
                 }
 
-                //Obtengo en bytes lo quiere mandar
-                //byte[] bytes=chatText.getText().toString().getBytes(Charset.defaultCharset());
-                byte[] bytes= file;
-                //Se lo paso a mandar por la conexion
-                mBluetoothConnection.write(bytes);
-                chatText.setText("");
+
+
+
+
             }
         });
     }
@@ -236,7 +271,7 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            /*PackageManager m = getPackageManager();
+            PackageManager m = getPackageManager();
             String s = getPackageName();
             try {
                 PackageInfo p = m.getPackageInfo(s, 0);
@@ -258,7 +293,7 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), "Couldn't create file on directory "+s,Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-            }*/
+            }
             String text = intent.getStringExtra("theMessage");
             messages.append(text + "\n");
             incomingMessages.setText(messages);
