@@ -1,6 +1,7 @@
 package isl.wumpus;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.io.InputStream;
 import static isl.wumpus.R.styleable.View;
 
 public class EscogerLaberinto extends AppCompatActivity implements View.OnClickListener {
+
 
     Button btnR;
     Button btnI;
@@ -50,10 +53,10 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRegular:
-                PopupMenu popup = new PopupMenu(EscogerLaberinto.this, btnR);
-                popup.getMenuInflater().inflate(R.menu.menu_regulares, popup.getMenu());
+                PopupMenu popupR = new PopupMenu(EscogerLaberinto.this, btnR);
+                popupR.getMenuInflater().inflate(R.menu.menu_regulares, popupR.getMenu());
 
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                popupR.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         //Carge poliedro y muestre la foto.
                         if (item.getTitle().equals("Tetraedro")){
@@ -75,9 +78,32 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                     }
                 });
 
-                popup.show();
+                popupR.show();
                 break;
             case R.id.btnIrregular:
+
+                PopupMenu popupI = new PopupMenu(EscogerLaberinto.this, btnI);
+
+                File folder = new File(getApplicationContext().getFilesDir() + File.separator + "Mapas");
+                for (File f : folder.listFiles()) {
+                    if (f.isFile())
+                        popupI.getMenu().add(f.getName().split("\\.")[0]);
+                }
+
+                popupI.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        //Carge poliedro y muestre la foto.
+
+                        String imgpath = getFilesDir() + File.separator + "Imagenes" + File.separator + item.getTitle() + ".png";
+
+                        Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
+                        iv.setImageBitmap(bitmap);
+
+                        return true;
+                    }
+                });
+
+                popupI.show();
 
                 break;
             case R.id.btnDibujar:
@@ -90,26 +116,6 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    @Override
-    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-
-
-        if (resultCode == RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                iv.setImageBitmap(selectedImage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Error al cargar imagen de galeria", Toast.LENGTH_LONG).show();
-            }
-
-        }else {
-            Toast.makeText(getApplicationContext(), "Escoger imagen",Toast.LENGTH_LONG).show();
-        }
-    }
 
 }
 

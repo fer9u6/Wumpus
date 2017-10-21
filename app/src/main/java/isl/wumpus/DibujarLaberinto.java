@@ -2,6 +2,8 @@ package isl.wumpus;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 public class DibujarLaberinto extends AppCompatActivity implements View.OnClickListener {
@@ -63,11 +68,34 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
 
                 //Para asociar PNG con TXT. Pedir nombre?
 
+                File folder = new File(getFilesDir() + File.separator + "Imagenes");
 
-                //attempt to save
+                if(!folder.exists()){
+                    folder.mkdir();
+                }
+
+                File archivoimagen=new File(folder,nombre+".png");
+
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(archivoimagen);
+                    lienzo.getDrawingCache().compress(Bitmap.CompressFormat.PNG, 100, fos);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Toast.makeText(getApplicationContext(),"Imagen guardada como "+ archivoimagen.getAbsolutePath(),Toast.LENGTH_LONG).show();
+
+                /*//attempt to save
                 String imgSaved = MediaStore.Images.Media.insertImage(
                         getContentResolver(), lienzo.getDrawingCache(),
-                        nombre+".png", "drawing");
+                        nombre+".png", "drawing");*/
 
                 //Guardar
                 GestionadorDeArchivos ga = new GestionadorDeArchivos();
@@ -75,7 +103,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
 
 
                 //Mensaje de todo correcto
-                if(imgSaved!=null){
+                /*if(imgSaved!=null){
                     Toast savedToast = Toast.makeText(getApplicationContext(),
                             "¡Laberinto salvado en la galeria!", Toast.LENGTH_SHORT);
                     savedToast.show();
@@ -84,7 +112,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                     Toast unsavedToast = Toast.makeText(getApplicationContext(),
                             "¡Error! El laberinto no ha podido ser salvado.", Toast.LENGTH_SHORT);
                     unsavedToast.show();
-                }
+                }*/
                 lienzo.destroyDrawingCache();
 
 
