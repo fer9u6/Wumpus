@@ -45,16 +45,16 @@ public class GestionadorDeArchivos {
     }
 
     //Convierte String a objeto
-    public static Object convertirStringAObjeto(String string){
+    public static Mapa convertirStringAObjeto(String string){
         final Gson gson = new Gson();
-        Object o = gson.fromJson(string, Object.class);
+        Mapa o = gson.fromJson(string, Mapa.class);
         return o;
     }
 
     //Recibe el nombre de laberinto que quiere abrir
     public static String read(String nombrelab/*, View view*/, Context ctx) {
         try {
-            FileInputStream fileInputStream= ctx.getApplicationContext().openFileInput(nombrelab+".txt");
+            FileInputStream fileInputStream= new FileInputStream(new File(ctx.getFilesDir() + File.separator + "Mapas" + File.separator +nombrelab+".txt"));
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuffer stringBuffer = new StringBuffer();
@@ -84,7 +84,7 @@ public class GestionadorDeArchivos {
             folder.mkdir();
         }
 
-        File file = new File(folder, nombrelab+".mapa");
+        File file = new File(folder, nombrelab+".txt");
 
         FileOutputStream fos;
 
