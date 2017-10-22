@@ -97,4 +97,18 @@
         android:layout_below="@+id/btnSend"
         android:text="TextView" />
 
+    <Button
+        android:id="@+id/btnPrueba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnStartConnection"
+        android:layout_alignStart="@+id/btnStartConnection"
+        android:layout_below="@+id/btnStartConnection"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="27dp"
+        android:text="Prueba"
+        android:onClick="prueba"
+        />
+
 </android.widget.RelativeLayout>
