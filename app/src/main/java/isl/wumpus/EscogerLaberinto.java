@@ -86,9 +86,11 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                 PopupMenu popupI = new PopupMenu(EscogerLaberinto.this, btnI);
 
                 File folder = new File(getApplicationContext().getFilesDir() + File.separator + "Mapas");
-                for (File f : folder.listFiles()) {
-                    if (f.isFile())
-                        popupI.getMenu().add(f.getName().split("\\.")[0]);
+                if (folder.exists()) {
+                    for (File f : folder.listFiles()) {
+                        if (f.isFile())
+                            popupI.getMenu().add(f.getName().split("\\.")[0]);
+                    }
                 }
 
                 popupI.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

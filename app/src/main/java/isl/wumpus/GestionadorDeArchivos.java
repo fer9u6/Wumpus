@@ -37,7 +37,7 @@ public class GestionadorDeArchivos {
     }*/
 
     //Convierte objeto a string
-    public static String convertirObjetoAString(Object o){
+    public static String convertirObjetoAString(Mapa o){
         final Gson gson = new Gson();
         // 1. Java object to JSON,
         //return gson.toJson(o).toString();
@@ -54,7 +54,7 @@ public class GestionadorDeArchivos {
     //Recibe el nombre de laberinto que quiere abrir
     public static String read(String nombrelab/*, View view*/, Context ctx) {
         try {
-            FileInputStream fileInputStream= new FileInputStream(new File(ctx.getFilesDir() + File.separator + "Mapas" + File.separator +nombrelab+".txt"));
+            FileInputStream fileInputStream= new FileInputStream(new File(ctx.getFilesDir() + File.separator + "Mapas" + File.separator +nombrelab+".mapa"));
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuffer stringBuffer = new StringBuffer();
@@ -84,7 +84,7 @@ public class GestionadorDeArchivos {
             folder.mkdir();
         }
 
-        File file = new File(folder, nombrelab+".txt");
+        File file = new File(folder, nombrelab+".mapa");
 
         FileOutputStream fos;
 
