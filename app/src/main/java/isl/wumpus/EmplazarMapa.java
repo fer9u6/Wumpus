@@ -30,6 +30,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private Marker marker;
     double lat = 0.0, lon = 0.0;
     private Mapa mapaWumpus;
+    private String nombreMapa;
 
 
     @Override
@@ -39,6 +40,22 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        nombreMapa="";
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                nombreMapa= null;
+            } else {
+                nombreMapa= extras.getString("nM");
+            }
+        } else {
+            nombreMapa= (String) savedInstanceState.getSerializable("nM");
+        }
+        GestionadorDeArchivos ga = new GestionadorDeArchivos();
+        String s =ga.read(nombreMapa,getApplicationContext());
+        mapaWumpus= ga.convertirStringAObjeto(s);
+
+
 
         mapFragment.getMapAsync(this);
     }
@@ -105,27 +122,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     }
 
     //Esto es una variable para el metodo de abajo
-   /* private LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            actualizarUbic(location);
-        }
 
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };*/
 
     private void miUbic() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -138,10 +135,88 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        actualizarUbic(location);
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,15000,0,locationListener);
+
+        LocationManager locationManager= (LocationManager) getSystemService(Context.LOCATION_SERVICE);;
+        Location location= locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
+        try {
+
+            // getting GPS status
+            boolean isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            boolean isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // location service disabled
+            } else {
+                // if GPS Enabled get lat/long using GPS Services
+
+                if (isGPSEnabled) {
+                    LocationListener locationListener1 = new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                        }
+
+                        @Override
+                        public void onStatusChanged(String s, int i, Bundle bundle) {
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String s) {
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String s) {
+                        }
+                    };
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener1);
+
+                    Log.d("GPS Enabled", "GPS Enabled");
+
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    }
+                }
+
+                // First get location from Network Provider
+                if (isNetworkEnabled) {
+                    if (location == null) {
+                        LocationListener locationListener2 = new LocationListener() {
+                            @Override
+                            public void onLocationChanged(Location location) {
+                            }
+
+                            @Override
+                            public void onStatusChanged(String s, int i, Bundle bundle) {
+                            }
+
+                            @Override
+                            public void onProviderEnabled(String s) {
+                            }
+
+                            @Override
+                            public void onProviderDisabled(String s) {
+                            }
+                        };
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener2);
+
+                        Log.d("Network", "Network");
+
+                        if (locationManager != null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            actualizarUbic(location);
+                        }
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            // e.printStackTrace();
+            Log.e("Error : Location",
+                    "Impossible to connect to LocationManager", e);
+        }
 
     }
 

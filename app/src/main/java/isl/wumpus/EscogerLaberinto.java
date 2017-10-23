@@ -30,6 +30,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
     Button btnD;
     Button btnE;
     ImageView iv;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,8 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                 popupI.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         //Carge poliedro y muestre la foto.
-
-                        String imgpath = getFilesDir() + File.separator + "Imagenes" + File.separator + item.getTitle() + ".png";
+                        title=item.getTitle().toString();
+                        String imgpath = getFilesDir() + File.separator + "Imagenes" + File.separator + title + ".png";
 
                         Bitmap bitmap = BitmapFactory.decodeFile(imgpath);
                         iv.setImageBitmap(bitmap);
@@ -112,6 +113,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnEmplazar:
                 Intent a = new Intent(this, EmplazarMapa.class);
+                a.putExtra("nM", title);
                 startActivity(a);
         }
     }

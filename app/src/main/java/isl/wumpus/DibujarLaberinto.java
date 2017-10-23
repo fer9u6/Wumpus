@@ -180,8 +180,9 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 lienzo.crearDodecahedro();
                 break;
             case R.id.btnEmplazar:
-                if(mapa.Validar()) {
+                if(!nombre.equals("")) {
                     Intent i = new Intent(this, EmplazarMapa.class);
+                    i.putExtra("nM", nombre);
                     startActivity(i);
                 } else Toast.makeText(getApplicationContext(), "Mapa invalido.", Toast.LENGTH_LONG).show();
         }
