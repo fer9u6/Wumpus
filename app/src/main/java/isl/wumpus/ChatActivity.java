@@ -60,6 +60,8 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
     public DeviceAdapter mDeviceAdapter;
     ListView listDeviceView;
 
+    String line;
+
     // Create a BroadcastReceiver for ACTION_FOUND.
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -218,8 +220,7 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
                 File file = new File(ruta);
 
                //Contiene el texto dentro de .mapa
-                String line = null;
-
+                String line2=null;
                 try {
                     // FileReader, lector por defecto de Java
                     FileReader fileReader =
@@ -230,6 +231,10 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
                             new BufferedReader(fileReader);
 
                     while((line = bufferedReader.readLine()) != null) {
+                        Toast.makeText(getApplicationContext(), "Se leyo 1 "+ line,
+                                Toast.LENGTH_SHORT).show();
+
+                        line2 = line;
 
                         Toast.makeText(getApplicationContext(), "Leyendo el contenido del archivo",
                                 Toast.LENGTH_SHORT).show();
@@ -250,9 +255,12 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
                     Toast.makeText(getApplicationContext(), "Error leyendo el archivo"+ruta,
                             Toast.LENGTH_SHORT).show();
                 }
+                System.out.println(line2);
+                Toast.makeText(getApplicationContext(), "Line 2 es "+ line2,
+                        Toast.LENGTH_SHORT).show();
 
                 //Obtiene en bytes lo quiere mandar
-                byte[] bytes=line.getBytes(Charset.defaultCharset());
+                byte[] bytes=line2.getBytes(Charset.defaultCharset());
                 //Se lo paso a mandar por la conexion
                 mBluetoothConnection.write(bytes);
                 chatText.setText("");
