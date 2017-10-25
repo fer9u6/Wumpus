@@ -31,6 +31,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
     Button btnE;
     ImageView iv;
     String title;
+    int idMapaRegular;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         btnE.setOnClickListener(this);
         iv = (ImageView) findViewById(R.id.ivPoliedro);
 
-
+        idMapaRegular=0;
         }
 
     public void onClick(View v) {
@@ -62,18 +63,23 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                         //Carge poliedro y muestre la foto.
                         if (item.getTitle().equals("Tetraedro")){
                             iv.setImageResource(R.drawable.tetraedro);
+                            idMapaRegular=1;
                         }
                         if (item.getTitle().equals("Octaedro")){
                             iv.setImageResource(R.drawable.octaedro);
+                            idMapaRegular=2;
                         }
                         if (item.getTitle().equals("Cubo")){
                             iv.setImageResource(R.drawable.cubo);
+                            idMapaRegular=3;
                         }
                         if (item.getTitle().equals("Icosaedro")){
                             iv.setImageResource(R.drawable.icosaedro);
+                            idMapaRegular=4;
                         }
                         if (item.getTitle().equals("Dodecaedro")){
                             iv.setImageResource(R.drawable.dodecaedro);
+                            idMapaRegular=5;
                         }
                         return true;
                     }
@@ -116,6 +122,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
             case R.id.btnEmplazar:
                 Intent a = new Intent(this, EmplazarMapa.class);
                 a.putExtra("nM", title);
+                a.putExtra("idMR",idMapaRegular);
                 startActivity(a);
         }
     }
