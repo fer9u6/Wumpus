@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,7 +35,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class ChatActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class ChatActivity extends AppCompatActivity  implements AdapterView.OnItemClickListener {
     private static final String TAG = "MainActiviy";
     BluetoothAdapter mBluetoothAdapter;
     Button btnDiscover;
@@ -46,8 +47,6 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
     StringBuilder messages;
 
     BluetoothConnection mBluetoothConnection;
-
-    String nombre;
 
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
@@ -272,41 +271,47 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
-
-            GestionadorDeArchivos ga = new GestionadorDeArchivos();
-
             String text = intent.getStringExtra("theMessage");
             messages.append(text + "\n");
+            incomingMessages.setText(messages);
+
+            PackageManager m = getPackageManager();
+            String s = getPackageName();
+            try {
+                PackageInfo p = m.getPackageInfo(s, 0);
+                s = p.applicationInfo.dataDir;
+            } catch (PackageManager.NameNotFoundException e) {
+
+            }
+
             String recibido=messages.toString();
-           //incomingMessages.setText(messages);
+            Toast.makeText(getApplicationContext(),"Mensaje es: "+recibido,Toast.LENGTH_SHORT).show();
+            //Usa la ruta de nuestra aplicacion, chatText es el nombre a buscar
+            String ruta = "data/user/0/isl.wumpus/files/Mapas/nuevoMapa.mapa";
+            Toast.makeText(getApplicationContext(),"Se creara archivo en "+ruta,Toast.LENGTH_SHORT).show();
+
+            GestionadorDeArchivos ga= new GestionadorDeArchivos();
+            ga.write("nuevoMapa",recibido,getApplicationContext());
 
 
+            /*try{
+                File file = new File(ruta);
+                file.createNewFile();
+            }
+            catch (IOException e){
+                Toast.makeText(getApplicationContext(),"No pudo crear archivo",Toast.LENGTH_LONG).show();
+            }
 
-            //AlertDialog Nombre del laberinto.
-            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-            builder.setTitle("Nombre del laberinto:");
+            FileOutputStream fos;
 
-            final EditText input = new EditText(getApplicationContext());
-            builder.setView(input);
-
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    nombre = input.getText().toString();
-                }
-            });
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            builder.show();
-
-            ga.write(nombre,recibido,getApplicationContext());
-
-
+            try{
+                fos = new FileOutputStream(file);
+                fos.write(recibido.getBytes());
+                fos.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+            Toast.makeText(getApplicationContext(),"Se creo el archivo en "+ruta,Toast.LENGTH_SHORT).show();*/
         }
     };
 
@@ -400,7 +405,7 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
 
-    public void prueba(){
+    public void prueba(View view){
             PackageManager m = getPackageManager();
             String s = getPackageName();
             try {
@@ -421,6 +426,44 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
                     Toast.makeText(getApplicationContext(), "El archivo "+todo+ " ya existe, funciona",
                             Toast.LENGTH_SHORT).show();
                 }
+            String line2=null;
+            try {
+                // FileReader, lector por defecto de Java
+                FileReader fileReader =
+                        new FileReader(todo);
+
+                //BufferedReader para leer las lineas
+                BufferedReader bufferedReader =
+                        new BufferedReader(fileReader);
+
+                while((line = bufferedReader.readLine()) != null) {
+                    Toast.makeText(getApplicationContext(), "Se leyo 1 "+ line,
+                            Toast.LENGTH_SHORT).show();
+
+                    line2 = line;
+
+                    Toast.makeText(getApplicationContext(), "Leyendo el contenido del archivo",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                //Cierra el archivo
+                bufferedReader.close();
+            }
+            catch(FileNotFoundException ex) {
+                Toast.makeText(getApplicationContext(), "No se pudo abrir el archivo"+todo,
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            //Error, no se puede leer el archivo
+            catch(IOException ex) {
+
+                Toast.makeText(getApplicationContext(), "Error leyendo el archivo"+todo,
+                        Toast.LENGTH_SHORT).show();
+            }
+            System.out.println(line2);
+            Toast.makeText(getApplicationContext(), "Line 2 es "+ line2,
+                    Toast.LENGTH_SHORT).show();
+
 
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), "Couldn't create file on directory "+s,Toast.LENGTH_SHORT).show();
@@ -430,6 +473,7 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
 
 }
 
+// GestionadorDeArchivos ga = new GestionadorDeArchivos();
 
 //    public void generarArchivo(Context context, String sFileName, String sBody) {
 //
@@ -457,4 +501,32 @@ public class ChatActivity extends AppCompatActivity implements AdapterView.OnIte
 //            e.printStackTrace();
 //        }
 //    }
+
+/*
+
+
+            //AlertDialog Nombre del laberinto.
+            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            builder.setTitle("Nombre del laberinto:");
+
+            final EditText input = new EditText(getApplicationContext());
+            builder.setView(input);
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    nombre = input.getText().toString();
+                }
+            });
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+
+
+
+*/
 
