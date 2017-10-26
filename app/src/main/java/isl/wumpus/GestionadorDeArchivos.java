@@ -30,12 +30,6 @@ import static java.security.AccessController.getContext;
 public class GestionadorDeArchivos {
 
 
-    //private static Context ctx;
-
-    /*public GestionadorDeArchivos(Context c) {
-        this.ctx = c;
-    }*/
-
     //Convierte objeto a string
     public static String convertirObjetoAString(Mapa o){
         final Gson gson = new Gson();
@@ -52,7 +46,7 @@ public class GestionadorDeArchivos {
     }
 
     //Recibe el nombre de laberinto que quiere abrir
-    public static String read(String nombrelab/*, View view*/, Context ctx) {
+    public static String read(String nombrelab, Context ctx) {
         try {
             FileInputStream fileInputStream= new FileInputStream(new File(ctx.getFilesDir() + File.separator + "Mapas" + File.separator +nombrelab+".mapa"));
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -63,7 +57,7 @@ public class GestionadorDeArchivos {
                 stringBuffer.append(lines+"\n");
             }
             return stringBuffer.toString();
-            //view.texto.setText(stringBuffer.toString());
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -74,9 +68,6 @@ public class GestionadorDeArchivos {
 
     public static void write(String nombrelab, String string, Context ctx) {
 
-
-
-        //File folder = ctx.getDir("Mapas",ctx.MODE_PRIVATE);
 
         File folder = new File(ctx.getFilesDir() + File.separator + "Mapas");
 
@@ -95,10 +86,7 @@ public class GestionadorDeArchivos {
         }catch(IOException e){
             e.printStackTrace();
         }
-            /*
-            FileOutputStream fileOutputStream = ctx.openFileOutput(nombrelab + ".mapa",MODE_PRIVATE);
-            fileOutputStream.write(string.getBytes());
-            fileOutputStream.close();*/
+
         Toast.makeText(ctx.getApplicationContext(),"Laberinto guardado como "+ file.getAbsolutePath(),Toast.LENGTH_LONG).show();
     }
 
