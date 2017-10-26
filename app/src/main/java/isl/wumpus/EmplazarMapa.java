@@ -131,9 +131,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         int[] cuevaY= mapaWumpus.getCuevaY();
         int[] caminoV1= mapaWumpus.getCaminoV1();
         int[] caminoV2 = mapaWumpus.getCaminoV2();
-        for(int o=1; o<cuevaX.length; o++){
-            cuevaX[o]-= cuevaX[0];
-            cuevaY[o]-= cuevaX[0];
+        for(int o=2; o<cuevaX.length; o++){
+            cuevaX[o]-= cuevaX[1];
+            cuevaY[o]-= cuevaX[1];
         }
 
         //colocar los demas marcadores
@@ -142,17 +142,17 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //asignarMapaReg();
         }
         int cantidadCuevas=mapaWumpus.getContCuevas(); //por ahora fijo porque mapawumpus no sirve
-        for(int i =1;i<cantidadCuevas;i++) {
+        for(int i =2;i<=cantidadCuevas;i++) {
             double lat = marcadores.get(0).getPosition().latitude;
             double lon = marcadores.get(0).getPosition().longitude;
 
             // degree in google map is equal to 111.32 Kilometer. 1Degree = 111.32KM. 1KM in Degree = 1 / 111.32 = 0.008983. 1M in Degree = 0.000008983
             // agregar nuevo marcador a 5 metros markers[i]
             double metros = cuevaX[i];
-            double coef = metros * 0.0000005;
+            double coef = metros * 0.0000007;
             double new_lat = lat + coef;
             metros = cuevaY[i];
-            coef = metros * 0.0000003;
+            coef = metros * 0.0000007;
             double new_long = lon + coef / Math.cos(lat * 0.018);
             LatLng coord = new LatLng(new_lat, new_long);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
