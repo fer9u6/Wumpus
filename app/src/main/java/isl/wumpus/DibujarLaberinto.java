@@ -51,22 +51,19 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bBorrar.setOnClickListener(this);
         bEmplazar.setOnClickListener(this);
 
-       /* File fileDir = new File(getFilesDir().getAbsolutePath());
-       fileDir.mkdirs();*/
-
     }
 
     public void guardarLaberinto(){
         AlertDialog.Builder salvarDibujo = new AlertDialog.Builder(this);
         salvarDibujo.setTitle("Salvar laberinto");
-        salvarDibujo.setMessage("¿Salvar Laberinto a la galeria?");
+        salvarDibujo.setMessage("¿Salvar Laberinto?");
         salvarDibujo.setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
 
                 //Salvar dibujo
                 lienzo.setDrawingCacheEnabled(true);
 
-                //Para asociar PNG con TXT. Pedir nombre?
+                //Para asociar PNG con TXT
 
                 File folder = new File(getFilesDir() + File.separator + "Imagenes");
 
@@ -91,28 +88,9 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 }
 
                 Toast.makeText(getApplicationContext(),"Imagen guardada como "+ archivoimagen.getAbsolutePath(),Toast.LENGTH_LONG).show();
-
-                /*//attempt to save
-                String imgSaved = MediaStore.Images.Media.insertImage(
-                        getContentResolver(), lienzo.getDrawingCache(),
-                        nombre+".png", "drawing");*/
-
-                //Guardar
                 GestionadorDeArchivos ga = new GestionadorDeArchivos();
                 ga.write(nombre,ga.convertirObjetoAString(mapa),getApplicationContext());
 
-
-                //Mensaje de todo correcto
-                /*if(imgSaved!=null){
-                    Toast savedToast = Toast.makeText(getApplicationContext(),
-                            "¡Laberinto salvado en la galeria!", Toast.LENGTH_SHORT);
-                    savedToast.show();
-                }
-                else{
-                    Toast unsavedToast = Toast.makeText(getApplicationContext(),
-                            "¡Error! El laberinto no ha podido ser salvado.", Toast.LENGTH_SHORT);
-                    unsavedToast.show();
-                }*/
                 lienzo.destroyDrawingCache();
 
 
@@ -147,7 +125,6 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                         lienzo.caminoB, lienzo.numCuevas, lienzo.contadorCamino);
                 if(mapa.Validar()) {
 
-                    //AlertDialog Nombre del laberinto.
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Nombre del laberinto:");
 
