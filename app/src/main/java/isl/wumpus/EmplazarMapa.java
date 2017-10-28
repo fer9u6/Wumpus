@@ -2,6 +2,7 @@ package isl.wumpus;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,7 +42,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private int idMapaReg;
     boolean puntoFijo = false;
     private Button btnPunto;
-
+    private Button btnRA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +52,17 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         btnPunto =(Button) findViewById(R.id.btnCoordenadas);
+        btnRA=(Button)findViewById(R.id.btnRealidad) ;
         btnPunto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fijaPunto();
+            }
+        });
+        btnRA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              irARealidad();
             }
         });
 
@@ -78,6 +86,11 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         mapaWumpus= ga.convertirStringAObjeto(s);
         mapFragment.getMapAsync(this);
 
+    }
+
+    public void irARealidad(){
+        Intent a = new Intent(this, RealidaAumentada.class);
+        startActivity(a);
     }
 
 
