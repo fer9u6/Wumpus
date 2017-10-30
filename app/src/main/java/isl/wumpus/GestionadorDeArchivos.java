@@ -36,6 +36,10 @@ public class GestionadorDeArchivos {
         this.ctx = c;
     }*/
 
+    public boolean existe(String string){
+        return new File(string).exists();
+    }
+
     //Convierte objeto a string
     public static String convertirObjetoAString(Mapa o){
         final Gson gson = new Gson();

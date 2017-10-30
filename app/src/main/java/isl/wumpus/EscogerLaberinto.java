@@ -31,6 +31,9 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
     Button btnE;
     ImageView iv;
     String title;
+    int idMapaRegular;
+    GestionadorDeArchivos gA;
+    Regulares regular;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,10 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         btnE = (Button) findViewById(R.id.btnEmplazar);
         btnE.setOnClickListener(this);
         iv = (ImageView) findViewById(R.id.ivPoliedro);
+        regular = new Regulares();
+        gA = new GestionadorDeArchivos();
 
-
+        idMapaRegular=0;
         }
 
     public void onClick(View v) {
@@ -60,20 +65,31 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                 popupR.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         //Carge poliedro y muestre la foto.
-                        if (item.getTitle().equals("Tetraedro")){
+                        if ((title= (String) item.getTitle()).equals("Tetraedro")){
                             iv.setImageResource(R.drawable.tetraedro);
+                            regular.crearTetrahedro();
+                            //idMapaRegular=1;
+
                         }
-                        if (item.getTitle().equals("Octaedro")){
+                        if ((title= (String) item.getTitle()).equals("Octaedro")){
                             iv.setImageResource(R.drawable.octaedro);
+                            regular.crearOctahedro();
+                            //idMapaRegular=2;
                         }
-                        if (item.getTitle().equals("Cubo")){
+                        if ((title= (String) item.getTitle()).equals("Cubo")){
                             iv.setImageResource(R.drawable.cubo);
+                            regular.crearCubo();
+                            //idMapaRegular=3;
                         }
-                        if (item.getTitle().equals("Icosaedro")){
+                        if ((title= (String) item.getTitle()).equals("Icosaedro")){
                             iv.setImageResource(R.drawable.icosaedro);
+                            regular.crearIcosahedro();
+                            //idMapaRegular=4;
                         }
-                        if (item.getTitle().equals("Dodecaedro")){
+                        if ((title= (String) item.getTitle()).equals("Dodecaedro")){
                             iv.setImageResource(R.drawable.dodecaedro);
+                            regular.crearDodecahedro();
+                            //idMapaRegular=5;
                         }
                         return true;
                     }
@@ -116,6 +132,9 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
             case R.id.btnEmplazar:
                 Intent a = new Intent(this, EmplazarMapa.class);
                 a.putExtra("nM", title);
+                if(!gA.existe(title)) gA.write(title, gA.convertirObjetoAString(regular.retornaMapa()), this);
+                //a.putExtra("idMR",idMapaRegular);
+                a.putExtra("idMR",0); // :P
                 startActivity(a);
         }
     }
