@@ -186,7 +186,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         }
     }*/
 
-    private void agregarMarcador(double la, double lo) {
+    private void agregarMarcador(double la, double lo ) {
         LatLng coord = new LatLng(la, lo);
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         if (marker != null) marker.remove();
