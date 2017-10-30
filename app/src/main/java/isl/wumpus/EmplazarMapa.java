@@ -43,6 +43,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     boolean puntoFijo = false;
     private Button btnPunto;
     private Button btnRA;
+    private ArrayList<LatLng> latlngArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
               irARealidad();
             }
         });
-
+        latlngArray = new ArrayList<>();
         nombreMapa="";
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -89,7 +90,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void irARealidad(){
+        // putExtra array coordenadas
         Intent a = new Intent(this, RealidaAumentada.class);
+        a.putExtra("latlngAarray", latlngArray);
         startActivity(a);
     }
 
@@ -139,6 +142,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         if(marker.isVisible()) { // se podria hacer una mejor validacion  R: si....
             puntoFijo = true;
             marker.setDraggable(false);
+            //LatLng de primera cueva.
+            LatLng latlngActual = new LatLng(marcadores.get(0).getPosition().latitude,marcadores.get(0).getPosition().longitude);
+            latlngArray.add(latlngActual);
         }
         int[] cuevaX= mapaWumpus.getCuevaX();
         int[] cuevaY= mapaWumpus.getCuevaY();
@@ -168,6 +174,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             coef = metros * 0.0000007;
             double new_long = lon + coef / Math.cos(lat * 0.018);
             LatLng coord = new LatLng(new_lat, new_long);
+            latlngArray.add(coord);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(false));
 

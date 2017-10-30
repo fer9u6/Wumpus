@@ -15,6 +15,7 @@ import com.beyondar.android.util.location.BeyondarLocationManager;
 import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
 import com.beyondar.android.world.World;
+import com.google.android.gms.maps.model.LatLng;
 
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     private BeyondarFragmentSupport mBeyondarFragment;
     private WorldHelper worldHelper;
     private World mWorld;
+    ArrayList<LatLng> latlngArray;
 
 
 
@@ -32,20 +34,35 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         super.onCreate(savedInstanceState);
         //El layout correspondiente a la actividad de Realidad Aumentada
        // setContentView(R.layout.beyondar);
+
+
+
         setContentView(R.layout.beyondar);
+        latlngArray = new ArrayList<>();
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                latlngArray= null; //nunca seria null
+            } else {
+                    latlngArray = extras.getIntegerArrayList("latlngArray"); ///Como recibir extras de LatLng Array List??
+                }
+            }
+        } else {
+            nombreMapa= (String) savedInstanceState.getSerializable("nM");
+        }
 
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
                 R.id.beyondarFragment);
 
 
 
-        worldHelper = new WorldHelper();
+        worldHelper = new WorldHelper(//extra.getArray*/);
 
         //Esto permite que BeyondAR pueda acceder a la posición del usuario
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(Context.LOCATION_SERVICE));
 
         //Creo el mundo
-        mWorld = worldHelper.createWorld(this);
+        mWorld = worldHelper.createWorld(this, locations); //mandar array de locations
 
         /*Parametros para variar la distancia de los objetos*/
         mBeyondarFragment.setMaxDistanceToRender(3000); //Asigno distancia máxima de renderización de objetos

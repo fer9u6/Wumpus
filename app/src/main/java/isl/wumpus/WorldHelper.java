@@ -6,8 +6,12 @@ package isl.wumpus;
 
 
 import android.content.Context;
+import android.location.Location;
+
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
+
+import java.util.ArrayList;
 
 public class WorldHelper {
     public static World world;
@@ -18,7 +22,7 @@ public class WorldHelper {
      * @param context es el contexto donde se encuentra la aplicación
      * @return
      */
-    public World createWorld(Context context){
+    public World createWorld(Context context, ArrayList<Location> locations ){ //recibe array con cordenadas
         //Si ya existe un mundo
         if(world != null){
             return world;
@@ -26,7 +30,7 @@ public class WorldHelper {
         //Creamos el mundo
         world = new World(context);
        // ubicacion = new Ubicacion(context);
-        createObjects();
+        createObjects(locations);
         return world;
 
     }
@@ -34,10 +38,23 @@ public class WorldHelper {
     /**
      * Método para crear objetos georeferenciados y agregarlos al mundo de RA
      */
-    public void createObjects(){
+    public void createObjects(ArrayList<Location> locations){
         /*Posicion estática para colocar al mundo en algun punto. Si se desea
         * utilizar la ubicación actual, comentar esto y en MainActivity descomentar
         * BeyondarLocationManager.enable() en el onCreate*/
+
+        //iterar el locations
+        ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
+        GeoObject go;
+        int i = 0;
+        for (Location l:locations){
+            go = new GeoObject(i++);
+            go.setLocation(l);
+            go.setName(""+i);
+            go.setImageResource(R.mipmap.cueva);
+            listaGeoObject.add(go);
+        }
+
         world.setGeoPosition(9.956388, -84.171513);
 
         GeoObject geo1 = new GeoObject(1);
