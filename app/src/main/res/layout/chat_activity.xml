@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="isl.wumpus.ChatActivity"
+    android:rowCount="9"
+    android:columnCount="2"
+    >
+
+
+    <Button
+        android:id="@+id/onoffBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BluetoothONOFF"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="171dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/btnDiscover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Discovery"
+        android:onClick="btnDiscover"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="246dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/onoffBTN"
+        android:layout_toEndOf="@+id/onoffBTN" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/listDeviceView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnLookup"
+        android:layout_alignRight="@+id/btnLookup"
+        android:layout_alignEnd="@+id/btnLookup" />
+
+    <Button
+        android:id="@+id/btnLookup"
+        android:layout_width="142dp"
+        android:layout_height="wrap_content"
+        android:onClick="btnLookup"
+        android:text="Lookup"
+        android:layout_below="@+id/onoffBTN"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/btnStartConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDiscover"
+        android:layout_toRightOf="@+id/onoffBTN"
+        android:text="Start Connection"
+        android:layout_alignRight="@+id/btnDiscover"
+        android:layout_alignEnd="@+id/btnDiscover" />
+
+    <EditText
+        android:id="@+id/chatText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listDeviceView"
+        android:ems="10"
+        android:hint="Enter Text" />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chatText"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toRightOf="@+id/chatText"
+        android:text="Send"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/incomingMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnSend"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/btnPrueba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnStartConnection"
+        android:layout_alignStart="@+id/btnStartConnection"
+        android:layout_below="@+id/btnStartConnection"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="27dp"
+        android:text="Prueba"
+        android:onClick="prueba"
+        />
+
+</android.widget.RelativeLayout>

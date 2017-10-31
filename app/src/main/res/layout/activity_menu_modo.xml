@@ -29,18 +29,19 @@
 
         <Button
             android:id="@+id/btnSolo"
-            android:layout_width="wrap_content"
+            android:layout_width="181dp"
             android:layout_height="wrap_content"
             android:text="SOLO"
             android:onClick="showmsg"
             />
 
-        <Button
-            android:id="@+id/btnMulti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MULTI"
-            android:onClick="showmsg"/>
-
     </GridLayout>
+
+    <Button
+        android:id="@+id/btnMulti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showmsg"
+        android:text="Compartir Laberinto" />
+
 </android.widget.LinearLayout>
