@@ -353,10 +353,15 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     // Start Geofence creation process
     private void startGeofence() {
         Log.i(TAG, "startGeofence()");
-
-            Geofence geofence = createGeofence( latlngArray.get(0), GEOFENCE_RADIUS );
-            GeofencingRequest geofenceRequest = createGeofenceRequest( geofence );
+        int sizelatlng=latlngArray.size();
+        Geofence geofence;
+        GeofencingRequest geofenceRequest;
+        for(int i =0;i<sizelatlng-1;i++){
+            geofence = createGeofence( latlngArray.get(i), GEOFENCE_RADIUS );
+            geofenceRequest = createGeofenceRequest( geofence );
             addGeofence( geofenceRequest );
+        }
+
 
     }
 
@@ -424,7 +429,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     public void onResult(@NonNull Status status) {
         Log.i(TAG, "onResult: " + status);
         if ( status.isSuccess() ) {
-            saveGeofence();
+            //saveGeofence();
             drawGeofence();
         } else {
             // inform about fail
@@ -438,13 +443,15 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
         if ( geoFenceLimits != null )
             geoFenceLimits.remove();
-
-        CircleOptions circleOptions = new CircleOptions()
-                .center( latlngArray.get(0))
-                .strokeColor(Color.argb(50, 70,70,70))
-                .fillColor( Color.argb(100, 150,150,150) )
-                .radius( GEOFENCE_RADIUS );
-        geoFenceLimits = mMap.addCircle( circleOptions );
+        int sizelatlng=latlngArray.size();
+        for(int i =0;i<sizelatlng-1;i++){
+           CircleOptions circleOptions = new CircleOptions()
+                   .center( latlngArray.get(i))
+                   .strokeColor(Color.argb(50, 70,70,70))
+                   .fillColor( Color.argb(100, 150,150,150) )
+                   .radius( GEOFENCE_RADIUS );
+           geoFenceLimits = mMap.addCircle( circleOptions );
+        }
     }
 
     private final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
