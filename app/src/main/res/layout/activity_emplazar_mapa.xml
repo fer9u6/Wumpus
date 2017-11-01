@@ -27,7 +27,14 @@
             android:id="@+id/btnCoordenadas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="Fijar Punto" />
+        <Button
+            android:id="@+id/btnRealidad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Jugar" />
     </LinearLayout>
 
 </LinearLayout>
