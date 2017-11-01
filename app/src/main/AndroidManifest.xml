@@ -12,6 +12,14 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,9 +50,8 @@
         </activity>
         <activity android:name=".MenuModo" />
         <activity android:name=".EscogerLaberinto" />
-        <activity android:name=".EmplazarMapa" >
-
-        </activity>
+        <activity android:name=".EmplazarMapa" />
+        <activity android:name=".ChatActivity"/>
         <activity android:name=".MenuMapa" />
         <activity android:name=".PantallaSolo" />
         <activity android:name=".GeofenceMap">
