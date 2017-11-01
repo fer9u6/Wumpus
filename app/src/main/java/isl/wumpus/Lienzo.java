@@ -85,7 +85,7 @@ public class Lienzo extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawPath(drawPath, drawPaint);
 
-            Bitmap b = BitmapFactory.decodeResource(getResources(), R.mipmap.cueva);
+            Bitmap b = BitmapFactory.decodeResource(getResources(), R.mipmap.cueva8bit);
             for (int i = 1; i <= numCuevas; i++) {
                 canvas.drawBitmap(b, cuevaX[i], cuevaY[i], canvasPaint);
             }

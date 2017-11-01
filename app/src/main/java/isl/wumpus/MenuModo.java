@@ -23,22 +23,22 @@ public class MenuModo extends AppCompatActivity {
         /*Toast.makeText(context, "Boton presionado "+buttonText,
                 Toast.LENGTH_LONG).show();*/
 
-        if(buttonText.equals("SOLO")){
+        if(buttonText.equals("INICIAR EL JUEGO")){
             Intent i = new Intent(this, EscogerLaberinto.class);
             startActivity(i);
         }
-        if(buttonText.equals("MULTI")){
+        if(buttonText.equals("Compartir Laberinto")){
             pantallamultiopen();
         }
 
         }
-    public void pantallasoloopen(){
+    /*public void pantallasoloopen(){
         Intent i = new Intent(this,PantallaSolo.class);
         startActivity(i);
-    }
+    }*/
 
     public void pantallamultiopen(){
-        Intent i = new Intent(this,PantallaMulti.class);
+        Intent i = new Intent(this, ChatActivity.class);
         startActivity(i);
     }
 

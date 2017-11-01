@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="isl.wumpus.MenuModo"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="40dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Escoge Modalidad" />
-    </LinearLayout>
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:background="@drawable/fondomenu"
+    >
 
         <Button
             android:id="@+id/btnSolo"
-            android:layout_width="wrap_content"
+            android:layout_width="181dp"
             android:layout_height="wrap_content"
-            android:text="SOLO"
+            android:text="INICIAR EL JUEGO"
             android:onClick="showmsg"
-            />
+            android:layout_above="@+id/btnMulti"
+            android:layout_alignLeft="@+id/btnMulti"
+            android:layout_alignStart="@+id/btnMulti"
+            android:layout_marginBottom="36dp" />
 
-        <Button
-            android:id="@+id/btnMulti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MULTI"
-            android:onClick="showmsg"/>
 
-    </GridLayout>
-</android.widget.LinearLayout>
+
+    <Button
+        android:id="@+id/btnMulti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showmsg"
+        android:text="Compartir Laberinto"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/editText"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Escoge Modalidad"
+        android:textColor="#fffff2"
+        android:textSize="40dp"
+        android:layout_marginBottom="24dp"
+        android:layout_above="@+id/btnSolo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="11dp"
+        android:layout_marginEnd="11dp" />
+
+    <TextView
+        android:id="@+id/editText2"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="El Wumpus te esta esperando"
+        android:textColor="#fffff2"
+        android:textSize="20dp"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/btnMulti"
+        android:layout_centerHorizontal="true" />
+
+
+</android.widget.RelativeLayout>
