@@ -1,20 +1,31 @@
 package isl.wumpus;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -24,6 +35,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,7 +44,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback {
+public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback,
+        ResultCallback<Status> {
 
     private GoogleMap mMap;
     private Marker marker;  //posicion de primera cueva
@@ -44,6 +58,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private Button btnPunto;
     private Button btnRA;
     private ArrayList<LatLng> latlngArray;
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +193,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             LatLng coord = new LatLng(new_lat, new_long);
             latlngArray.add(coord);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
             marcadores.add(m);
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
@@ -334,5 +349,115 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private static final String TAG = GeofenceMap.class.getSimpleName();
+    // Start Geofence creation process
+    private void startGeofence() {
+        Log.i(TAG, "startGeofence()");
 
+            Geofence geofence = createGeofence( latlngArray.get(0), GEOFENCE_RADIUS );
+            GeofencingRequest geofenceRequest = createGeofenceRequest( geofence );
+            addGeofence( geofenceRequest );
+
+    }
+
+
+    private static final long GEO_DURATION = 60 * 60 * 1000;
+    private static final String GEOFENCE_REQ_ID = "My Geofence";
+    private static final float GEOFENCE_RADIUS = 35.0f; // in meters
+
+    // Create a Geofence
+    private Geofence createGeofence( LatLng latLng, float radius ) {
+        Log.d(TAG, "createGeofence");
+        return new Geofence.Builder()
+                .setRequestId(GEOFENCE_REQ_ID)
+                .setCircularRegion( latLng.latitude, latLng.longitude, radius)
+                .setExpirationDuration( GEO_DURATION )
+                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
+                        | Geofence.GEOFENCE_TRANSITION_EXIT )
+                .build();
+    }
+
+    // Create a Geofence Request
+    private GeofencingRequest createGeofenceRequest(Geofence geofence ) {
+        Log.d(TAG, "createGeofenceRequest");
+        return new GeofencingRequest.Builder()
+                .setInitialTrigger( GeofencingRequest.INITIAL_TRIGGER_ENTER )
+                .addGeofence( geofence )
+                .build();
+    }
+
+    private PendingIntent geoFencePendingIntent;
+    private final int GEOFENCE_REQ_CODE = 0;
+    private PendingIntent createGeofencePendingIntent() {
+        Log.d(TAG, "createGeofencePendingIntent");
+        if ( geoFencePendingIntent != null )
+            return geoFencePendingIntent;
+
+        Intent intent = new Intent( this, GeofenceTrasitionService.class);
+        return PendingIntent.getService(
+                this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+    }
+
+    LocationServices locationServices;
+
+    // Add the created GeofenceRequest to the device's monitoring list
+    private void addGeofence(GeofencingRequest request) {
+        Log.d(TAG, "addGeofence");
+        if (checkPermission())
+            locationServices.GeofencingApi.addGeofences(
+                    googleApiClient,
+                    request,
+                    createGeofencePendingIntent()
+            ).setResultCallback(this);
+    }
+
+    private final int REQ_PERMISSION = 999;
+
+    // Check for permission to access Location
+    private boolean checkPermission() {
+        Log.d(TAG, "checkPermission()");
+        // Ask for permission if it wasn't granted yet
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED );
+    }
+    @Override
+    public void onResult(@NonNull Status status) {
+        Log.i(TAG, "onResult: " + status);
+        if ( status.isSuccess() ) {
+            saveGeofence();
+            drawGeofence();
+        } else {
+            // inform about fail
+        }
+    }
+
+    // Draw Geofence circle on GoogleMap
+    private Circle geoFenceLimits;
+    private void drawGeofence() {
+        Log.d(TAG, "drawGeofence()");
+
+        if ( geoFenceLimits != null )
+            geoFenceLimits.remove();
+
+        CircleOptions circleOptions = new CircleOptions()
+                .center( latlngArray.get(0))
+                .strokeColor(Color.argb(50, 70,70,70))
+                .fillColor( Color.argb(100, 150,150,150) )
+                .radius( GEOFENCE_RADIUS );
+        geoFenceLimits = mMap.addCircle( circleOptions );
+    }
+
+    private final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
+    private final String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";
+
+    // Saving GeoFence marker with prefs mng
+    private void saveGeofence() {
+        Log.d(TAG, "saveGeofence()");
+        SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putLong( KEY_GEOFENCE_LAT, Double.doubleToRawLongBits( latlngArray.get(0).latitude ));
+        editor.putLong( KEY_GEOFENCE_LON, Double.doubleToRawLongBits( latlngArray.get(0).longitude ));
+        editor.apply();
+    }
 }
