@@ -2,6 +2,7 @@ package isl.wumpus;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -41,7 +42,8 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private int idMapaReg;
     boolean puntoFijo = false;
     private Button btnPunto;
-
+    private Button btnRA;
+    private ArrayList<LatLng> latlngArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,20 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         btnPunto =(Button) findViewById(R.id.btnCoordenadas);
+        btnRA=(Button)findViewById(R.id.btnRealidad) ;
         btnPunto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fijaPunto();
             }
         });
-
+        btnRA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              irARealidad();
+            }
+        });
+        latlngArray = new ArrayList<>();
         nombreMapa="";
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -78,6 +87,15 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         mapaWumpus= ga.convertirStringAObjeto(s);
         mapFragment.getMapAsync(this);
 
+    }
+
+    public void irARealidad(){
+        // putExtra array coordenadas
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("latlngArray", latlngArray);
+        Intent a = new Intent(this, RealidaAumentada.class);
+        a.putExtras(bundle);
+        startActivity(a);
     }
 
 
@@ -126,6 +144,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         if(marker.isVisible()) { // se podria hacer una mejor validacion  R: si....
             puntoFijo = true;
             marker.setDraggable(false);
+            //LatLng de primera cueva.
+            LatLng latlngActual = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
+            latlngArray.add(latlngActual);
         }
         int[] cuevaX= mapaWumpus.getCuevaX();
         int[] cuevaY= mapaWumpus.getCuevaY();
@@ -155,11 +176,11 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             coef = metros * 0.0000007;
             double new_long = lon + coef / Math.cos(lat * 0.018);
             LatLng coord = new LatLng(new_lat, new_long);
+            latlngArray.add(coord);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(false));
-
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true))
             marcadores.add(m);
-            agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
+            //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
 
 
@@ -191,7 +212,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         if (marker != null) marker.remove();
         marker = mMap.addMarker(new MarkerOptions().position(coord).title("Primera cueva")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
 
         mMap.animateCamera(miUbic);
     }
@@ -201,7 +222,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         LatLng coord = new LatLng(la, lo);
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         m = mMap.addMarker(new MarkerOptions().position(coord).title(titulo)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
         mMap.animateCamera(miUbic);
     }
 

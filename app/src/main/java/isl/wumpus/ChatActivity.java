@@ -285,7 +285,7 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
             }
 
             String recibido=messages.toString();
-            Toast.makeText(getApplicationContext(),"Mensaje es: "+recibido,Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(),"Mensaje es: "+recibido,Toast.LENGTH_SHORT).show();
             //Usa la ruta de nuestra aplicacion, chatText es el nombre a buscar
             String ruta = "data/user/0/isl.wumpus/files/Mapas/nuevoMapa.mapa";
             Toast.makeText(getApplicationContext(),"Se creara archivo en "+ruta,Toast.LENGTH_SHORT).show();
@@ -293,25 +293,6 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
             GestionadorDeArchivos ga= new GestionadorDeArchivos();
             ga.write("nuevoMapa",recibido,getApplicationContext());
 
-
-            /*try{
-                File file = new File(ruta);
-                file.createNewFile();
-            }
-            catch (IOException e){
-                Toast.makeText(getApplicationContext(),"No pudo crear archivo",Toast.LENGTH_LONG).show();
-            }
-
-            FileOutputStream fos;
-
-            try{
-                fos = new FileOutputStream(file);
-                fos.write(recibido.getBytes());
-                fos.close();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-            Toast.makeText(getApplicationContext(),"Se creo el archivo en "+ruta,Toast.LENGTH_SHORT).show();*/
         }
     };
 

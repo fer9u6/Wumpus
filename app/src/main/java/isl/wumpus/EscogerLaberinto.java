@@ -50,8 +50,9 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         btnE = (Button) findViewById(R.id.btnEmplazar);
         btnE.setOnClickListener(this);
         iv = (ImageView) findViewById(R.id.ivPoliedro);
-        regular = new Regulares();
+        regular = new Regulares(); regular.crearTetrahedro();
         gA = new GestionadorDeArchivos();
+        title= "Tetraedro";
 
         idMapaRegular=0;
         }
@@ -130,9 +131,9 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                 startActivity(i);
                 break;
             case R.id.btnEmplazar:
+                if(!gA.existe(title)) gA.write(title, gA.convertirObjetoAString(regular.retornaMapa()), this);
                 Intent a = new Intent(this, EmplazarMapa.class);
                 a.putExtra("nM", title);
-                if(!gA.existe(title)) gA.write(title, gA.convertirObjetoAString(regular.retornaMapa()), this);
                 //a.putExtra("idMR",idMapaRegular);
                 a.putExtra("idMR",0); // :P
                 startActivity(a);
