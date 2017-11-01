@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/cueva" />
+        android:layout_width="104dp"
+        android:layout_height="100dp"
+        app:srcCompat="@mipmap/cueva8bit" />
 
 </FrameLayout>

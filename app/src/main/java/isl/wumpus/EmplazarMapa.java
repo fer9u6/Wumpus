@@ -156,7 +156,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             double new_long = lon + coef / Math.cos(lat * 0.018);
             LatLng coord = new LatLng(new_lat, new_long);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(false));
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(false));
 
             marcadores.add(m);
             agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
@@ -191,7 +191,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         if (marker != null) marker.remove();
         marker = mMap.addMarker(new MarkerOptions().position(coord).title("Primera cueva")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
 
         mMap.animateCamera(miUbic);
     }
@@ -201,7 +201,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         LatLng coord = new LatLng(la, lo);
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         m = mMap.addMarker(new MarkerOptions().position(coord).title(titulo)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
         mMap.animateCamera(miUbic);
     }
 

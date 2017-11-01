@@ -23,7 +23,7 @@ public class MenuModo extends AppCompatActivity {
         /*Toast.makeText(context, "Boton presionado "+buttonText,
                 Toast.LENGTH_LONG).show();*/
 
-        if(buttonText.equals("SOLO")){
+        if(buttonText.equals("INICIAR EL JUEGO")){
             Intent i = new Intent(this, EscogerLaberinto.class);
             startActivity(i);
         }
