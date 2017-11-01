@@ -8,8 +8,10 @@ package isl.wumpus;
 import android.content.Context;
 import android.location.Location;
 
+import com.beyondar.android.opengl.util.LowPassFilter;
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class WorldHelper {
      * @param context es el contexto donde se encuentra la aplicación
      * @return
      */
-    public World createWorld(Context context, ArrayList<Location> locations ){ //recibe array con cordenadas
+    public World createWorld(Context context, ArrayList<LatLng> latlngArray ){ //recibe array con cordenadas
         //Si ya existe un mundo
         if(world != null){
             return world;
@@ -30,7 +32,10 @@ public class WorldHelper {
         //Creamos el mundo
         world = new World(context);
        // ubicacion = new Ubicacion(context);
-        createObjects(locations);
+        createObjects(latlngArray);
+
+        // LowPassFilter.ALPHA = 1; para arreglar que los geo objects se mueven mucho
+
         return world;
 
     }
@@ -38,7 +43,7 @@ public class WorldHelper {
     /**
      * Método para crear objetos georeferenciados y agregarlos al mundo de RA
      */
-    public void createObjects(ArrayList<Location> locations){
+    public void createObjects(ArrayList<LatLng> latlngArray){
         /*Posicion estática para colocar al mundo en algun punto. Si se desea
         * utilizar la ubicación actual, comentar esto y en MainActivity descomentar
         * BeyondarLocationManager.enable() en el onCreate*/
@@ -47,16 +52,18 @@ public class WorldHelper {
         ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
         GeoObject go;
         int i = 0;
-        for (Location l:locations){
+        for (LatLng l:latlngArray){
             go = new GeoObject(i++);
-            go.setLocation(l);
+            go.setGeoPosition(l.latitude, l.longitude);
             go.setName(""+i);
             go.setImageResource(R.mipmap.cueva);
             listaGeoObject.add(go);
+            world.addBeyondarObject(go); //agrega el objecto al RA
         }
 
-        world.setGeoPosition(9.956388, -84.171513);
-
+        world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
+        //world.setGeoPosition(9.956388, -84.171513);
+        /*
         GeoObject geo1 = new GeoObject(1);
         geo1.setGeoPosition(9.957452, -84.170577);
         geo1.setName("Soy el monstruo azul");
@@ -81,7 +88,7 @@ public class WorldHelper {
         world.addBeyondarObject(geo2);
         world.addBeyondarObject(geo3);
         world.addBeyondarObject(geo4);
-
+        */
 
     }
 

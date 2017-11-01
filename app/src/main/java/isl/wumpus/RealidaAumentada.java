@@ -44,31 +44,28 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
             if(extras == null) {
                 latlngArray= null; //nunca seria null
             } else {
-                    latlngArray = extras.getIntegerArrayList("latlngArray"); ///Como recibir extras de LatLng Array List??
+                    latlngArray = getIntent().getParcelableArrayListExtra("latlngArray"); ///Como recibir extras de LatLng Array List??
                 }
             }
-        } else {
-            nombreMapa= (String) savedInstanceState.getSerializable("nM");
-        }
 
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
                 R.id.beyondarFragment);
 
 
 
-        worldHelper = new WorldHelper(//extra.getArray*/);
+        worldHelper = new WorldHelper();
 
         //Esto permite que BeyondAR pueda acceder a la posición del usuario
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(Context.LOCATION_SERVICE));
 
         //Creo el mundo
-        mWorld = worldHelper.createWorld(this, locations); //mandar array de locations
+        mWorld = worldHelper.createWorld(this, latlngArray); //mandar array de locations
 
         /*Parametros para variar la distancia de los objetos*/
         mBeyondarFragment.setMaxDistanceToRender(3000); //Asigno distancia máxima de renderización de objetos
         mBeyondarFragment.setDistanceFactor(4); //El factor de distancia de objetos (más cerca entre mayor valor)
-        mBeyondarFragment.setPushAwayDistance(0); //Para alejar un poco los objetos que están muy cerca
-        mBeyondarFragment.setPullCloserDistance(0); //Para acercar un poco los objetos que están muy lejos
+        mBeyondarFragment.setPushAwayDistance(3); //Para alejar un poco los objetos que están muy cerca
+        mBeyondarFragment.setPullCloserDistance(2); //Para acercar un poco los objetos que están muy lejos
         mBeyondarFragment.setWorld(mWorld);
 
         //BeyondarLocationManager.enable();

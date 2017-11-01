@@ -91,8 +91,10 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
     public void irARealidad(){
         // putExtra array coordenadas
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("latlngArray", latlngArray);
         Intent a = new Intent(this, RealidaAumentada.class);
-        a.putExtra("latlngAarray", latlngArray);
+        a.putExtras(bundle);
         startActivity(a);
     }
 
@@ -143,7 +145,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             puntoFijo = true;
             marker.setDraggable(false);
             //LatLng de primera cueva.
-            LatLng latlngActual = new LatLng(marcadores.get(0).getPosition().latitude,marcadores.get(0).getPosition().longitude);
+            LatLng latlngActual = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
             latlngArray.add(latlngActual);
         }
         int[] cuevaX= mapaWumpus.getCuevaX();
@@ -176,10 +178,10 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             LatLng coord = new LatLng(new_lat, new_long);
             latlngArray.add(coord);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(false));
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
 
             marcadores.add(m);
-            agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
+            //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
 
 
