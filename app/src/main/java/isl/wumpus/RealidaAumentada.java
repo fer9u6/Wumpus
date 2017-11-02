@@ -31,12 +31,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        //El layout correspondiente a la actividad de Realidad Aumentada
-       // setContentView(R.layout.beyondar);
-
-
-
         setContentView(R.layout.beyondar);
         latlngArray = new ArrayList<>();
         if (savedInstanceState == null) {
@@ -44,7 +40,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
             if(extras == null) {
                 latlngArray= null; //nunca seria null
             } else {
-                    latlngArray = getIntent().getParcelableArrayListExtra("latlngArray"); ///Como recibir extras de LatLng Array List??
+                    latlngArray = getIntent().getParcelableArrayListExtra("latlngArray");//Recibe el ArrayListd latlngArray de Emplazar
                 }
             }
 

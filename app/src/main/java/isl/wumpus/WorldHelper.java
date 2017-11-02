@@ -61,8 +61,8 @@ public class WorldHelper {
             world.addBeyondarObject(go); //agrega el objecto al RA
         }
 
-        world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
-        //world.setGeoPosition(9.956388, -84.171513);
+        //world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
+        world.setGeoPosition(9.956388, -84.171513);
         /*
         GeoObject geo1 = new GeoObject(1);
         geo1.setGeoPosition(9.957452, -84.170577);
