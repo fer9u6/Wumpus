@@ -37,7 +37,7 @@ public class GestionadorDeArchivos {
     }*/
 
     public boolean existe(String string){
-        return new File(string).exists();
+        return false;/*new File(string).exists();*/
     }
 
     //Convierte objeto a string

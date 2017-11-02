@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,6 +43,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private int idMapaReg;
     boolean puntoFijo = false;
     private Button btnPunto;
+    private Random random;
+    private int [] elementosDeMapa;
+
     private Button btnRA;
     private ArrayList<LatLng> latlngArray;
 
@@ -52,6 +56,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        random = new Random(System.currentTimeMillis());
         btnPunto =(Button) findViewById(R.id.btnCoordenadas);
         btnRA=(Button)findViewById(R.id.btnRealidad) ;
         btnPunto.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +90,27 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         GestionadorDeArchivos ga = new GestionadorDeArchivos();
         String s =ga.read(nombreMapa,getApplicationContext());
         mapaWumpus= ga.convertirStringAObjeto(s);
+        elementosDeMapa = new int[mapaWumpus.getContCuevas()];
+        genereElementos();
         mapFragment.getMapAsync(this);
 
+    }
+
+    private void genereElementos(){
+        ArrayList<Integer> posiciones= new ArrayList<>(); int cant;
+        if(elementosDeMapa.length<4){
+            cant=3;
+        }else cant=2;
+        while (cant>0){
+            Integer r= random.nextInt(elementosDeMapa.length);
+            if(!posiciones.contains(r)){
+                cant--; posiciones.add(r);
+            }
+        }
+        //for(int j=0; j<elementosDeMapa.length; j++) elementosDeMapa[j]= 0;
+        elementosDeMapa[(int) posiciones.remove(0)] = 2;
+        elementosDeMapa[(int) posiciones.remove(0)] = 1;
+        if(!posiciones.isEmpty())elementosDeMapa[(int) posiciones.remove(0)] = 1;
     }
 
     public void irARealidad(){
