@@ -56,7 +56,7 @@ public class WorldHelper {
             go = new GeoObject(i++);
             go.setGeoPosition(l.latitude, l.longitude);
             go.setName(""+i);
-            go.setImageResource(R.mipmap.cueva);
+            go.setImageResource(R.mipmap.cueva8bit);
             listaGeoObject.add(go);
             world.addBeyondarObject(go); //agrega el objecto al RA
         }

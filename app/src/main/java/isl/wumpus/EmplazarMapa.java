@@ -178,7 +178,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             LatLng coord = new LatLng(new_lat, new_long);
             latlngArray.add(coord);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
             marcadores.add(m);
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
