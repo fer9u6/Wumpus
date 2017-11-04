@@ -15,6 +15,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+/**
+ * Esta clase maneja las reglas de los objetos del juego
+ */
 public class WorldHelper {
     public static World world;
     //private Ubicacion ubicacion;
@@ -40,8 +43,11 @@ public class WorldHelper {
 
     }
 
+
     /**
      * Método para crear objetos georeferenciados y agregarlos al mundo de RA
+     * Crea las cuevas y demas objetos necesarios para el juego
+     * @param latlngArray es un array de LatIng que contiene las coordenadas de las cuevas
      */
     public void createObjects(ArrayList<LatLng> latlngArray){
         /*Posicion estática para colocar al mundo en algun punto. Si se desea
@@ -63,32 +69,7 @@ public class WorldHelper {
 
         //world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
         world.setGeoPosition(9.956388, -84.171513);
-        /*
-        GeoObject geo1 = new GeoObject(1);
-        geo1.setGeoPosition(9.957452, -84.170577);
-        geo1.setName("Soy el monstruo azul");
-        geo1.setImageResource(R.drawable.creature_tulu);
 
-        GeoObject geo2 = new GeoObject(2);
-        geo2.setGeoPosition(9.957346, -84.171264);
-        geo2.setName("Soy el monstruo naranja");
-        geo2.setImageResource(R.drawable.creature_tulu);
-
-        GeoObject geo3 = new GeoObject(3);
-        geo3.setGeoPosition(9.956081, -84.171679);
-        geo3.setName("Soy el monstruo verde");
-        geo3.setImageResource(R.drawable.creature_muck);
-
-        GeoObject geo4 = new GeoObject(4);
-        geo4.setGeoPosition(9.956416, -84.171725);
-        geo4.setName("Soy el monstruo morado");
-        geo4.setImageResource(R.drawable.creature_muck);
-
-        world.addBeyondarObject(geo1);
-        world.addBeyondarObject(geo2);
-        world.addBeyondarObject(geo3);
-        world.addBeyondarObject(geo4);
-        */
 
     }
 

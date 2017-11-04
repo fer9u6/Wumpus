@@ -50,7 +50,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         btnD.setOnClickListener(this);
         btnE = (Button) findViewById(R.id.btnEmplazar);
         btnE.setOnClickListener(this);
-        iv = (ImageView) findViewById(R.id.ivPoliedro);
+       // iv = (ImageView) findViewById(R.id.ivPoliedro);
         regular = new Regulares(); regular.crearTetrahedro();
         gA = new GestionadorDeArchivos();
         title= "Tetraedro";

@@ -20,7 +20,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
-
+/**
+ * Clase que puede despliega los objetos de la realidad aumentada y captura los eventos de los objetos
+ */
 public class RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListener {
     private BeyondarFragmentSupport mBeyondarFragment;
     private WorldHelper worldHelper;
@@ -28,7 +30,11 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     ArrayList<LatLng> latlngArray;
 
 
-
+    /**
+     * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
+     * a createObjects.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -93,7 +99,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     }
 
     /**
-     * Método para registar el evento de tap a algún objeto del mundo RA
+     * Método para registar el evento de tap a algún objeto del mundo RA y muestra el nombre del objeto(numero de cueva)
      * @param arrayList contiene el objeto georefernciado
      */
     @Override
