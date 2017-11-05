@@ -50,8 +50,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         btnD.setOnClickListener(this);
         btnE = (Button) findViewById(R.id.btnEmplazar);
         btnE.setOnClickListener(this);
-       // iv = (ImageView) findViewById(R.id.ivPoliedro);
-        regular = new Regulares(); regular.crearTetrahedro();
+        regular = new Regulares(); regular.crearTetrahedro(); //Emplea el tetrahedro por defecto.
         gA = new GestionadorDeArchivos();
         title= "Tetraedro";
 
@@ -59,10 +58,10 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         }
 
     public void onClick(View v) {
-        File folder = new File(getApplicationContext().getFilesDir() + File.separator + "Mapas");
+        File folder = new File(getApplicationContext().getFilesDir() + File.separator + "Mapas"); //Directorio de mapas.
 
         switch (v.getId()){
-            case R.id.btnRegular:
+            case R.id.btnRegular: //Menu de poliedros regulares.
                 PopupMenu popupR = new PopupMenu(EscogerLaberinto.this, btnR);
                 popupR.getMenuInflater().inflate(R.menu.menu_regulares, popupR.getMenu());
 
@@ -106,7 +105,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                 PopupMenu popupI = new PopupMenu(EscogerLaberinto.this, btnI);
 
                 if (folder.exists()) {
-                    for (File f : folder.listFiles()) {
+                    for (File f : folder.listFiles()) { //Evita incluir los regulares en el menu de irregulares
                         if (f.isFile() && !f.getName().equals("Tetraedro.mapa") && !f.getName().equals("Octaedro.mapa")
                             && !f.getName().equals("Cubo.mapa") && !f.getName().equals("Icosaedro.mapa")
                             && !f.getName().equals("Dodecaedro.mapa"))
@@ -149,5 +148,3 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
 
 
 }
-
-
