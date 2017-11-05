@@ -43,9 +43,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+/**
+ * Esta clase despliega un mapa de google que muestra la ubicacion del usuario que es donde se ubica la primera cueva
+ * y con respecto a esta, ubica las demas cuevas del mapa elegido.
+ * mapa.
+ */
 public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback,
         ResultCallback<Status> {
+
 
     private GoogleMap mMap;
     private Marker marker;  //posicion de primera cueva
@@ -56,6 +63,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private int idMapaReg;
     boolean puntoFijo = false;
     private Button btnPunto;
+    private Random random;
+    private int [] elementosDeMapa;
+
     private Button btnRA;
     private ArrayList<LatLng> latlngArray;
     private GoogleApiClient googleApiClient;
@@ -67,6 +77,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        random = new Random(System.currentTimeMillis());
         btnPunto =(Button) findViewById(R.id.btnCoordenadas);
         btnRA=(Button)findViewById(R.id.btnRealidad) ;
         btnPunto.setOnClickListener(new View.OnClickListener() {
@@ -100,10 +111,34 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         GestionadorDeArchivos ga = new GestionadorDeArchivos();
         String s =ga.read(nombreMapa,getApplicationContext());
         mapaWumpus= ga.convertirStringAObjeto(s);
+        elementosDeMapa = new int[mapaWumpus.getContCuevas()];
+        genereElementos();
         mapFragment.getMapAsync(this);
 
     }
 
+    private void genereElementos(){
+        ArrayList<Integer> posiciones= new ArrayList<>(); int cant;
+        if(elementosDeMapa.length<4){
+            cant=3;
+        }else cant=2;
+        while (cant>0){
+            Integer r= random.nextInt(elementosDeMapa.length);
+            if(!posiciones.contains(r)){
+                cant--; posiciones.add(r);
+            }
+        }
+        //for(int j=0; j<elementosDeMapa.length; j++) elementosDeMapa[j]= 0;
+        elementosDeMapa[(int) posiciones.remove(0)] = 2;
+        elementosDeMapa[(int) posiciones.remove(0)] = 1;
+        if(!posiciones.isEmpty())elementosDeMapa[(int) posiciones.remove(0)] = 1;
+    }
+
+    /**
+     * Este metodo le pasa como parametro las coordenadas de las cuevas del mapa elegido a la actividad de la realidad aumentada
+     * para que pueda crear los geoobject y la inicia.
+     * Se invoca al presionar el boton jugar.
+     */
     public void irARealidad(){
         // putExtra array coordenadas
         Bundle bundle = new Bundle();
@@ -154,9 +189,12 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    //por ahora fija el punto y agrega una cantidad de cuevas , agrega varias en el mismo punto , ver etiquetas(pasa algo raro)
+    /**
+     * Hace que la primer cueva no se pueda cambiar de ubicacion en el mapa y coloca el resto de las cuevas y se agregan al array de
+     * coordenadas que se le va a pasar a la realidad aumentada.
+     */
     private void fijaPunto(){
-        if(marker.isVisible()) { // se podria hacer una mejor validacion  R: si....
+        if(marker.isVisible()) {
             puntoFijo = true;
             marker.setDraggable(false);
             //LatLng de primera cueva.
@@ -193,7 +231,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             LatLng coord = new LatLng(new_lat, new_long);
             latlngArray.add(coord);
             Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva)).draggable(true));
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
             marcadores.add(m);
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
@@ -222,6 +260,11 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         }
     }*/
 
+    /**
+     * Agrega un marcador que representa la ubicacion de una cueva
+     * @param la latitud de la cueva que se va a agregar
+     * @param lo longitud de la cueva que se va a agregar
+     */
     private void agregarMarcador(double la, double lo ) {
         LatLng coord = new LatLng(la, lo);
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
@@ -252,7 +295,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
     //Esto es una variable para el metodo de abajo
 
-
+    /**
+     * Metodo que consigue la ubicacion actual de el usuario mediante varios parametros
+     */
     private void miUbic() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
