@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,7 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
         btnD.setOnClickListener(this);
         btnE = (Button) findViewById(R.id.btnEmplazar);
         btnE.setOnClickListener(this);
+        iv = (ImageView) findViewById(R.id.ivPoliedro);
         regular = new Regulares(); regular.crearTetrahedro(); //Emplea el tetrahedro por defecto.
         gA = new GestionadorDeArchivos();
         title= "Tetraedro";
@@ -71,28 +73,28 @@ public class EscogerLaberinto extends AppCompatActivity implements View.OnClickL
                         if ((title= (String) item.getTitle()).equals("Tetraedro")){
                             iv.setImageResource(R.drawable.tetraedro);
                             regular.crearTetrahedro();
-                            //idMapaRegular=1;
+
 
                         }
                         if ((title= (String) item.getTitle()).equals("Octaedro")){
                             iv.setImageResource(R.drawable.octaedro);
                             regular.crearOctahedro();
-                            //idMapaRegular=2;
+
                         }
                         if ((title= (String) item.getTitle()).equals("Cubo")){
                             iv.setImageResource(R.drawable.cubo);
                             regular.crearCubo();
-                            //idMapaRegular=3;
+
                         }
                         if ((title= (String) item.getTitle()).equals("Icosaedro")){
                             iv.setImageResource(R.drawable.icosaedro);
                             regular.crearIcosahedro();
-                            //idMapaRegular=4;
+
                         }
                         if ((title= (String) item.getTitle()).equals("Dodecaedro")){
                             iv.setImageResource(R.drawable.dodecaedro);
                             regular.crearDodecahedro();
-                            //idMapaRegular=5;
+
                         }
                         return true;
                     }
