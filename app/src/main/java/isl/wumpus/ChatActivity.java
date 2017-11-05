@@ -35,33 +35,77 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * The type Chat activity.
+ */
 public class ChatActivity extends AppCompatActivity  implements AdapterView.OnItemClickListener {
     private static final String TAG = "MainActiviy";
+    /**
+     * mBluetoothAdapter: Obtiene el adaptador de bluetooth
+     */
     BluetoothAdapter mBluetoothAdapter;
+    /**
+     * btnDiscover: Boton para la funcion de descubrir dispositivo
+     */
     Button btnDiscover;
 
+    /**
+     * btnStartConnection: Llama a la funcion de conexion
+     */
     Button btnStartConnection;
+    /**
+     * btnSend: Llama a la funcion que envia archivos
+     */
     Button btnSend;
 
+    /**
+     * incomingMessages: Muestra mensajes en pantalla
+     */
     TextView incomingMessages;
+    /**
+     * messages: El mensaje enviado, se usa para convertir de String a StringBuilder
+     */
     StringBuilder messages;
 
+    /**
+     * mBluetoothConnection: Maneja las conexiones de bluetooth, requiere de UUID
+     */
     BluetoothConnection mBluetoothConnection;
 
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
+    /**
+     * mBTDevice: Usa a device adapter
+     */
     BluetoothDevice mBTDevice;
 
+    /**
+     * chatText: El nombre del archivo a enviar
+     */
     EditText chatText;
 
+    /**
+     * mBLDevice: Un array con todos los dispositivos que se pueden conectar
+     */
     public ArrayList<BluetoothDevice> mBLDevice = new ArrayList<>();
+    /**
+     * mDeviceAdapter: De la clase DeviceAdapter
+     */
     public DeviceAdapter mDeviceAdapter;
+    /**
+     * listDeviceView: Muestra los dispositivos que se pueden conectar
+     */
     ListView listDeviceView;
 
+    /**
+     * line: Donde se almacena el mensaje recibido.
+     */
     String line;
 
-    // Create a BroadcastReceiver for ACTION_FOUND.
+    /*
+    *BroadcastReceiver: Lee los cambios en ACTION_STATE, el estado del bluetooth en el mobil
+    */
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -86,7 +130,9 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
         }
     };
 
-    // Create a BroadcastReceiver for ACTION_FOUND.
+   /*
+   * mBroadcastReceiver2: Lee los cambios en la conexion
+   */
     private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -117,6 +163,10 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
             }
         }
     };
+
+    /*
+    *mBroadcastReceiver3: Lee los cambios en los dispositivos disponibles
+     */
     private BroadcastReceiver mBroadcastReceiver3 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -132,6 +182,9 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
         }
     };
 
+    /*
+    *mBroadcastReceiver4: Lee si se esta conectando o no un dispositivo
+     */
     private final BroadcastReceiver mBroadcastReceiver4 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -155,10 +208,6 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //unregisterReceiver(mBroadcastReceiver1);
-        //unregisterReceiver(mBroadcastReceiver2);
-        //unregisterReceiver(mBroadcastReceiver3);
-        //unregisterReceiver(mBroadcastReceiver4);
     }
 
     @Override
@@ -267,6 +316,9 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
         });
     }
 
+    /**
+     * mReceiver:Recibe mensajes y los guarda en archivos .mapa
+     */
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -297,16 +349,27 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
     };
 
 
+    /**
+     * startConnection: Inicia conexiones bluetooth.
+     */
     public void startConnection(){
         startBTConnection(mBTDevice,MY_UUID_INSECURE);
     }
 
+    /**
+     * startBTConnection: Conecta a los dispositivos
+     * @param device  device: El mobil a conectarse
+     * @param uuid    uuid: La direccion uuid a usarse, statica, definida al inicio del programa
+     */
     public void startBTConnection(BluetoothDevice device, UUID uuid){
         mBluetoothConnection.startClient(device, uuid);
 
     }
 
 
+    /**
+     * enableDisableBT: permite activar o desactivar el Bluetooth
+     */
     public void enableDisableBT() {
         if (mBluetoothAdapter == null) {
             Log.d(TAG, "enableDisableBT: Does not have BT capabilities");
@@ -326,6 +389,10 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
     }
 
 
+    /**
+     * btnDiscover: permite descubrir el mobil a conexiones     *
+     * @param view: La vista donde esta el boton, requerido en este tipo de metodos
+     */
     public void btnDiscover(View view) {
         Log.d(TAG, "btn discoverable created for a few seconds");
 
@@ -338,6 +405,10 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
     }
 
 
+    /**
+     * btnLookup: Busca por dispositivos bluetooth disponibles     *
+     * @param view: Requerido para el uso de botones
+     */
     public void btnLookup(View view) {
 
         if (mBluetoothAdapter.isDiscovering()) {
@@ -386,6 +457,10 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
             }
         }
 
+    /**
+     * prueba: Comprueba que el archivo fue recibido. Se retirara en versiones posteriores
+     * @param view: Requerido para el uso de botones
+     */
     public void prueba(View view){
             PackageManager m = getPackageManager();
             String s = getPackageName();
@@ -453,61 +528,3 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
     }
 
 }
-
-// GestionadorDeArchivos ga = new GestionadorDeArchivos();
-
-//    public void generarArchivo(Context context, String sFileName, String sBody) {
-//
-//        PackageManager m = getPackageManager();
-//        String s = getPackageName();
-//        try {
-//            PackageInfo p = m.getPackageInfo(s, 0);
-//            s = p.applicationInfo.dataDir;
-//        } catch (PackageManager.NameNotFoundException e) {
-//
-//        }
-//
-//        try {
-//            File root = new File(s + "/" + sFileName);
-//            if (!root.exists()) {
-//                root.mkdirs();
-//            }
-//            File gpxfile = new File(root, sFileName);
-//            FileWriter writer = new FileWriter(gpxfile);
-//            writer.append(sBody);
-//            writer.flush();
-//            writer.close();
-//            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-/*
-
-
-            //AlertDialog Nombre del laberinto.
-            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-            builder.setTitle("Nombre del laberinto:");
-
-            final EditText input = new EditText(getApplicationContext());
-            builder.setView(input);
-
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    nombre = input.getText().toString();
-                }
-            });
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            builder.show();
-
-
-
-*/
-
