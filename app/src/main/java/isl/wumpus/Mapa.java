@@ -12,6 +12,12 @@ public class Mapa {
     private int contCuevas;
     private int contCaminos;
 
+    public Mapa tetrahedro;
+    public Mapa octahedro;
+    public Mapa cubo;
+    public Mapa icosahedro;
+    public Mapa dodecahedro;
+
     public int[] getCuevaX(){
         return cuevaX;
     }
@@ -38,10 +44,40 @@ public class Mapa {
         contCaminos = cCaminos;
     }
 
-    /**
-     * Metodo que verifica si el mapa es valido, que cada cueva tenga por lo menos un camino que la conecte con el mapa
-     * @return si es un mapa valido o no
-     */
+  //  public Mapa(){
+       // setTetrahedro();
+   // }
+
+    public void setTetrahedro(){
+        contCuevas=4;
+        cuevaX[1] = 200;
+        cuevaY[1] = 70 ;
+        cuevaX[2] = 350;
+        cuevaY[2] = 350 ;
+        cuevaX[3] = 50;
+        cuevaY[3] = 350 ;
+        cuevaX[4] = 200;
+        cuevaY[4] = 200 ;
+        //se generan 6 lineas
+        caminoV1[0]= 1; caminoV2[0]=2;
+        caminoV1[1]= 2; caminoV2[1]=3;
+        caminoV1[2]= 3; caminoV2[2]=1;// aqui se forma el triangulo
+        caminoV1[3]= 1; caminoV2[3]=4;
+        caminoV1[4]= 2; caminoV2[4]=4;
+        caminoV1[5]= 3; caminoV2[5]=4;
+        contCaminos=6;
+
+        /*tetrahedro.caminoV2 =caminoV2;
+        tetrahedro.caminoV1=caminoV2;
+        tetrahedro.cuevaX=cuevaX;
+        tetrahedro.cuevaY=cuevaY;
+        tetrahedro.contCaminos=contCaminos;
+        tetrahedro.contCuevas=contCuevas;*/
+        //tetrahedro = new Mapa();
+        //tetrahedro=this;
+
+    }
+
     public boolean Validar(){
         boolean esValido = true;
         for(int j=1; j <= contCuevas; j++){
