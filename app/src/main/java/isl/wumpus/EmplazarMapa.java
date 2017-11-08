@@ -53,6 +53,8 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
     private Button btnRA;
     private ArrayList<LatLng> latlngArray;
+    private int[] caminosA;
+    private int[] caminosB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         String s =ga.read(nombreMapa,getApplicationContext());
         mapaWumpus= ga.convertirStringAObjeto(s);
         elementosDeMapa = new int[mapaWumpus.getContCuevas()];
+        //se obtiene los caminos del mapa , con el fin de enviarlos a la actividad realidad aumentada
+        caminosA=mapaWumpus.getCaminoV1();
+        caminosB=mapaWumpus.getCaminoV2();
         genereElementos();
         mapFragment.getMapAsync(this);
 
@@ -127,6 +132,8 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         // putExtra array coordenadas
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("latlngArray", latlngArray);
+        bundle.putIntArray("caminosA",caminosA);
+        bundle.putIntArray("caminoB",caminosB);
         Intent a = new Intent(this, RealidaAumentada.class);
         a.putExtras(bundle);
         startActivity(a);

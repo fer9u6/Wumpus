@@ -20,14 +20,20 @@ import java.util.ArrayList;
  */
 public class WorldHelper {
     public static World world;
+    int cuevaActual;
+    int[] caminosA;
+    int[] caminosB;
     //private Ubicacion ubicacion;
 
     /**
-     * Método para crear el mundo de RA
-     * @param context es el contexto donde se encuentra la aplicación
+     * Metodo que crea los objetos del mundo
+     * @param context
+     * @param latlngArray coordenadas de las cuevas
+     * @param cA vector de caminos
+     * @param cB vector de caminos
      * @return
      */
-    public World createWorld(Context context, ArrayList<LatLng> latlngArray ){ //recibe array con cordenadas
+    public World createWorld(Context context, ArrayList<LatLng> latlngArray,int[] cA,int[] cB){ //recibe array con cordenadas
         //Si ya existe un mundo
         if(world != null){
             return world;
@@ -35,7 +41,7 @@ public class WorldHelper {
         //Creamos el mundo
         world = new World(context);
        // ubicacion = new Ubicacion(context);
-        createObjects(latlngArray);
+        createObjects(latlngArray,cA,cB);
 
         // LowPassFilter.ALPHA = 1; para arreglar que los geo objects se mueven mucho
 
@@ -49,7 +55,7 @@ public class WorldHelper {
      * Crea las cuevas y demas objetos necesarios para el juego
      * @param latlngArray es un array de LatIng que contiene las coordenadas de las cuevas
      */
-    public void createObjects(ArrayList<LatLng> latlngArray){
+    public void createObjects(ArrayList<LatLng> latlngArray,int[] cA,int[] cB){
         /*Posicion estática para colocar al mundo en algun punto. Si se desea
         * utilizar la ubicación actual, comentar esto y en MainActivity descomentar
         * BeyondarLocationManager.enable() en el onCreate*/
@@ -65,10 +71,19 @@ public class WorldHelper {
             go.setImageResource(R.mipmap.cueva8bit);
             listaGeoObject.add(go);
             world.addBeyondarObject(go); //agrega el objecto al RA
+
         }
 
         //world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
         world.setGeoPosition(9.956388, -84.171513);
+        //para que esto funcione los primeros objetos de la lista de geoobjects deben ser las cuevas
+        //poner visibles solo las cuevas que esta  adyacentes
+        //la cueva 1 siempre va a estar visible
+        // cuevas adyacentes
+        //for(int i=0;l<listaGeoObject.lenght;i++){
+        // if(cA.contains[cuevaA]||cB.contains[cuevaB])
+             //listaGeoObject.get(i).setVisible(true);
+        // }
 
 
     }

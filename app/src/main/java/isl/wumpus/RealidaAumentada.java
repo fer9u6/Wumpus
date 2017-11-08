@@ -28,6 +28,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     private WorldHelper worldHelper;
     private World mWorld;
     ArrayList<LatLng> latlngArray;
+    int[] caminoA;
+    int[] caminoB;
 
 
     /**
@@ -46,8 +48,10 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
             if(extras == null) {
                 latlngArray= null; //nunca seria null
             } else {
-                    latlngArray = getIntent().getParcelableArrayListExtra("latlngArray");//Recibe el ArrayListd latlngArray de Emplazar
-                }
+                  latlngArray = getIntent().getParcelableArrayListExtra("latlngArray");//Recibe el ArrayListd latlngArray de Emplazar
+                caminoA = getIntent().getIntArrayExtra("caminoA");
+                caminoB= getIntent().getIntArrayExtra("caminoB");
+               }
             }
 
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
@@ -61,7 +65,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(Context.LOCATION_SERVICE));
 
         //Creo el mundo
-        mWorld = worldHelper.createWorld(this, latlngArray); //mandar array de locations
+        mWorld = worldHelper.createWorld(this, latlngArray,caminoA,caminoB); //mandar array de locations
 
         /*Parametros para variar la distancia de los objetos*/
         mBeyondarFragment.setMaxDistanceToRender(3000); //Asigno distancia máxima de renderización de objetos
