@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -45,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback,
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks,
         ResultCallback<Status> {
 
     private GoogleMap mMap;
@@ -78,11 +82,12 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         btnRA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              irARealidad();
+                irARealidad();
             }
         });
         latlngArray = new ArrayList<>();
         nombreMapa="";
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -90,7 +95,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             } else {
                 idMapaReg = extras.getInt("idMR");
                 if(idMapaReg==0) {//si no hay id de poliedro regular
-                   nombreMapa = extras.getString("nM");
+                    nombreMapa = extras.getString("nM");
                 }
             }
         } else {
@@ -101,7 +106,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         String s =ga.read(nombreMapa,getApplicationContext());
         mapaWumpus= ga.convertirStringAObjeto(s);
         mapFragment.getMapAsync(this);
-
+        createGoogleApi();
     }
 
     public void irARealidad(){
@@ -127,8 +132,6 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         miUbic();
-
-
         mMap.setOnMarkerDragListener(new OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker arg0) {
@@ -141,8 +144,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             public void onMarkerDragEnd(Marker arg0) {
                 // TODO Auto-generated method stub
                 Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
-
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+                if(checkPermission()){
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+                }
             }
 
             @Override
@@ -173,7 +177,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         }
 
         //colocar los demas marcadores
-       marcadores.add(marker); //marker es la primera cueva
+        marcadores.add(marker); //marker es la primera cueva
         if(idMapaReg!=0){
             //asignarMapaReg();
         }
@@ -197,7 +201,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             marcadores.add(m);
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
-
+        startGeofence();
 
     }
 
@@ -228,17 +232,20 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         if (marker != null) marker.remove();
         marker = mMap.addMarker(new MarkerOptions().position(coord).title("Primera cueva")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
-
-        mMap.animateCamera(miUbic);
+        if(checkPermission()) {
+            mMap.animateCamera(miUbic);
+        }
     }
 
 
-   private void agregarOtroMarcador(double la, double lo,Marker m,String titulo) {
+    private void agregarOtroMarcador(double la, double lo,Marker m,String titulo) {
         LatLng coord = new LatLng(la, lo);
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         m = mMap.addMarker(new MarkerOptions().position(coord).title(titulo)
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
-        mMap.animateCamera(miUbic);
+        if(checkPermission()){
+            mMap.animateCamera(miUbic);
+        }
     }
 
 
@@ -262,6 +269,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            askPermission();
             return;
         }
 
@@ -306,6 +314,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        actualizarUbic(location);
                     }
                 }
 
@@ -445,12 +454,12 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             geoFenceLimits.remove();
         int sizelatlng=latlngArray.size();
         for(int i =0;i<sizelatlng-1;i++){
-           CircleOptions circleOptions = new CircleOptions()
-                   .center( latlngArray.get(i))
-                   .strokeColor(Color.argb(50, 70,70,70))
-                   .fillColor( Color.argb(100, 150,150,150) )
-                   .radius( GEOFENCE_RADIUS );
-           geoFenceLimits = mMap.addCircle( circleOptions );
+            CircleOptions circleOptions = new CircleOptions()
+                    .center( latlngArray.get(i))
+                    .strokeColor(Color.argb(50, 70,70,70))
+                    .fillColor( Color.argb(100, 150,150,150) )
+                    .radius( GEOFENCE_RADIUS );
+            geoFenceLimits = mMap.addCircle( circleOptions );
         }
     }
 
@@ -466,5 +475,81 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         editor.putLong( KEY_GEOFENCE_LAT, Double.doubleToRawLongBits( latlngArray.get(0).latitude ));
         editor.putLong( KEY_GEOFENCE_LON, Double.doubleToRawLongBits( latlngArray.get(0).longitude ));
         editor.apply();
+    }
+    // Create GoogleApiClient instance
+    private void createGoogleApi() {
+        Log.d(TAG, "createGoogleApi()");
+        if ( googleApiClient == null ) {
+            googleApiClient = new GoogleApiClient.Builder( this )
+                    .addConnectionCallbacks( this )
+                    .addOnConnectionFailedListener( this )
+                    .addApi( LocationServices.API )
+                    .build();
+        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Call GoogleApiClient connection when starting the Activity
+        googleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Disconnect GoogleApiClient when stopping Activity
+        googleApiClient.disconnect();
+    }
+
+
+
+    // Asks for permission
+    private void askPermission() {
+        Log.d(TAG, "askPermission()");
+        ActivityCompat.requestPermissions(
+                this,
+                new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                REQ_PERMISSION
+        );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult()");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch ( requestCode ) {
+            case REQ_PERMISSION: {
+                if ( grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
+                    // Permission granted
+                    //askPermission();
+
+                } else {
+                    // Permission denied
+                    askPermission();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected()");
+
+    }
+
+    // GoogleApiClient.ConnectionCallbacks suspended
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.w(TAG, "onConnectionSuspended()");
+    }
+
+    // GoogleApiClient.OnConnectionFailedListener fail
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.w(TAG, "onConnectionFailed()");
     }
 }
