@@ -410,7 +410,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     }
     private static final long GEO_DURATION = 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 35.0f; // in meters
+    private static final float GEOFENCE_RADIUS = 7.0f; // in meters
 
     private static final String TAG = EmplazarMapa.class.getSimpleName();
 
