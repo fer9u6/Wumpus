@@ -144,9 +144,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             public void onMarkerDragEnd(Marker arg0) {
                 // TODO Auto-generated method stub
                 Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
-                if(checkPermission()){
+
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
-                }
+
             }
 
             @Override
@@ -232,9 +232,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         if (marker != null) marker.remove();
         marker = mMap.addMarker(new MarkerOptions().position(coord).title("Primera cueva")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
-        if(checkPermission()) {
+
             mMap.animateCamera(miUbic);
-        }
+
     }
 
 
@@ -243,9 +243,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate miUbic = CameraUpdateFactory.newLatLngZoom(coord, 20f);
         m = mMap.addMarker(new MarkerOptions().position(coord).title(titulo)
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
-        if(checkPermission()){
+
             mMap.animateCamera(miUbic);
-        }
+
     }
 
 
@@ -314,7 +314,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        actualizarUbic(location);
+                        
                     }
                 }
 
@@ -358,7 +358,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private static final String TAG = GeofenceMap.class.getSimpleName();
+    private static final String TAG = EmplazarMapa.class.getSimpleName();
     // Start Geofence creation process
     private void startGeofence() {
         Log.i(TAG, "startGeofence()");
