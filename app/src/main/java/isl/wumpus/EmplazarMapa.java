@@ -303,7 +303,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         }
 
         LocationManager locationManager= (LocationManager) getSystemService(Context.LOCATION_SERVICE);;
-        Location location= locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);;
+        Location location= null;
         try {
 
             // getting GPS status
