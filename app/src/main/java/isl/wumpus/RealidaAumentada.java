@@ -20,23 +20,27 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
-
+/**
+ * Clase que puede despliega los objetos de la realidad aumentada y captura los eventos de los objetos
+ */
 public class RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListener {
     private BeyondarFragmentSupport mBeyondarFragment;
     private WorldHelper worldHelper;
     private World mWorld;
     ArrayList<LatLng> latlngArray;
+    int[] caminoA;
+    int[] caminoB;
 
 
-
+    /**
+     * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
+     * a createObjects.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        //El layout correspondiente a la actividad de Realidad Aumentada
-       // setContentView(R.layout.beyondar);
-
-
-
         setContentView(R.layout.beyondar);
         latlngArray = new ArrayList<>();
         if (savedInstanceState == null) {
@@ -44,8 +48,10 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
             if(extras == null) {
                 latlngArray= null; //nunca seria null
             } else {
-                    latlngArray = getIntent().getParcelableArrayListExtra("latlngArray"); ///Como recibir extras de LatLng Array List??
-                }
+                  latlngArray = getIntent().getParcelableArrayListExtra("latlngArray");//Recibe el ArrayListd latlngArray de Emplazar
+                caminoA = getIntent().getIntArrayExtra("caminoA");
+                caminoB= getIntent().getIntArrayExtra("caminoB");
+               }
             }
 
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
@@ -59,13 +65,13 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(Context.LOCATION_SERVICE));
 
         //Creo el mundo
-        mWorld = worldHelper.createWorld(this, latlngArray); //mandar array de locations
+        mWorld = worldHelper.createWorld(this, latlngArray,caminoA,caminoB); //mandar array de locations
 
         /*Parametros para variar la distancia de los objetos*/
         mBeyondarFragment.setMaxDistanceToRender(3000); //Asigno distancia máxima de renderización de objetos
         mBeyondarFragment.setDistanceFactor(4); //El factor de distancia de objetos (más cerca entre mayor valor)
-        mBeyondarFragment.setPushAwayDistance(3); //Para alejar un poco los objetos que están muy cerca
-        mBeyondarFragment.setPullCloserDistance(2); //Para acercar un poco los objetos que están muy lejos
+        mBeyondarFragment.setPushAwayDistance(4); //Para alejar un poco los objetos que están muy cerca
+        mBeyondarFragment.setPullCloserDistance(4); //Para acercar un poco los objetos que están muy lejos //3
         mBeyondarFragment.setWorld(mWorld);
 
         //BeyondarLocationManager.enable();
@@ -97,7 +103,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     }
 
     /**
-     * Método para registar el evento de tap a algún objeto del mundo RA
+     * Método para registar el evento de tap a algún objeto del mundo RA y muestra el nombre del objeto(numero de cueva)
      * @param arrayList contiene el objeto georefernciado
      */
     @Override

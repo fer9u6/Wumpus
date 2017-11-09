@@ -14,12 +14,22 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * DeviceAdapter: Crea la lista de dispositivos bluetooth disponibles
+ */
 public class DeviceAdapter extends ArrayAdapter<BluetoothDevice> {
 
     private LayoutInflater mLayoutInflater;
     private  ArrayList<BluetoothDevice> mDevices;
     private int mViewResourceId;
 
+    /**
+     * Crea un nuevo DeviceAdapter
+     *
+     * @param context      : El contexto actual
+     * @param tvResourceId : El resource id del dispositivo
+     * @param devices      : Los dispositivos disponibles para conectarse
+     */
     public DeviceAdapter(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices){
         super(context, tvResourceId,devices);
         this.mDevices = devices;

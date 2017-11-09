@@ -15,16 +15,25 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+/**
+ * Esta clase maneja las reglas de los objetos del juego
+ */
 public class WorldHelper {
     public static World world;
+    int cuevaActual;
+    int[] caminosA;
+    int[] caminosB;
     //private Ubicacion ubicacion;
 
     /**
-     * Método para crear el mundo de RA
-     * @param context es el contexto donde se encuentra la aplicación
+     * Metodo que crea los objetos del mundo
+     * @param context
+     * @param latlngArray coordenadas de las cuevas
+     * @param cA vector de caminos
+     * @param cB vector de caminos
      * @return
      */
-    public World createWorld(Context context, ArrayList<LatLng> latlngArray ){ //recibe array con cordenadas
+    public World createWorld(Context context, ArrayList<LatLng> latlngArray,int[] cA,int[] cB){ //recibe array con cordenadas
         //Si ya existe un mundo
         if(world != null){
             return world;
@@ -32,7 +41,7 @@ public class WorldHelper {
         //Creamos el mundo
         world = new World(context);
        // ubicacion = new Ubicacion(context);
-        createObjects(latlngArray);
+        createObjects(latlngArray,cA,cB);
 
         // LowPassFilter.ALPHA = 1; para arreglar que los geo objects se mueven mucho
 
@@ -40,10 +49,13 @@ public class WorldHelper {
 
     }
 
+
     /**
      * Método para crear objetos georeferenciados y agregarlos al mundo de RA
+     * Crea las cuevas y demas objetos necesarios para el juego
+     * @param latlngArray es un array de LatIng que contiene las coordenadas de las cuevas
      */
-    public void createObjects(ArrayList<LatLng> latlngArray){
+    public void createObjects(ArrayList<LatLng> latlngArray,int[] cA,int[] cB){
         /*Posicion estática para colocar al mundo en algun punto. Si se desea
         * utilizar la ubicación actual, comentar esto y en MainActivity descomentar
         * BeyondarLocationManager.enable() en el onCreate*/
@@ -56,39 +68,23 @@ public class WorldHelper {
             go = new GeoObject(i++);
             go.setGeoPosition(l.latitude, l.longitude);
             go.setName(""+i);
-            go.setImageResource(R.mipmap.cueva);
+            go.setImageResource(R.mipmap.cueva8bit);
             listaGeoObject.add(go);
             world.addBeyondarObject(go); //agrega el objecto al RA
+
         }
 
-        world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
-        //world.setGeoPosition(9.956388, -84.171513);
-        /*
-        GeoObject geo1 = new GeoObject(1);
-        geo1.setGeoPosition(9.957452, -84.170577);
-        geo1.setName("Soy el monstruo azul");
-        geo1.setImageResource(R.drawable.creature_tulu);
+        //world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
+        world.setGeoPosition(9.956388, -84.171513);
+        //para que esto funcione los primeros objetos de la lista de geoobjects deben ser las cuevas
+        //poner visibles solo las cuevas que esta  adyacentes
+        //la cueva 1 siempre va a estar visible
+        // cuevas adyacentes
+        //for(int i=0;l<listaGeoObject.lenght;i++){
+        // if(cA.contains[cuevaA]||cB.contains[cuevaB])
+             //listaGeoObject.get(i).setVisible(true);
+        // }
 
-        GeoObject geo2 = new GeoObject(2);
-        geo2.setGeoPosition(9.957346, -84.171264);
-        geo2.setName("Soy el monstruo naranja");
-        geo2.setImageResource(R.drawable.creature_tulu);
-
-        GeoObject geo3 = new GeoObject(3);
-        geo3.setGeoPosition(9.956081, -84.171679);
-        geo3.setName("Soy el monstruo verde");
-        geo3.setImageResource(R.drawable.creature_muck);
-
-        GeoObject geo4 = new GeoObject(4);
-        geo4.setGeoPosition(9.956416, -84.171725);
-        geo4.setName("Soy el monstruo morado");
-        geo4.setImageResource(R.drawable.creature_muck);
-
-        world.addBeyondarObject(geo1);
-        world.addBeyondarObject(geo2);
-        world.addBeyondarObject(geo3);
-        world.addBeyondarObject(geo4);
-        */
 
     }
 

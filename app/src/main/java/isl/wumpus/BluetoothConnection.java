@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import java.util.UUID;
 
 /**
- * Created by Jay on 07/10/2017.
+ * BluetoothConnection: Maneja la conexion de bluetooth, es llamado por ChatActivity
  */
 
 public class BluetoothConnection {
@@ -28,16 +28,27 @@ public class BluetoothConnection {
     private AcceptThread mInsecureConnectionThread;
 
     private final BluetoothAdapter mBluetoothAdapter;
+    /**
+     * mContext: El contexto actual
+     */
     Context mContext;
     private AcceptThread mInsecureAcceptThread;
 
     private ConnectThread mConnectThread;
     private BluetoothDevice mDevice;
     private UUID deviceUUID;
+    /**
+     * mProgressDialog: Muestra una ventana cuando se esta estableciendo una conexion
+     */
     ProgressDialog mProgressDialog;
 
     private ConnectedThread mConnectedThread;
 
+    /**
+     * BluetoothConection: Inicia una nueva conexion de Bluetooth
+     *
+     * @param context: El contexto actual, requerido por el constructor
+     */
     public BluetoothConnection(Context context) {
         mContext = context;
         mBluetoothAdapter= BluetoothAdapter.getDefaultAdapter();
@@ -47,6 +58,9 @@ public class BluetoothConnection {
     private class AcceptThread extends Thread{
         private final BluetoothServerSocket mServerSocket;
 
+        /**
+         * AcceptThread: Thread que busca si se ha aceptado la conexion
+         */
         public AcceptThread(){ //
             BluetoothServerSocket tmp = null;
             try {
@@ -57,6 +71,9 @@ public class BluetoothConnection {
             }
             mServerSocket=tmp;
         }
+        /*
+        *run: Si la conexion es aceptada se corre el metodo de aceptacion
+         */
         public void run(){ //accepts connection
             BluetoothSocket socket=null;
             try {
@@ -69,6 +86,10 @@ public class BluetoothConnection {
             }
 
         }
+
+        /**
+         * Cancel: Detiene la conexion
+         */
         public void cancel(){ //closes thread
             try{
                 mServerSocket.close();
@@ -81,6 +102,12 @@ public class BluetoothConnection {
     private class ConnectThread extends Thread{ //connects to a device
         private BluetoothSocket mSocket;
 
+        /**
+         * Thread de conexion, busca conexiones
+         *
+         * @param device: el dispositivo que desea conectarse
+         * @param uuid: la direccion declarada con la que queremos conectarnos
+         */
         public ConnectThread(BluetoothDevice device, UUID uuid){
             mDevice=device;
             deviceUUID=uuid;
@@ -105,6 +132,10 @@ public class BluetoothConnection {
             }
             connected(mSocket,mDevice);
         }
+
+        /**
+         * cancel: Cierra este hilo
+         */
         public void cancel(){
             try {
                 mSocket.close();
@@ -113,6 +144,10 @@ public class BluetoothConnection {
             }
         }
     }
+
+    /**
+     * Start: Inicia el proceso de conexion
+     */
     public synchronized void start(){ //starts accept thread
 
         if(mConnectThread!=null){//cancel new connection attempts
@@ -126,8 +161,14 @@ public class BluetoothConnection {
 
     }
 
+    /**
+     * startClient: La conexion del lado del cliente (emisor) hacia el servidor (receptor)
+     *
+     * @param device: el dispositivo a conetarse
+     * @param uuid:   la direccion a conectarnos
+     */
     public void startClient (BluetoothDevice device, UUID uuid){
-        mProgressDialog=ProgressDialog.show(mContext, "Cnnecting to other device","" +
+        mProgressDialog=ProgressDialog.show(mContext, "Connecting to other device","" +
                 "Please wait",true);
         mConnectThread=new ConnectThread(device, uuid);
         mConnectThread.start();
@@ -138,6 +179,11 @@ public class BluetoothConnection {
         private final InputStream mInputStream;
         private final OutputStream mOutputStream;
 
+        /**
+         * ConnectedThread: Inicia el connected thread
+         *
+         * @param socket: El socket de conexion declarado como mSocket
+         */
         public ConnectedThread(BluetoothSocket socket){
             mSocket=socket;
             InputStream tmpin=null;
@@ -181,6 +227,11 @@ public class BluetoothConnection {
             }
         }
 
+        /**
+         * write: Metodo que escribe en bytes al servidor
+         *
+         * @param bytes: Los bytes del mensaje que queremos enviar
+         */
         public void write(byte[] bytes){
 
             String text = new String (bytes, Charset.defaultCharset());
@@ -191,6 +242,9 @@ public class BluetoothConnection {
             }
         }
 
+        /**
+         * cancel: Cierra la conexion al cerrar el socket
+         */
         public void cancel(){
             try{
                 mSocket.close();
@@ -206,6 +260,11 @@ public class BluetoothConnection {
         mConnectedThread.start();
     }
 
+    /**
+     * write: Le escribe al servidor de la conexion.
+     *
+     * @param out: los bytes obtenidos
+     */
     public void write(byte[] out){
         ConnectedThread r;
         mConnectedThread.write(out);
