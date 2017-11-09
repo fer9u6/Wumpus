@@ -152,7 +152,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        miUbic();
+
 
 
         mMap.setOnMarkerDragListener(new OnMarkerDragListener() {
@@ -177,6 +177,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
                 Log.i("System out", "onMarkerDrag...");
             }
         });
+        miUbic();
     }
 
 
@@ -314,11 +315,12 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
+                int i;
                 // location service disabled
             } else {
                 // if GPS Enabled get lat/long using GPS Services
 
-                if (isGPSEnabled) {
+                if (isGPSEnabled && !isNetworkEnabled ) {
                     LocationListener locationListener1 = new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
@@ -336,12 +338,14 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
                         public void onProviderDisabled(String s) {
                         }
                     };
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener1);
+                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener1, null);
 
                     Log.d("GPS Enabled", "GPS Enabled");
 
                     if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        while (location==null) {
+                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        }
                     }
                 }
 
@@ -365,13 +369,14 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
                             public void onProviderDisabled(String s) {
                             }
                         };
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener2);
+                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener2, null);
 
                         Log.d("Network", "Network");
 
                         if (locationManager != null) {
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            actualizarUbic(location);
+                            while (location==null){
+                                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            }
                         }
                     }
 
@@ -382,6 +387,8 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             Log.e("Error : Location",
                     "Impossible to connect to LocationManager", e);
         }
+
+        actualizarUbic(location);
 
     }
 
