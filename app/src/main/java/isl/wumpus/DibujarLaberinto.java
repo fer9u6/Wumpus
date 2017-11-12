@@ -59,14 +59,10 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         salvarDibujo.setMessage("¿Salvar Laberinto?");
         salvarDibujo.setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
-
                 //Salvar dibujo
                 lienzo.setDrawingCacheEnabled(true);
-
                 //Para asociar PNG con TXT
-
                 File folder = new File(getFilesDir() + File.separator + "Imagenes");
-
                 if(!folder.exists()){
                     folder.mkdir();
                 }
