@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
 
     <Button
         android:id="@+id/onoffBTN"
-        android:layout_width="wrap_content"
+        android:layout_width="181dp"
         android:layout_height="wrap_content"
         android:text="Bluetooth I/O"
         android:layout_weight="1"
@@ -39,21 +39,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <ListView
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:id="@+id/listDeviceView"
-        android:background="#fffff2"
-        android:layout_weight="1"
-        android:layout_below="@+id/btnLookup"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/btnLookup"
-        android:layout_alignEnd="@+id/btnLookup" />
-
     <Button
         android:id="@+id/btnLookup"
-        android:layout_width="142dp"
+        android:layout_width="181dp"
         android:layout_height="wrap_content"
         android:onClick="btnLookup"
         android:text="Buscar Dispositivo"
@@ -64,57 +52,81 @@
         android:layout_alignRight="@+id/btnDiscover"
         android:layout_alignEnd="@+id/btnDiscover" />
 
-    <Button
-        android:id="@+id/btnStartConnection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Conectarse"
-        android:layout_alignBaseline="@+id/btnLookup"
-        android:layout_alignBottom="@+id/btnLookup"
-        android:layout_alignLeft="@+id/btnSend"
-        android:layout_alignStart="@+id/btnSend" />
-
-    <EditText
-        android:id="@+id/chatText"
-        android:layout_width="190dp"
-        android:layout_height="40dp"
-        android:ems="10"
-        android:background="#fffff2"
-        android:hint="Nombre del Mapa"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:id="@+id/btnSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enviar"
-        android:layout_below="@+id/chatText"
-        android:layout_alignLeft="@+id/chatText"
-        android:layout_alignStart="@+id/chatText" />
-
     <TextView
-        android:textColor="#fffff2"
         android:id="@+id/incomingMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="186dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:text="TextView" />
+        android:layout_column="0"
+        android:layout_row="5"
+        android:text="TextView"
+        android:textColor="#fffff2" />
 
     <Button
         android:id="@+id/btnPrueba"
-        android:layout_width="wrap_content"
+        android:layout_width="182dp"
         android:layout_height="wrap_content"
-        android:text="Probar"
-        android:onClick="prueba"
         android:layout_alignBaseline="@+id/btnSend"
         android:layout_alignBottom="@+id/btnSend"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:layout_toEndOf="@+id/btnSend"
         android:layout_toRightOf="@+id/btnSend"
-        android:layout_toEndOf="@+id/btnSend" />
+        android:onClick="prueba"
+        android:text="Probar" />
 
-</android.widget.RelativeLayout>
+    <ListView
+        android:id="@+id/listDeviceView"
+        android:layout_width="187dp"
+        android:layout_height="47dp"
+        android:layout_alignEnd="@+id/btnLookup"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/btnLookup"
+        android:layout_below="@+id/btnLookup"
+        android:layout_column="0"
+        android:layout_row="2"
+        android:layout_weight="1"
+        android:background="#fffff2" />
+
+    <Button
+        android:id="@+id/btnStartConnection"
+        android:layout_width="182dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnLookup"
+        android:layout_alignBottom="@+id/btnLookup"
+        android:layout_alignLeft="@+id/btnSend"
+        android:layout_alignStart="@+id/btnSend"
+        android:layout_column="1"
+        android:layout_row="2"
+        android:text="Conectarse" />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="178dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chatText"
+        android:layout_alignStart="@+id/chatText"
+        android:layout_below="@+id/chatText"
+        android:layout_column="1"
+        android:layout_row="3"
+        android:text="Enviar" />
+
+    <EditText
+        android:id="@+id/chatText"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_column="0"
+        android:layout_row="3"
+        android:background="#fffff2"
+        android:ems="10"
+        android:hint="Nombre del Mapa" />
+
+</android.widget.GridLayout>
