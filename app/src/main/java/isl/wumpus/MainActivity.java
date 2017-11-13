@@ -16,19 +16,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.title_theme);
 
-        mediaPlayer.start();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.stop();
-        mediaPlayer.release();
-
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.title_theme);
+        mediaPlayer.start();
+    }
+
+
 
     public void menumodoopen(View v){
         Intent i = new Intent(this,MenuModo.class);

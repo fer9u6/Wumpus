@@ -81,7 +81,7 @@ public class Regulares {
         cuevaX[7]=250;  cuevaY[7]=250;
         cuevaX[8]=150;  cuevaY[8]=250;
         //12 lineas
-        caminoA = new int[13]; caminoB = new int[13];
+        caminoA = new int[12]; caminoB = new int[12];
         caminoA[0]= 1; caminoB[0]=2;
         caminoA[1]= 2; caminoB[1]=3;
         caminoA[2]= 3; caminoB[2]=4;

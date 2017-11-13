@@ -4,9 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -27,6 +29,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,8 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<LatLng> latlngArray;
     private int[] caminosA;
     private int[] caminosB;
+    private ArrayList<Polyline> lineas;
+    private boolean emplazado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +75,10 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         btnPunto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fijaPunto();
+                if(!emplazado){fijaPunto(); emplazado=true; btnPunto.setText("Ordenar Lineas");}
+                else {
+                    dibujaLineas();
+                }
             }
         });
         btnRA.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +89,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         });
         latlngArray = new ArrayList<>();
         nombreMapa="";
+        lineas= new ArrayList<>();
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -128,8 +138,12 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
      * para que pueda crear los geoobject y la inicia.
      * Se invoca al presionar el boton jugar.
      */
-    public void irARealidad(){
+    public void irARealidad() {
+
         // putExtra array coordenadas
+        for(Marker ll: marcadores){
+            latlngArray.add(ll.getPosition());
+        }
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("latlngArray", latlngArray);
         bundle.putIntArray("caminosA",caminosA);
@@ -190,16 +204,14 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             puntoFijo = true;
             marker.setDraggable(false);
             //LatLng de primera cueva.
-            LatLng latlngActual = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
-            latlngArray.add(latlngActual);
+            //LatLng latlngActual = marker.getPosition(); //new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
+            //latlngArray.add(latlngActual);
         }
         int[] cuevaX= mapaWumpus.getCuevaX();
         int[] cuevaY= mapaWumpus.getCuevaY();
-        int[] caminoV1= mapaWumpus.getCaminoV1();
-        int[] caminoV2 = mapaWumpus.getCaminoV2();
         for(int o=2; o<cuevaX.length; o++){
             cuevaX[o]-= cuevaX[1];
-            cuevaY[o]-= cuevaX[1];
+            cuevaY[o]-= cuevaY[1];
         }
 
         //colocar los demas marcadores
@@ -208,9 +220,9 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //asignarMapaReg();
         }
         int cantidadCuevas=mapaWumpus.getContCuevas(); //por ahora fijo porque mapawumpus no sirve
+        double lat = marcadores.get(0).getPosition().latitude;
+        double lon = marcadores.get(0).getPosition().longitude;
         for(int i =2;i<=cantidadCuevas;i++) {
-            double lat = marcadores.get(0).getPosition().latitude;
-            double lon = marcadores.get(0).getPosition().longitude;
 
             // degree in google map is equal to 111.32 Kilometer. 1Degree = 111.32KM. 1KM in Degree = 1 / 111.32 = 0.008983. 1M in Degree = 0.000008983
             // agregar nuevo marcador a 5 metros markers[i]
@@ -219,14 +231,15 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             double new_lat = lat + coef;
             metros = cuevaY[i];
             coef = metros * 0.0000007;
-            double new_long = lon + coef / Math.cos(lat * 0.018);
+            double new_long = lon + coef /* Math.cos(lat * 0.018)*/;
             LatLng coord = new LatLng(new_lat, new_long);
-            latlngArray.add(coord);
-            Marker m = mMap.addMarker(new MarkerOptions().position(coord).title("x")
+            String x = ""+(i+2)+"";
+            Marker m = mMap.addMarker(new MarkerOptions().position(coord).title(x)
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
             marcadores.add(m);
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
+        dibujaLineas();
 
 
     }
@@ -274,6 +287,25 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         m = mMap.addMarker(new MarkerOptions().position(coord).title(titulo)
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.cueva8bit)).draggable(true));
         mMap.animateCamera(miUbic);
+    }
+
+    private void dibujaLineas(){
+        for(Polyline p: lineas){
+            p.remove();
+        }
+        int v1[]=mapaWumpus.getCaminoV1();
+        int v2[]=mapaWumpus.getCaminoV2();
+        for(int i=0; i< v1.length; i++){
+            if(v1[i]!= 0 || v2[i]!=0) lineas.add(drawLine(marcadores.get(v1[i]-1).getPosition(),marcadores.get(v2[i]-1).getPosition()));
+        }
+    }
+
+    @NonNull
+    private Polyline drawLine(LatLng x, LatLng y){
+        return  mMap.addPolyline(new PolylineOptions()
+                .add(x,y)
+                .width(5)
+                .color(Color.RED));
     }
 
 
