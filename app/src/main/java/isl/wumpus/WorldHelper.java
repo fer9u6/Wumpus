@@ -23,6 +23,7 @@ public class WorldHelper {
     ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
     int cuevaActual;
     int contCuevas;
+   ArrayList<Integer>cuevasAdyacentes = new ArrayList<>();; //cuevas adyacentes a la actual
     int[] caminosA;
     int[] caminosB;
     int cuevaWumpus=0;
@@ -48,13 +49,9 @@ public class WorldHelper {
         world = new World(context);
        // ubicacion = new Ubicacion(context);
         createObjects(latlngArray,cA,cB);
-
         // LowPassFilter.ALPHA = 1; para arreglar que los geo objects se mueven mucho
-
         return world;
-
     }
-
 
     /**
      * Método para crear objetos georeferenciados y agregarlos al mundo de RA
@@ -62,10 +59,6 @@ public class WorldHelper {
      * @param latlngArray es un array de LatIng que contiene las coordenadas de las cuevas
      */
     public void createObjects(ArrayList<LatLng> latlngArray,int[] cA,int[] cB) {
-        /*Posicion estática para colocar al mundo en algun punto. Si se desea
-        * utilizar la ubicación actual, comentar esto y en MainActivity descomentar
-        * BeyondarLocationManager.enable() en el onCreate*/
-
         //iterar el locations
         GeoObject go;
         int i = 0;
@@ -134,16 +127,23 @@ public class WorldHelper {
         for (int i =0;i<listaGeoObject.size();i++){
             listaGeoObject.get(i).setVisible(false);
         }
-
         for (int i = 0; i < caminosA.length; i++) {
             //En lista objects los objetos empiezan en la posicion 0, no existe el numero de cueva 0 en caminosA y caminos B
             if (caminosA[i] == cuevaActual || caminosB[i] == cuevaActual) {
                 if (caminosA[i] == cuevaActual) {
                     listaGeoObject.get(caminosB[i]-1).setVisible(true);
+                    cuevasAdyacentes.add(caminosB[i]-1); //esta es la posicion de la cueva en listaGeoObject
+
                 } else {
                     listaGeoObject.get(caminosA[i]-1).setVisible(true);
+                    cuevasAdyacentes.add(caminosA[i]-1); //esta es la posicion de la cueva en listaGeoObject
                 }
             }
+        }
+
+        //aqui se puede compbrobar cual es la lista de adyacentes
+        for(int i: cuevasAdyacentes){
+            int ad = i;
         }
 
     }
