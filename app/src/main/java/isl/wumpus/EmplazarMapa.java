@@ -147,7 +147,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("latlngArray", latlngArray);
         bundle.putIntArray("caminosA",caminosA);
-        bundle.putIntArray("caminoB",caminosB);
+        bundle.putIntArray("caminosB",caminosB);
         Intent a = new Intent(this, RealidaAumentada.class);
         a.putExtras(bundle);
         startActivity(a);

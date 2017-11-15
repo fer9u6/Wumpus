@@ -20,9 +20,14 @@ import java.util.ArrayList;
  */
 public class WorldHelper {
     public static World world;
+    ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
     int cuevaActual;
+    int contCuevas;
     int[] caminosA;
     int[] caminosB;
+    int cuevaWumpus=0;
+    int cuevaPozo=0;
+    int cuevaMurcielago=0;
     //private Ubicacion ubicacion;
 
     /**
@@ -35,6 +40,7 @@ public class WorldHelper {
      */
     public World createWorld(Context context, ArrayList<LatLng> latlngArray,int[] cA,int[] cB){ //recibe array con cordenadas
         //Si ya existe un mundo
+        contCuevas = latlngArray.size();
         if(world != null){
             return world;
         }
@@ -55,35 +61,98 @@ public class WorldHelper {
      * Crea las cuevas y demas objetos necesarios para el juego
      * @param latlngArray es un array de LatIng que contiene las coordenadas de las cuevas
      */
-    public void createObjects(ArrayList<LatLng> latlngArray,int[] cA,int[] cB){
+    public void createObjects(ArrayList<LatLng> latlngArray,int[] cA,int[] cB) {
         /*Posicion estática para colocar al mundo en algun punto. Si se desea
         * utilizar la ubicación actual, comentar esto y en MainActivity descomentar
         * BeyondarLocationManager.enable() en el onCreate*/
 
         //iterar el locations
-        ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
         GeoObject go;
         int i = 0;
-        for (LatLng l:latlngArray){
+        for (LatLng l : latlngArray) {
             go = new GeoObject(i++);
             go.setGeoPosition(l.latitude, l.longitude);
-            go.setName(""+i);
+            go.setName("" + i);
             go.setImageResource(R.mipmap.cueva8bit);
+            go.setVisible(false);
             listaGeoObject.add(go);
             world.addBeyondarObject(go); //agrega el objecto al RA
+        }
+        cuevaActual = 1;
+        mostrarCuevas(cA, cB);
+        asignarCaracteristicasCuevas();
+    }
 
+    /**
+     * Este metodo asigna los murcielagos , el wumpus y los pozos a las cuevas
+     */
+    public void asignarCaracteristicasCuevas(){
+        //la cueva 1 siempre estara vacia
+        cuevaWumpus = (int) (Math.random() * contCuevas - 1) + 2; // rango entra 2 y cantidad de cuevas
+        if(contCuevas >3) {
+            int temp = (int) (Math.random() * contCuevas - 1) + 2;
+            if (temp != cuevaWumpus) {
+                cuevaPozo = temp;
+            } else {
+                cuevaPozo = temp + 1;
+            }
+            temp = (int) (Math.random() * contCuevas - 1) + 2;
+            while (cuevaMurcielago == 0) {
+                if (temp == contCuevas) {
+                    temp = temp - 2;
+                }
+                if (temp != cuevaWumpus && temp != cuevaPozo) {
+                    cuevaMurcielago = temp;
+                }
+                temp++;
+            }
         }
 
-        //world.setGeoPosition(latlngArray.get(0).latitude,latlngArray.get(0).longitude);
-        world.setGeoPosition(9.956388, -84.171513);
-        //para que esto funcione los primeros objetos de la lista de geoobjects deben ser las cuevas
-        //poner visibles solo las cuevas que esta  adyacentes
-        //la cueva 1 siempre va a estar visible
-        // cuevas adyacentes
-        //for(int i=0;l<listaGeoObject.lenght;i++){
-        // if(cA.contains[cuevaA]||cB.contains[cuevaB])
-             //listaGeoObject.get(i).setVisible(true);
-        // }
+    }
+
+    public int getCuevaActual(){
+        return cuevaActual;
+    }
+
+    /**
+     * Este metodo cambia la cueva actual y llama a mostrar cuevas para actualizar las cuevas adyacentes a la actual
+     * @param i nueva cueva actual
+     * @param ca vector de caminos
+     * @param cb vector de caminos
+     */
+    public void setCuevaActual(int i,int [] ca, int[] cb){
+        cuevaActual=i;
+        mostrarCuevas(ca,cb);
+    }
+
+    /**
+     * Este metodo define las cuevas adyacentes a la cueva actual , solo estas cuevas se mostraran en la pantalla
+     */
+    public void mostrarCuevas(int[] caminosA, int[] caminosB) {
+        //si alguno de los puntos es la cueva actual, haga visible el otro punto(cueva)
+        // pone todas las cuevas invisibles
+        for (int i =0;i<listaGeoObject.size();i++){
+            listaGeoObject.get(i).setVisible(false);
+        }
+
+        for (int i = 0; i < caminosA.length; i++) {
+            //En lista objects los objetos empiezan en la posicion 0, no existe el numero de cueva 0 en caminosA y caminos B
+            if (caminosA[i] == cuevaActual || caminosB[i] == cuevaActual) {
+                if (caminosA[i] == cuevaActual) {
+                    listaGeoObject.get(caminosB[i]-1).setVisible(true);
+                } else {
+                    listaGeoObject.get(caminosA[i]-1).setVisible(true);
+                }
+            }
+        }
+
+    }
+
+
+
+
+
+
 
 
     }
@@ -91,4 +160,4 @@ public class WorldHelper {
 
 
 
-}
+
