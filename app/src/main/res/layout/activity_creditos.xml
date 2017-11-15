@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="isl.wumpus.Creditos">
+
+    <TextView
+        android:id="@+id/editText3"
+        android:layout_width="244dp"
+        android:layout_height="52dp"
+
+        android:text="ESTABAS ESPERANDO CREDITOS \n PERO NO ERA YO, WUMPUS"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <ImageView
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/wumpus" />
+</android.widget.LinearLayout>

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -106,6 +107,10 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
     /*
     *BroadcastReceiver: Lee los cambios en ACTION_STATE, el estado del bluetooth en el mobil
     */
+
+    MediaPlayer mediaPlayer;
+
+
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -315,6 +320,22 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
             }
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.tema_bluetooth);
+        mediaPlayer.start();
+    }
+
 
     /**
      * mReceiver:Recibe mensajes y los guarda en archivos .mapa
@@ -526,5 +547,11 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
                 e.printStackTrace();
             }
     }
+
+    public void insopen(View v){
+        Intent i = new Intent(this,BluetoothInstrucciones.class);
+        startActivity(i);
+    }
+
 
 }
