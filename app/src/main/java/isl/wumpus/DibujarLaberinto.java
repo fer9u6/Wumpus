@@ -28,6 +28,7 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
     public Button bCamino;
     public Button bGuardar;
     public Button bBorrar;
+    public Button bPoliedro;
     public Button bEmplazar;
     public Mapa mapa;
     private String nombre = ""; //input nombre laberinto
@@ -40,9 +41,11 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
         bCueva = (Button) findViewById(R.id.btncueva);
         bGuardar = (Button) findViewById(R.id.btnguardar);
         bBorrar =(Button) findViewById(R.id.btnborrar);
+        bPoliedro=(Button) findViewById(R.id.btnPoliedro);
         bEmplazar =(Button)findViewById(R.id.btnEmplazar);
         lienzo = (Lienzo) findViewById(R.id.lienzo);
         bCamino.setOnClickListener(this);
+        bPoliedro.setOnClickListener(this);
         bCueva.setOnClickListener(this);
         bGuardar.setOnClickListener(this);
         bBorrar.setOnClickListener(this);
@@ -50,9 +53,6 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
 
     }
 
-    /**
-     * Se guarda el laberinto como imagen png y se guarda como string mediante un objeto Json
-     */
     public void guardarLaberinto(){
         AlertDialog.Builder salvarDibujo = new AlertDialog.Builder(this);
         salvarDibujo.setTitle("Salvar laberinto");
@@ -148,6 +148,9 @@ public class DibujarLaberinto extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btnborrar:
                 lienzo.borrar();
+                break;
+            case R.id.btnPoliedro:
+                lienzo.crearDodecahedro();
                 break;
             case R.id.btnEmplazar:
                 if(!nombre.equals("")) {

@@ -30,34 +30,33 @@ import static java.security.AccessController.getContext;
 public class GestionadorDeArchivos {
 
 
-    /**
-     * Convierte un Objeto de tipo Mapa a String de Json unando Gson
-     * @param o Objeto Mapa que se convierte en string
-     * @return String que contiene los atributos del objeto mpapa.
-     */
+    //private static Context ctx;
+
+    /*public GestionadorDeArchivos(Context c) {
+        this.ctx = c;
+    }*/
+
+    public boolean existe(String string){
+        return new File(string).exists();
+    }
+
+    //Convierte objeto a string
     public static String convertirObjetoAString(Mapa o){
         final Gson gson = new Gson();
+        // 1. Java object to JSON,
+        //return gson.toJson(o).toString();
         return gson.toJson(o);
     }
 
-    /**
-     * Convierte un String de Json a un objeto de tipo Mapa
-     * @param string string que se desea convertir a Mapa
-     * @return Objeto Mapa
-     */
+    //Convierte String a objeto
     public static Mapa convertirStringAObjeto(String string){
         final Gson gson = new Gson();
         Mapa o = gson.fromJson(string, Mapa.class);
         return o;
     }
 
-    /**
-     * Lee de memoria interna /Mapas un archivo que contiene un String.
-     * @param nombrelab String que contiene el nombre sin extensión del archivo que se quiere leer.
-     * @param ctx Contexto del activity que llama al método.
-     * @return String que está contenido en el archivo.
-     */
-    public static String read(String nombrelab, Context ctx) {
+    //Recibe el nombre de laberinto que quiere abrir
+    public static String read(String nombrelab/*, View view*/, Context ctx) {
         try {
             FileInputStream fileInputStream= new FileInputStream(new File(ctx.getFilesDir() + File.separator + "Mapas" + File.separator +nombrelab+".mapa"));
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -68,6 +67,7 @@ public class GestionadorDeArchivos {
                 stringBuffer.append(lines+"\n");
             }
             return stringBuffer.toString();
+            //view.texto.setText(stringBuffer.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -76,18 +76,20 @@ public class GestionadorDeArchivos {
         return "";
     }
 
-    /**
-     * Escribe en memoria interna un archivo que contiene un String
-     * @param nombrelab el nombre del archivo a escribirse, sin extensión.
-     * @param ctx Contexto del activity que llama al método.
-     */
     public static void write(String nombrelab, String string, Context ctx) {
 
+
+
+        //File folder = ctx.getDir("Mapas",ctx.MODE_PRIVATE);
+
         File folder = new File(ctx.getFilesDir() + File.separator + "Mapas");
+
         if(!folder.exists()){
             folder.mkdir();
         }
+
         File file = new File(folder, nombrelab+".mapa");
+
         FileOutputStream fos;
 
         try{
@@ -97,8 +99,12 @@ public class GestionadorDeArchivos {
         }catch(IOException e){
             e.printStackTrace();
         }
-
+            /*
+            FileOutputStream fileOutputStream = ctx.openFileOutput(nombrelab + ".mapa",MODE_PRIVATE);
+            fileOutputStream.write(string.getBytes());
+            fileOutputStream.close();*/
         Toast.makeText(ctx.getApplicationContext(),"Laberinto guardado como "+ file.getAbsolutePath(),Toast.LENGTH_LONG).show();
     }
+
 
 }

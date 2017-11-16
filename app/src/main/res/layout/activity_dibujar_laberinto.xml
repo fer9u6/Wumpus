@@ -61,6 +61,14 @@
             android:background="#42A5F5"
             android:text="Borrar" />
 
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnPoliedro"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
+            android:text="Poliedro" />
 
         <Button
             android:layout_width="0dp"
