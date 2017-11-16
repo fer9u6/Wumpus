@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -253,7 +252,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
         dibujaLineas();
-        //startGeofence();
+        startGeofence();
 
     }
 
@@ -438,7 +437,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
 
     private static final String TAG = EmplazarMapa.class.getSimpleName();
     // Start Geofence creation process
-    /*private void startGeofence() {
+    private void startGeofence() {
         Log.i(TAG, "startGeofence()");
         int sizelatlng=latlngArray.size();
         Geofence geofence;
@@ -450,7 +449,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-    }*/
+    }
 
 
     private static final long GEO_DURATION = 60 * 60 * 1000;
@@ -469,7 +468,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
                 .build();
     }
 
-    /*// Create a Geofence Request
+    // Create a Geofence Request
     private GeofencingRequest createGeofenceRequest(Geofence geofence ) {
         Log.d(TAG, "createGeofenceRequest");
         return new GeofencingRequest.Builder()
@@ -485,14 +484,14 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         if ( geoFencePendingIntent != null )
             return geoFencePendingIntent;
 
-        //Intent intent = new Intent( this, GeofenceTrasitionService.class);
+        Intent intent = new Intent( this, GeofenceTrasitionService.class);
         return PendingIntent.getService(
-                //this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-    }*/
+                this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+    }
 
     LocationServices locationServices;
 
-   /* // Add the created GeofenceRequest to the device's monitoring list
+    // Add the created GeofenceRequest to the device's monitoring list
     private void addGeofence(GeofencingRequest request) {
         Log.d(TAG, "addGeofence");
         if (checkPermission())
@@ -501,7 +500,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
                     request,
                     createGeofencePendingIntent()
             ).setResultCallback(this);
-    }*/
+    }
 
     private final int REQ_PERMISSION = 999;
 
