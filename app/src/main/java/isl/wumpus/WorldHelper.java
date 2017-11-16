@@ -23,38 +23,33 @@ public class WorldHelper {
     ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
     int cuevaActual;
     int contCuevas;
+   ArrayList<Integer>cuevasAdyacentes = new ArrayList<>();; //cuevas adyacentes a la actual
     int[] caminosA;
     int[] caminosB;
     int cuevaWumpus=0;
     int cuevaPozo=0;
     int cuevaMurcielago=0;
-
     //private Ubicacion ubicacion;
 
     /**
      * Metodo que crea los objetos del mundo
-     *
      * @param context
      * @param latlngArray coordenadas de las cuevas
-     * @param cA          vector de caminos
-     * @param cB          vector de caminos
+     * @param cA vector de caminos
+     * @param cB vector de caminos
      * @return
      */
-    public World createWorld(Context context, ArrayList<LatLng> latlngArray, int[] cA, int[] cB) { //recibe array con cordenadas
+    public World createWorld(Context context, ArrayList<LatLng> latlngArray,int[] cA,int[] cB){ //recibe array con cordenadas
         //Si ya existe un mundo
         contCuevas = latlngArray.size();
-        if (world != null) {
+        if(world != null){
             return world;
         }
+        //Creamos el mundo
         world = new World(context);
-        createObjects(latlngArray, cA, cB);
-        /*caminosA = new int[cA.length];
-        caminosB = new int[cB.length];
-        for (int i = 0; i < cA.length; i++) {
-            caminosB[i] = cB[i];
-            caminosA[i] = cA[i];
-        }*/
-        //LowPassFilter.ALPHA = 1; //para arreglar que los geo objects se mueven mucho
+       // ubicacion = new Ubicacion(context);
+        createObjects(latlngArray,cA,cB);
+        // LowPassFilter.ALPHA = 1; para arreglar que los geo objects se mueven mucho
         return world;
     }
 
@@ -63,7 +58,8 @@ public class WorldHelper {
      * Crea las cuevas y demas objetos necesarios para el juego
      * @param latlngArray es un array de LatIng que contiene las coordenadas de las cuevas
      */
-    public void createObjects(ArrayList<LatLng> latlngArray, int[] cA, int[] cB) {
+    public void createObjects(ArrayList<LatLng> latlngArray,int[] cA,int[] cB) {
+        //iterar el locations
         GeoObject go;
         int i = 0;
         for (LatLng l : latlngArray) {
@@ -78,7 +74,6 @@ public class WorldHelper {
         cuevaActual = 1;
         mostrarCuevas(cA, cB);
         asignarCaracteristicasCuevas();
-
     }
 
     /**
@@ -107,6 +102,7 @@ public class WorldHelper {
         }
 
     }
+
     public int getCuevaActual(){
         return cuevaActual;
     }
@@ -131,18 +127,37 @@ public class WorldHelper {
         for (int i =0;i<listaGeoObject.size();i++){
             listaGeoObject.get(i).setVisible(false);
         }
-
         for (int i = 0; i < caminosA.length; i++) {
             //En lista objects los objetos empiezan en la posicion 0, no existe el numero de cueva 0 en caminosA y caminos B
             if (caminosA[i] == cuevaActual || caminosB[i] == cuevaActual) {
                 if (caminosA[i] == cuevaActual) {
                     listaGeoObject.get(caminosB[i]-1).setVisible(true);
+                    cuevasAdyacentes.add(caminosB[i]-1); //esta es la posicion de la cueva en listaGeoObject
+
                 } else {
                     listaGeoObject.get(caminosA[i]-1).setVisible(true);
+                    cuevasAdyacentes.add(caminosA[i]-1); //esta es la posicion de la cueva en listaGeoObject
                 }
             }
         }
 
+        //aqui se puede compbrobar cual es la lista de adyacentes
+        for(int i: cuevasAdyacentes){
+            int ad = i;
+        }
+
     }
-}
+
+
+
+
+
+
+
+
+    }
+
+
+
+
 

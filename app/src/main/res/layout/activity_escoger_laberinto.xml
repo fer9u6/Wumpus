@@ -1,72 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="isl.wumpus.EscogerLaberinto"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
-
-    <Button
-        android:id="@+id/btnRegular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Regular"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/btnDibujar" />
-
-    <Button
-        android:id="@+id/btnIrregular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Irregular"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintTop_toTopOf="@+id/btnRegular"
-        app:layout_constraintLeft_toRightOf="@+id/btnRegular" />
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/ivPoliedro"
-        android:layout_width="331dp"
-        android:layout_height="344dp"
-        android:layout_marginEnd="51dp"
-        android:layout_marginLeft="51dp"
-        android:layout_marginRight="51dp"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="35dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tetraedro"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
-        app:layout_constraintHorizontal_bias="0.489" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:srcCompat="@drawable/tetraedro" />
 
-    <Button
-        android:id="@+id/btnDibujar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dibujar"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnRegular"
-        tools:layout_constraintBaseline_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="10dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnRegular"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Regular"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"/>
 
-    <Button
-        android:id="@+id/btnEmplazar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Emplazar"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnIrregular"
-        tools:layout_constraintBaseline_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toRightOf="@+id/btnIrregular"
-        android:layout_marginLeft="-19dp" />
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/btnIrregular"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Irregular"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"/>
+
+        <Button
+            android:id="@+id/btnDibujar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Dibujar"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/btnEmplazar"
+            android:tag="#42A5F5"
+            android:background="#42A5F5"
+            android:text="Emplazar" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

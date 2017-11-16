@@ -1,33 +1,22 @@
 package isl.wumpus;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -37,8 +26,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,10 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.OnConnectionFailedListener,
-        GoogleApiClient.ConnectionCallbacks,
-        ResultCallback<Status> {
+/**
+ * Esta clase despliega un mapa de google que muestra la ubicacion del usuario que es donde se ubica la primera cueva
+ * y con respecto a esta, ubica las demas cuevas del mapa elegido.
+ * mapa.
+ */
+public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Marker marker;  //posicion de primera cueva
@@ -65,7 +54,6 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     private Button btnPunto;
     private Random random;
     private int [] elementosDeMapa;
-    private GoogleApiClient googleApiClient;
 
     private Button btnRA;
     private ArrayList<LatLng> latlngArray;
@@ -96,7 +84,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         btnRA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                irARealidad();
+              irARealidad();
             }
         });
         latlngArray = new ArrayList<>();
@@ -109,7 +97,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             } else {
                 idMapaReg = extras.getInt("idMR");
                 if(idMapaReg==0) {//si no hay id de poliedro regular
-                    nombreMapa = extras.getString("nM");
+                   nombreMapa = extras.getString("nM");
                 }
             }
         } else {
@@ -125,7 +113,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         caminosB=mapaWumpus.getCaminoV2();
         genereElementos();
         mapFragment.getMapAsync(this);
-        createGoogleApi();
+
     }
 
     private void genereElementos(){
@@ -178,7 +166,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        miUbic();
+
 
 
         mMap.setOnMarkerDragListener(new OnMarkerDragListener() {
@@ -212,7 +200,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
      * coordenadas que se le va a pasar a la realidad aumentada.
      */
     private void fijaPunto(){
-        if(marker.isVisible()) { // se podria hacer una mejor validacion  R: si....
+        if(marker.isVisible()) {
             puntoFijo = true;
             marker.setDraggable(false);
             //LatLng de primera cueva.
@@ -236,7 +224,6 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
         double lon = marcadores.get(0).getPosition().longitude;
         for(int i =2;i<=cantidadCuevas;i++) {
 
-
             // degree in google map is equal to 111.32 Kilometer. 1Degree = 111.32KM. 1KM in Degree = 1 / 111.32 = 0.008983. 1M in Degree = 0.000008983
             // agregar nuevo marcador a 5 metros markers[i]
             double metros = cuevaX[i];
@@ -253,7 +240,7 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //agregarOtroMarcador(new_lat, new_long, m, ""+(i+2)+""); //empieza poniendo de titulo cueva 2
         }
         dibujaLineas();
-        //startGeofence();
+
 
     }
 
@@ -344,7 +331,6 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            askPermission();
             return;
         }
 
@@ -433,201 +419,10 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             Log.e("Error : Location",
                     "Impossible to connect to LocationManager", e);
         }
+
         actualizarUbic(location);
-    }
-
-    private static final String TAG = EmplazarMapa.class.getSimpleName();
-    // Start Geofence creation process
-    /*private void startGeofence() {
-        Log.i(TAG, "startGeofence()");
-        int sizelatlng=latlngArray.size();
-        Geofence geofence;
-        GeofencingRequest geofenceRequest;
-        for(int i =0;i<sizelatlng-1;i++){
-            geofence = createGeofence( latlngArray.get(i), GEOFENCE_RADIUS );
-            geofenceRequest = createGeofenceRequest( geofence );
-            addGeofence( geofenceRequest );
-        }
-
-
-    }*/
-
-
-    private static final long GEO_DURATION = 60 * 60 * 1000;
-    private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 7.0f; // in meters
-
-    // Create a Geofence
-    private Geofence createGeofence( LatLng latLng, float radius ) {
-        Log.d(TAG, "createGeofence");
-        return new Geofence.Builder()
-                .setRequestId(GEOFENCE_REQ_ID)
-                .setCircularRegion( latLng.latitude, latLng.longitude, radius)
-                .setExpirationDuration( GEO_DURATION )
-                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
-                        | Geofence.GEOFENCE_TRANSITION_EXIT )
-                .build();
-    }
-
-    /*// Create a Geofence Request
-    private GeofencingRequest createGeofenceRequest(Geofence geofence ) {
-        Log.d(TAG, "createGeofenceRequest");
-        return new GeofencingRequest.Builder()
-                .setInitialTrigger( GeofencingRequest.INITIAL_TRIGGER_ENTER )
-                .addGeofence( geofence )
-                .build();
-    }
-
-    private PendingIntent geoFencePendingIntent;
-    private final int GEOFENCE_REQ_CODE = 0;
-    private PendingIntent createGeofencePendingIntent() {
-        Log.d(TAG, "createGeofencePendingIntent");
-        if ( geoFencePendingIntent != null )
-            return geoFencePendingIntent;
-
-        //Intent intent = new Intent( this, GeofenceTrasitionService.class);
-        return PendingIntent.getService(
-                //this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-    }*/
-
-    LocationServices locationServices;
-
-   /* // Add the created GeofenceRequest to the device's monitoring list
-    private void addGeofence(GeofencingRequest request) {
-        Log.d(TAG, "addGeofence");
-        if (checkPermission())
-            locationServices.GeofencingApi.addGeofences(
-                    googleApiClient,
-                    request,
-                    createGeofencePendingIntent()
-            ).setResultCallback(this);
-    }*/
-
-    private final int REQ_PERMISSION = 999;
-
-    // Check for permission to access Location
-    private boolean checkPermission() {
-        Log.d(TAG, "checkPermission()");
-        // Ask for permission if it wasn't granted yet
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED );
-    }
-    @Override
-    public void onResult(@NonNull Status status) {
-        Log.i(TAG, "onResult: " + status);
-        if ( status.isSuccess() ) {
-            //saveGeofence();
-            drawGeofence();
-        } else {
-            // inform about fail
-        }
-    }
-
-    // Draw Geofence circle on GoogleMap
-    private Circle geoFenceLimits;
-    private void drawGeofence() {
-        Log.d(TAG, "drawGeofence()");
-
-        if ( geoFenceLimits != null )
-            geoFenceLimits.remove();
-        int sizelatlng=latlngArray.size();
-        for(int i =0;i<sizelatlng-1;i++){
-            CircleOptions circleOptions = new CircleOptions()
-                    .center( latlngArray.get(i))
-                    .strokeColor(Color.argb(50, 70,70,70))
-                    .fillColor( Color.argb(100, 150,150,150) )
-                    .radius( GEOFENCE_RADIUS );
-            geoFenceLimits = mMap.addCircle( circleOptions );
-        }
-    }
-
-    private final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
-    private final String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";
-
-    // Saving GeoFence marker with prefs mng
-    private void saveGeofence() {
-        Log.d(TAG, "saveGeofence()");
-        SharedPreferences sharedPref = getPreferences( Context.MODE_PRIVATE );
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putLong( KEY_GEOFENCE_LAT, Double.doubleToRawLongBits( latlngArray.get(0).latitude ));
-        editor.putLong( KEY_GEOFENCE_LON, Double.doubleToRawLongBits( latlngArray.get(0).longitude ));
-        editor.apply();
-    }
-    // Create GoogleApiClient instance
-    private void createGoogleApi() {
-        Log.d(TAG, "createGoogleApi()");
-        if ( googleApiClient == null ) {
-            googleApiClient = new GoogleApiClient.Builder( this )
-                    .addConnectionCallbacks( this )
-                    .addOnConnectionFailedListener( this )
-                    .addApi( LocationServices.API )
-                    .build();
-        }
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // Call GoogleApiClient connection when starting the Activity
-        googleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // Disconnect GoogleApiClient when stopping Activity
-        googleApiClient.disconnect();
-    }
-
-
-
-    // Asks for permission
-    private void askPermission() {
-        Log.d(TAG, "askPermission()");
-        ActivityCompat.requestPermissions(
-                this,
-                new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                REQ_PERMISSION
-        );
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult()");
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch ( requestCode ) {
-            case REQ_PERMISSION: {
-                if ( grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
-                    // Permission granted
-                    //askPermission();
-
-                } else {
-                    // Permission denied
-                    askPermission();
-                }
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "onConnected()");
 
     }
 
-    // GoogleApiClient.ConnectionCallbacks suspended
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.w(TAG, "onConnectionSuspended()");
-    }
 
-    // GoogleApiClient.OnConnectionFailedListener fail
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "onConnectionFailed()");
-    }
 }

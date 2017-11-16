@@ -34,8 +34,6 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     int[] caminoB;
     boolean modoEntrarACueva;
 
-
-
     /**
      * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
      * a createObjects.
@@ -55,15 +53,19 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                   latlngArray = getIntent().getParcelableArrayListExtra("latlngArray");//Recibe el ArrayListd latlngArray de Emplazar
                 caminoA = getIntent().getIntArrayExtra("caminosA");
                 caminoB= getIntent().getIntArrayExtra("caminosB");
-
                }
             }
 
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
                 R.id.beyondarFragment);
+
+
+
         worldHelper = new WorldHelper();
+
         //Esto permite que BeyondAR pueda acceder a la posición del usuario
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(Context.LOCATION_SERVICE));
+
         //Creo el mundo
         mWorld = worldHelper.createWorld(this, latlngArray,caminoA,caminoB); //mandar array de locations
 
@@ -101,6 +103,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         super.onPause();
         BeyondarLocationManager.disable();
     }
+
     public void mostrarCuevaActual(){
         Toast.makeText(this, "Cueva Actual:"+worldHelper.getCuevaActual(), Toast.LENGTH_LONG).show();
     }
@@ -113,9 +116,9 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     public void onClickBeyondarObject(ArrayList<BeyondarObject> arrayList) {
         // The first element in the array belongs to the closest BeyondarObject
         final int idcueva = (int) arrayList.get(0).getId();
-         AlertDialog.Builder entrarACueva = new AlertDialog.Builder(this);
-         entrarACueva.setTitle("Entrar en cueva");
-         entrarACueva.setMessage("¿Desea entrar a la cueva " +(idcueva+1)+"?");
+        AlertDialog.Builder entrarACueva = new AlertDialog.Builder(this);
+        entrarACueva.setTitle("Entrar en cueva");
+        entrarACueva.setMessage("¿Desea entrar a la cueva " +(idcueva+1)+"?");
         entrarACueva.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -133,10 +136,6 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         });
         entrarACueva.show();
 
-        }
-
-
-
-
+    }
     }
 

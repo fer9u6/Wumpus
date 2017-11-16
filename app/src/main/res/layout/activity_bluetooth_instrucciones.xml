@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="5"
+    android:columnCount="1"
+    tools:context="isl.wumpus.BluetoothInstrucciones"
+    android:background="@drawable/fondoconexion"
+    >
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:text="Instrucciones
+
+Las funciones de emisor estan disponibles para dispositivos 6.0 o superior.
+                    " />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:text="Para encender o apagar el Bluetooth oprima el boton BluetoothI/O. Oprima el boton DescubrirDispositivo para abrir las conexiones a sus dispositivo por 300 segundos.                     Oprima el boton Buscar Dispositivo para encontrar el usuario con el que desea comunicarse" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:text="Para Emisor:
+
+Oprima el nombre del dispositivo a conectarse en la lista. Espere a que el receptor haga lo mismo. El emisor y solo el emisor debe de oprimir el boton Conectarse para establecer la comunicacion entre dispotivios.
+
+Para enviar introduzca el nombre del archivo a enviar. Se puede verificar con el boton probar. Oprima el boton Enviar para enviar el archivo.
+" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:text="Para Receptor:
+Oprima el nombre del dispositivo a conectarse en la lista. Espere a que el emisorr haga lo mismo. Espere a que el codigo recibido se llene y el mensaje que indique que recibio el mapa aparezca. Este mapa se guardara como nuevoMapa." />
+
+
+</android.widget.GridLayout>

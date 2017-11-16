@@ -46,7 +46,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyDS_HehOR8aMKcbSTkjFTU1SIi5IG2oSdw" />
 
         <activity
             android:name=".DibujarLaberinto"
