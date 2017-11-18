@@ -72,8 +72,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         /*Parametros para variar la distancia de los objetos*/
         mBeyondarFragment.setMaxDistanceToRender(3000); //Asigno distancia máxima de renderización de objetos
         mBeyondarFragment.setDistanceFactor(0); //El factor de distancia de objetos (más cerca entre mayor valor)
-        mBeyondarFragment.setPushAwayDistance(10); //Para alejar un poco los objetos que están muy cerca
-        mBeyondarFragment.setPullCloserDistance(3); //Para acercar un poco los objetos que están muy lejos //3
+        mBeyondarFragment.setPushAwayDistance(0); //Para alejar un poco los objetos que están muy cerca
+        mBeyondarFragment.setPullCloserDistance(0); //Para acercar un poco los objetos que están muy lejos //3
         mBeyondarFragment.setWorld(mWorld);
 
         BeyondarLocationManager.enable();
@@ -114,28 +114,35 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
      */
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> arrayList) {
-        // The first element in the array belongs to the closest BeyondarObject
-        final int idcueva = (int) arrayList.get(0).getId();
-        AlertDialog.Builder entrarACueva = new AlertDialog.Builder(this);
-        entrarACueva.setTitle("Entrar en cueva");
-        entrarACueva.setMessage("¿Desea entrar a la cueva " +(idcueva+1)+"?");
-        entrarACueva.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //idCueva +1 porque en los objetos si existe la cueva 0 , pero en los caminos no existe la cueva 0 , y con estos
-                // es que se determinan las cuevas adyacentes
-                worldHelper.setCuevaActual(idcueva+1,caminoA,caminoB);
-                mostrarCuevaActual();
-            }
-        });
-        entrarACueva.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        entrarACueva.show();
 
+        final int idcueva = (int) arrayList.get(0).getId();
+        //Si la cueva esta a 5m, puede entrar. Sino, mostrar distancia.
+        if (arrayList.get(0).getDistanceFromUser() > 5){
+            Toast.makeText(this, "La cueva "+(idcueva + 1)+" está a más de 5 metros. Distancia: "+(int)arrayList.get(0).getDistanceFromUser()+" metros.", Toast.LENGTH_LONG).show();
+        } else {
+
+            // The first element in the array belongs to the closest BeyondarObject
+
+            AlertDialog.Builder entrarACueva = new AlertDialog.Builder(this);
+            entrarACueva.setTitle("Entrar en cueva");
+            entrarACueva.setMessage("¿Desea entrar a la cueva " + (idcueva + 1) + "?");
+            entrarACueva.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //idCueva +1 porque en los objetos si existe la cueva 0 , pero en los caminos no existe la cueva 0 , y con estos
+                    // es que se determinan las cuevas adyacentes
+                    worldHelper.setCuevaActual(idcueva + 1, caminoA, caminoB);
+                    mostrarCuevaActual();
+                }
+            });
+            entrarACueva.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            entrarACueva.show();
+        }
     }
     }
 
