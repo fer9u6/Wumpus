@@ -60,6 +60,8 @@
         <activity android:name=".ChatActivity"/>
         <activity android:name=".MenuMapa" />
         <activity android:name=".PantallaSolo" />
+        <activity android:name=".Creditos" />
+        <activity android:name=".BluetoothInstrucciones" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

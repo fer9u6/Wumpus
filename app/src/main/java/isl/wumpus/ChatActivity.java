@@ -257,7 +257,7 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         btnSend.setOnClickListener(new View.OnClickListener(){//gets text and sends it
             @Override
-            public void onClick(View vie){
+            public void onClick(View view){
 
                 // Se encuentra la ruta del archivo
                 PackageManager m = getPackageManager();
@@ -336,6 +336,10 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
         mediaPlayer.start();
     }
 
+    public void insopen(View v){
+        Intent i = new Intent(this,BluetoothInstrucciones.class);
+        startActivity(i);
+    }
 
     /**
      * mReceiver:Recibe mensajes y los guarda en archivos .mapa
@@ -548,10 +552,7 @@ public class ChatActivity extends AppCompatActivity  implements AdapterView.OnIt
             }
     }
 
-    public void insopen(View v){
-        Intent i = new Intent(this,BluetoothInstrucciones.class);
-        startActivity(i);
-    }
+
 
 
 }
