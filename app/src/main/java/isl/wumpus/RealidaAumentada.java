@@ -10,6 +10,8 @@ import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     int paraTextCuevaActual;
     boolean modoEntrarACueva;
     private TextView textView;
+    RelativeLayout rl;
+    RelativeLayout.LayoutParams params;
     /**
      * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
      * a createObjects.
@@ -91,6 +95,9 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
 
         //Si queremos implementar algun evento al tocar un objeto de RA
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
+        rl = (RelativeLayout) findViewById(R.id.relativeText);
+        params = new RelativeLayout.LayoutParams(30, 40);
+
         textView.setText("Cueva actual: "+  worldHelper.getCuevaActual());
     }
 
@@ -137,6 +144,14 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                     // es que se determinan las cuevas adyacentes
                     worldHelper.setCuevaActual(idcueva + 1, caminoA, caminoB);
                     mostrarCuevaActual();
+                    if(worldHelper.getCuevaActual()>=10){
+                        params.leftMargin = 34;
+                        params.topMargin = 46;
+                    }else{
+                        params.leftMargin = 37;
+                        params.topMargin = 46;
+                    }
+                    rl.addView(textView, params);
                     textView.setText("Cueva actual: "+  worldHelper.getCuevaActual());
                 }
             });
