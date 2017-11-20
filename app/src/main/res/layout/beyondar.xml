@@ -13,7 +13,8 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Current cave: "
-        android:textColor="#AF5" />
+        android:text="Cueva actual:"
+        android:textColor="#AF5"
+        android:textSize="18sp" />
 
 </FrameLayout>
