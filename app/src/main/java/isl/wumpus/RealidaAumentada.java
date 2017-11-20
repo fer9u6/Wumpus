@@ -25,7 +25,8 @@ import java.util.ArrayList;
 /**
  * Clase que puede despliega los objetos de la realidad aumentada y captura los eventos de los objetos
  */
-public class RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListener {
+public class
+RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListener {
     private BeyondarFragmentSupport mBeyondarFragment;
     private WorldHelper worldHelper;
     private World mWorld;
