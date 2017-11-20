@@ -16,10 +16,7 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="14dp"
-        android:text="Instrucciones
-
-Las funciones de emisor estan disponibles para dispositivos 6.0 o superior.
-                    " />
+        android:text="Instrucciones\n\nLas funciones de emisor estan disponibles para dispositivos 6.0 o superior.\n                    " />
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
@@ -27,7 +24,7 @@ Las funciones de emisor estan disponibles para dispositivos 6.0 o superior.
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="14dp"
-        android:text="Para encender o apagar el Bluetooth oprima el boton BluetoothI/O. Oprima el boton DescubrirDispositivo para abrir las conexiones a sus dispositivo por 300 segundos.                     Oprima el boton Buscar Dispositivo para encontrar el usuario con el que desea comunicarse" />
+        android:text="Para encender o apagar el Bluetooth oprima el boton BluetoothI/O. Oprima el boton DescubrirDispositivo para abrir las conexiones a sus dispositivo por 300 segundos. Oprima el boton Buscar Dispositivo para encontrar el usuario con el que desea comunicarse\n" />
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
@@ -35,12 +32,9 @@ Las funciones de emisor estan disponibles para dispositivos 6.0 o superior.
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="14dp"
-        android:text="Para Emisor:
-
-Oprima el nombre del dispositivo a conectarse en la lista. Espere a que el receptor haga lo mismo. El emisor y solo el emisor debe de oprimir el boton Conectarse para establecer la comunicacion entre dispotivios.
-
-Para enviar introduzca el nombre del archivo a enviar. Se puede verificar con el boton probar. Oprima el boton Enviar para enviar el archivo.
-" />
+        android:text="Para Emisor:\n
+Oprima el nombre del dispositivo a conectarse en la lista. Espere a que el receptor haga lo mismo. El emisor y solo el emisor debe de oprimir el boton Conectarse para establecer la comunicacion entre dispotivos.\n
+Para enviar introduzca el nombre del archivo a enviar. Se puede verificar con el boton probar. Oprima el boton Enviar para enviar el archivo.\n" />
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
@@ -48,8 +42,7 @@ Para enviar introduzca el nombre del archivo a enviar. Se puede verificar con el
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="14dp"
-        android:text="Para Receptor:
-Oprima el nombre del dispositivo a conectarse en la lista. Espere a que el emisorr haga lo mismo. Espere a que el codigo recibido se llene y el mensaje que indique que recibio el mapa aparezca. Este mapa se guardara como nuevoMapa." />
+        android:text="Para Receptor:\n\nOprima el nombre del dispositivo a conectarse en la lista. Espere a que el emisorr haga lo mismo. Espere a que el codigo recibido se llene y el mensaje que indique que recibio el mapa aparezca. Este mapa se guardara como nuevoMapa." />
 
 
 </android.widget.GridLayout>
