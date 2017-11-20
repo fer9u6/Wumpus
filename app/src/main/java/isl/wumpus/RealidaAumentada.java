@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
@@ -32,8 +33,9 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     ArrayList<LatLng> latlngArray;
     int[] caminoA;
     int[] caminoB;
+    int paraTextCuevaActual;
     boolean modoEntrarACueva;
-
+    private TextView textView;
     /**
      * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
      * a createObjects.
@@ -45,6 +47,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beyondar);
         latlngArray = new ArrayList<>();
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -59,7 +62,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
                 R.id.beyondarFragment);
 
-
+        textView = (TextView)findViewById(R.id.textView);
 
         worldHelper = new WorldHelper();
 
@@ -88,6 +91,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
 
         //Si queremos implementar algun evento al tocar un objeto de RA
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
+        textView.setText("Cueva actual: "+  worldHelper.getCuevaActual());
     }
 
     @Override
@@ -133,6 +137,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                     // es que se determinan las cuevas adyacentes
                     worldHelper.setCuevaActual(idcueva + 1, caminoA, caminoB);
                     mostrarCuevaActual();
+                    textView.setText("Cueva actual: "+  worldHelper.getCuevaActual());
                 }
             });
             entrarACueva.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -142,6 +147,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                 }
             });
             entrarACueva.show();
+
+
         }
     }
     }
