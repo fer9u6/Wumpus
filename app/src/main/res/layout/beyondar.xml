@@ -3,6 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <isl.wumpus.PlayGifView
+        android:id="@+id/gifWumpus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
     <fragment
         android:id="@+id/beyondarFragment"
         android:name="com.beyondar.android.fragment.BeyondarFragmentSupport"

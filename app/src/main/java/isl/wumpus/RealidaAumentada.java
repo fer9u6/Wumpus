@@ -34,7 +34,7 @@ RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListen
     int[] caminoA;
     int[] caminoB;
     boolean modoEntrarACueva;
-
+    PlayGifView pGif;///////////////
     /**
      * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
      * a createObjects.
@@ -45,6 +45,8 @@ RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListen
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beyondar);
+        //Creación del PlayGifView
+        pGif = (PlayGifView) findViewById(R.id.gifWumpus);
         latlngArray = new ArrayList<>();
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -89,6 +91,8 @@ RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListen
 
         //Si queremos implementar algun evento al tocar un objeto de RA
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
+
+
     }
 
     @Override
@@ -118,7 +122,10 @@ RealidaAumentada extends FragmentActivity implements OnClickBeyondarObjectListen
 
         final int idcueva = (int) arrayList.get(0).getId();
         //Si la cueva esta a 5m, puede entrar. Sino, mostrar distancia.
+
         if (arrayList.get(0).getDistanceFromUser() > 5){
+            // Reproduce el gif del wumpus
+            pGif.setImageResource(R.drawable.giftest);
             Toast.makeText(this, "La cueva "+(idcueva + 1)+" está a más de 5 metros. Distancia: "+(int)arrayList.get(0).getDistanceFromUser()+" metros.", Toast.LENGTH_LONG).show();
         } else {
 
