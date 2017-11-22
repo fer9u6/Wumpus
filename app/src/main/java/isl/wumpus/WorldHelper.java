@@ -7,6 +7,7 @@ package isl.wumpus;
 
 import android.content.Context;
 import android.location.Location;
+import android.widget.Toast;
 
 import com.beyondar.android.opengl.util.LowPassFilter;
 import com.beyondar.android.world.GeoObject;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
  * Esta clase maneja las reglas de los objetos del juego
  */
 public class WorldHelper {
+    Context contextM;
     public static World world;
     ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
     ArrayList<GeoObject> listaGeoMonstruos = new ArrayList<>();
@@ -52,6 +54,7 @@ public class WorldHelper {
      */
     public World createWorld(Context context, ArrayList<LatLng> latlngArray,int[] cA,int[] cB){ //recibe array con cordenadas
         //Si ya existe un mundo
+        contextM = context;
         contCuevas = latlngArray.size();
         if(world != null){
             return world;
@@ -96,8 +99,8 @@ public class WorldHelper {
         world.addBeyondarObject(gm); //agrega el objecto al RA
 
 
-        mostrarCuevas(cA, cB);
         asignarCaracteristicasCuevas();
+        mostrarCuevas(cA, cB);
     }
 
     /**
@@ -123,6 +126,7 @@ public class WorldHelper {
                 }
                 temp++;
             }
+            System.out.print(cuevaMurcielago+ " "+ cuevaPozo + " "+ cuevaWumpus);
 
         }
 
@@ -172,7 +176,19 @@ public class WorldHelper {
 
         //aqui se puede compbrobar cual es la lista de adyacentes
         for(int i: cuevasAdyacentes){
-            int ad = i;
+            int ad = i-1;
+            if(ad == getCuevaWumpus()){
+                Toast toast1 = Toast.makeText(contextM, "¡¡¡Siento la precencia del WUMPUS!!!!", Toast.LENGTH_LONG);
+                toast1.show();
+            }
+            if(i == getCuevaMurcielago()){
+                Toast toast2 = Toast.makeText(contextM, "¿Qué pudo haber causado ese chirrido?", Toast.LENGTH_LONG);
+                toast2.show();
+            }
+            if(i == getCuevaPozo()){
+                Toast toast3 = Toast.makeText(contextM, "Siento una brisa helada que me congela hasta los huesos....", Toast.LENGTH_LONG);
+                toast3.show();
+            }
         }
 
     }
