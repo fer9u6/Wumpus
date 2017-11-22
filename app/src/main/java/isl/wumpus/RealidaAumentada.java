@@ -6,6 +6,7 @@ package isl.wumpus;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         /*Parametros para variar la distancia de los objetos*/
         mBeyondarFragment.setMaxDistanceToRender(3000); //Asigno distancia máxima de renderización de objetos
         mBeyondarFragment.setDistanceFactor(0); //El factor de distancia de objetos (más cerca entre mayor valor)
-        mBeyondarFragment.setPushAwayDistance(0); //Para alejar un poco los objetos que están muy cerca
+        mBeyondarFragment.setPushAwayDistance(7); //Para alejar un poco los objetos que están muy cerca
         mBeyondarFragment.setPullCloserDistance(0); //Para acercar un poco los objetos que están muy lejos //3
         mBeyondarFragment.setWorld(mWorld);
 
@@ -121,11 +122,10 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
 
         final int idcueva = (int) arrayList.get(0).getId();
         //Si la cueva esta a 5m, puede entrar. Sino, mostrar distancia.
-        if (arrayList.get(0).getDistanceFromUser() > 5){
-            Toast.makeText(this, "La cueva "+(idcueva + 1)+" está a más de 5 metros. Distancia: "+(int)arrayList.get(0).getDistanceFromUser()+" metros.", Toast.LENGTH_LONG).show();
-        } else {
-
-            // The first element in the array belongs to the closest BeyondarObject
+        //if (arrayList.get(0).getDistanceFromUser() > 5){
+         //   Toast.makeText(this, "La cueva "+(idcueva + 1)+" está a más de 5 metros. Distancia: "+(int)arrayList.get(0).getDistanceFromUser()+" metros.", Toast.LENGTH_LONG).show();
+       // } else {
+             worldHelper.monstruoVisible('m',false);
 
             AlertDialog.Builder entrarACueva = new AlertDialog.Builder(this);
             entrarACueva.setTitle("Entrar en cueva");
@@ -133,11 +133,23 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
             entrarACueva.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    //idCueva +1 porque en los objetos si existe la cueva 0 , pero en los caminos no existe la cueva 0 , y con estos
-                    // es que se determinan las cuevas adyacentes
+                    //idCueva +1 porque en los objetos si existe la cueva 0 , pero en los caminos no existe la cueva 0
+
                     worldHelper.setCuevaActual(idcueva + 1, caminoA, caminoB);
+                    int cuevaActual = worldHelper.getCuevaActual();
                     mostrarCuevaActual();
-                    textView.setText("Cueva actual: "+  worldHelper.getCuevaActual());
+                    textView.setText("Cueva actual: "+ worldHelper.getCuevaActual());
+                    if(worldHelper.getCuevaWumpus()==cuevaActual){
+                        Intent in = new Intent(getApplicationContext(), activity_perdioJuego.class);
+                        startActivity(in);
+                    }
+                    if(worldHelper.getCuevaMurcielago()==cuevaActual){
+                        worldHelper.monstruoVisible('m',true);
+                    }
+                    if(worldHelper.getCuevaPozo()==cuevaActual){
+                        Intent ia = new Intent(getApplicationContext(), caer_en_pozo.class);
+                        startActivity(ia);
+                    }
                 }
             });
             entrarACueva.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -149,7 +161,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
             entrarACueva.show();
 
 
-        }
+       // }
     }
     }
 

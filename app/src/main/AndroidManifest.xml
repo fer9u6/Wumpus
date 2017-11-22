@@ -6,17 +6,15 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.sensor.accelerometer" />
-    <uses-feature android:name="android.hardware.sensor.compass"/>
+    <uses-feature android:name="android.hardware.sensor.compass" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
@@ -33,9 +31,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
-
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -50,14 +45,12 @@
 
         <activity
             android:name=".DibujarLaberinto"
-            android:label="@string/title_activity_emplazar_mapa">
-
-        </activity>
+            android:label="@string/title_activity_emplazar_mapa" />
         <activity android:name=".MenuModo" />
         <activity android:name=".EscogerLaberinto" />
         <activity android:name=".EmplazarMapa" />
-        <activity android:name=".RealidaAumentada"/>
-        <activity android:name=".ChatActivity"/>
+        <activity android:name=".RealidaAumentada" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".MenuMapa" />
         <activity android:name=".PantallaSolo" />
         <activity android:name=".Creditos" />
@@ -69,7 +62,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PantallaMulti"></activity>
+        <activity android:name=".PantallaMulti" />
+        <activity android:name=".activity_perdioJuego" />
+        <activity android:name=".caer_en_pozo"></activity>
     </application>
 
 </manifest>

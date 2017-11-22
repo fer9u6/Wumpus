@@ -21,15 +21,26 @@ import java.util.ArrayList;
 public class WorldHelper {
     public static World world;
     ArrayList<GeoObject> listaGeoObject = new ArrayList<>();
+    ArrayList<GeoObject> listaGeoMonstruos = new ArrayList<>();
+
     int cuevaActual;
     int contCuevas;
    ArrayList<Integer>cuevasAdyacentes = new ArrayList<>();; //cuevas adyacentes a la actual
     int[] caminosA;
     int[] caminosB;
-    int cuevaWumpus=0;
-    int cuevaPozo=0;
-    int cuevaMurcielago=0;
+    int cuevaWumpus=-1;
+    int cuevaPozo=-1;
+    int cuevaMurcielago=-1;
     //private Ubicacion ubicacion;
+    public int getCuevaWumpus(){
+        return cuevaWumpus;
+    }
+    public int getCuevaPozo(){
+        return cuevaPozo;
+    }
+    public int getCuevaMurcielago(){
+        return cuevaMurcielago;
+    }
 
     /**
      * Metodo que crea los objetos del mundo
@@ -72,6 +83,19 @@ public class WorldHelper {
             world.addBeyondarObject(go); //agrega el objecto al RA
         }
         cuevaActual = 1;
+
+        GeoObject gm;
+        gm = new GeoObject(contCuevas+1);
+        gm.setName("objectMurcielago");
+        gm.setDistanceFromUser(2);
+        gm.faceToCamera(true);
+        gm.setImageResource(R.drawable.murcielago);
+       gm.setGeoPosition(listaGeoObject.get(1).getLatitude(),listaGeoObject.get(1).getLongitude());
+        gm.setVisible(false);
+        listaGeoMonstruos.add(gm);
+        world.addBeyondarObject(gm); //agrega el objecto al RA
+
+
         mostrarCuevas(cA, cB);
         asignarCaracteristicasCuevas();
     }
@@ -90,17 +114,24 @@ public class WorldHelper {
                 cuevaPozo = temp + 1;
             }
             temp = (int) (Math.random() * contCuevas - 1) + 2;
-            while (cuevaMurcielago == 0) {
-                if (temp == contCuevas) {
-                    temp = temp - 2;
+            while (cuevaMurcielago == -1) {
+                if (temp >contCuevas) {
+                    temp = temp - 3;
                 }
                 if (temp != cuevaWumpus && temp != cuevaPozo) {
                     cuevaMurcielago = temp;
                 }
                 temp++;
             }
+
         }
 
+    }
+
+    public void monstruoVisible(char tipo,boolean b){
+        if(tipo=='m'){
+            listaGeoMonstruos.get(0).setVisible(b);
+        }
     }
 
     public int getCuevaActual(){
@@ -122,8 +153,6 @@ public class WorldHelper {
      * Este metodo define las cuevas adyacentes a la cueva actual , solo estas cuevas se mostraran en la pantalla
      */
     public void mostrarCuevas(int[] caminosA, int[] caminosB) {
-        //si alguno de los puntos es la cueva actual, haga visible el otro punto(cueva)
-        // pone todas las cuevas invisibles
         for (int i =0;i<listaGeoObject.size();i++){
             listaGeoObject.get(i).setVisible(false);
         }

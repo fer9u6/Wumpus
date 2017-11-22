@@ -15,22 +15,22 @@
         android:layout_height="258dp"
         app:srcCompat="@drawable/wumpus_title" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:onClick="menumodoopen"
+        android:text="Inicio"
+
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/inicio" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Inicio"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        android:onClick="menumodoopen"
-
-        android:layout_below="@+id/imageView2"
-        android:layout_centerHorizontal="true" />
 
 </android.widget.GridLayout>
