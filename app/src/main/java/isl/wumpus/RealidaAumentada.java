@@ -40,6 +40,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     boolean modoEntrarACueva;
     private TextView textView;
     private ImageView IVmurcielago;
+    private ImageView imagenCueva;
+
     /**
      * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
      * a createObjects.
@@ -51,6 +53,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beyondar);
         latlngArray = new ArrayList<>();
+
+
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -68,6 +72,10 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
 
         textView = (TextView)findViewById(R.id.textView);
         IVmurcielago = (ImageView)findViewById(R.id.viewMurcielago) ;
+
+        imagenCueva = (ImageView)findViewById(R.id.imagenCueva) ;
+        imagenCueva.setVisibility(View.VISIBLE);
+
 
         worldHelper = new WorldHelper();
 
@@ -164,6 +172,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                         Intent ia = new Intent(getApplicationContext(), caer_en_pozo.class);
                         startActivity(ia);
                     }
+                    textView.setText("Cueva actual: "+ worldHelper.getCuevaActual());
                 }
             });
             entrarACueva.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
