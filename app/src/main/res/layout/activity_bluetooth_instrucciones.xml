@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+
     android:rowCount="5"
     android:columnCount="1"
     tools:context="isl.wumpus.BluetoothInstrucciones"
     android:background="@drawable/fondoconexion"
     >
+
+    <android.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="5"
+        android:columnCount="1"
+        >
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
@@ -44,5 +54,6 @@ Para enviar introduzca el nombre del archivo a enviar. Se puede verificar con el
         android:textSize="14dp"
         android:text="Para Receptor:\n\nOprima el nombre del dispositivo a conectarse en la lista. Espere a que el emisorr haga lo mismo. Espere a que el codigo recibido se llene y el mensaje que indique que recibio el mapa aparezca. Este mapa se guardara como nuevoMapa." />
 
+</android.widget.GridLayout>>
 
-</android.widget.GridLayout>
+</android.widget.ScrollView>
