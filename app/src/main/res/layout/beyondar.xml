@@ -16,5 +16,12 @@
         android:text="Cueva actual:"
         android:textColor="#AF5"
         android:textSize="18sp" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/murcielago"
+        android:id="@+id/viewMurcielago"
+        android:visibility="invisible"
+        />
 
 </FrameLayout>

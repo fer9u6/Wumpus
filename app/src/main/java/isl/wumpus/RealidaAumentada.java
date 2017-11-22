@@ -11,6 +11,8 @@ import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
     int paraTextCuevaActual;
     boolean modoEntrarACueva;
     private TextView textView;
+    private ImageView IVmurcielago;
     /**
      * Metodo que inicializa las atributos principales de la ralidad aumentada y envia como parametro las coordenadas de las cuevas
      * a createObjects.
@@ -64,6 +67,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                 R.id.beyondarFragment);
 
         textView = (TextView)findViewById(R.id.textView);
+        IVmurcielago = (ImageView)findViewById(R.id.viewMurcielago) ;
 
         worldHelper = new WorldHelper();
 
@@ -109,6 +113,14 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         BeyondarLocationManager.disable();
     }
 
+    public void mostrarMurcielago(boolean r){
+        if(r==true) {
+            IVmurcielago.setVisibility(View.VISIBLE);
+        }else{
+            IVmurcielago.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void mostrarCuevaActual(){
         Toast.makeText(this, "Cueva Actual:"+worldHelper.getCuevaActual(), Toast.LENGTH_LONG).show();
     }
@@ -125,8 +137,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
         //if (arrayList.get(0).getDistanceFromUser() > 5){
          //   Toast.makeText(this, "La cueva "+(idcueva + 1)+" está a más de 5 metros. Distancia: "+(int)arrayList.get(0).getDistanceFromUser()+" metros.", Toast.LENGTH_LONG).show();
        // } else {
-             worldHelper.monstruoVisible('m',false);
-
+             //worldHelper.monstruoVisible('m',false);
+              mostrarMurcielago(false);
             AlertDialog.Builder entrarACueva = new AlertDialog.Builder(this);
             entrarACueva.setTitle("Entrar en cueva");
             entrarACueva.setMessage("¿Desea entrar a la cueva " + (idcueva + 1) + "?");
@@ -144,7 +156,9 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                         startActivity(in);
                     }
                     if(worldHelper.getCuevaMurcielago()==cuevaActual){
-                        worldHelper.monstruoVisible('m',true);
+                        //worldHelper.monstruoVisible('m',true);
+                        mostrarMurcielago(true);
+
                     }
                     if(worldHelper.getCuevaPozo()==cuevaActual){
                         Intent ia = new Intent(getApplicationContext(), caer_en_pozo.class);
