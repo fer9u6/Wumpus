@@ -158,7 +158,7 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                     worldHelper.setCuevaActual(idcueva + 1, caminoA, caminoB);
                     int cuevaActual = worldHelper.getCuevaActual();
                     mostrarCuevaActual();
-                    textView.setText("Cueva actual: "+ worldHelper.getCuevaActual());
+                    textView.setText(worldHelper.getCuevaActual());
                     if(worldHelper.getCuevaWumpus()==cuevaActual){
                         Intent in = new Intent(getApplicationContext(), activity_perdioJuego.class);
                         startActivity(in);
@@ -172,7 +172,8 @@ public class RealidaAumentada extends FragmentActivity implements OnClickBeyonda
                         Intent ia = new Intent(getApplicationContext(), caer_en_pozo.class);
                         startActivity(ia);
                     }
-                    textView.setText("Cueva actual: "+ worldHelper.getCuevaActual());
+
+                    textView.setText(worldHelper.getCuevaActual());
                 }
             });
             entrarACueva.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
