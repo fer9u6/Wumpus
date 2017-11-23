@@ -7,6 +7,7 @@ package isl.wumpus;
 
 import android.content.Context;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.widget.Toast;
 
 import com.beyondar.android.opengl.util.LowPassFilter;
@@ -175,17 +176,21 @@ public class WorldHelper {
         }
 
         //aqui se puede compbrobar cual es la lista de adyacentes
-        for(int i: cuevasAdyacentes){
-            int ad = i-1;
-            if(ad == getCuevaWumpus()){
-                Toast toast1 = Toast.makeText(contextM, "¡¡¡Siento la precencia del WUMPUS!!!!", Toast.LENGTH_LONG);
-                toast1.show();
-            }
-            if(i == getCuevaMurcielago()){
+        if(cuevaActual!=getCuevaWumpus() && cuevaActual!=getCuevaMurcielago() && cuevaActual!=getCuevaPozo() )
+            for(int i: cuevasAdyacentes){
+            int ad = i+1;
+            if(ad == getCuevaMurcielago()){
+                MediaPlayer mediaPlayer = MediaPlayer.create(contextM, R.raw.murcielago);
+                mediaPlayer.start();
                 Toast toast2 = Toast.makeText(contextM, "¿Qué pudo haber causado ese chirrido?", Toast.LENGTH_LONG);
                 toast2.show();
             }
-            if(i == getCuevaPozo()){
+            if(ad == getCuevaWumpus()){
+                Toast toast1 = Toast.makeText(contextM, "¡¡¡Siento la precencia del WUMPUS, emite un hedor imperdible !!!!", Toast.LENGTH_LONG);
+                toast1.show();
+            }
+
+            if(ad == getCuevaPozo()){
                 Toast toast3 = Toast.makeText(contextM, "Siento una brisa helada que me congela hasta los huesos....", Toast.LENGTH_LONG);
                 toast3.show();
             }
