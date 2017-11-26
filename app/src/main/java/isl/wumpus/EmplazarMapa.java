@@ -331,7 +331,12 @@ public class EmplazarMapa extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+          /*  ActivityCompat.requestPermissions(
+                    this,
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                    999
+            );
+            return;*/
         }
 
         LocationManager locationManager= (LocationManager) getSystemService(Context.LOCATION_SERVICE);;
